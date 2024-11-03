@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0f172a;
+  --foreground: #171717;
+  --text-primary: #fffbeb;
+  --font-fredoka: "Fredoka", sans-serif;
+  --max-size: 80rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  color: var(--text-primary);
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-fredoka);
+}
+
+body {
+  @apply dark:bg-slate-900 dark:text-white;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body > * {
+  max-width: var(--max-size);
+}
+
+header {
+  max-width: 100%;
+}
+
+main {
+  margin: 0 auto;
+  padding-inline: 0.5rem;
+  opacity: 1;
+  transition: 0.4s;
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+p {
+  font-weight: 300;
+}
