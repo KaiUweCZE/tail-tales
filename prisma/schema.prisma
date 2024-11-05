@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String   @unique
+  hashedPassword String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  folders        Folder[]
+  files          File[]
+}
+
+model Folder {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  index        Int
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  // Relations to folder/file
+  files        File[]   @relation("FolderFiles")
+  subFolders   Folder[] @relation("FolderSubfolders")
+  parentFolder Folder?  @relation("FolderSubfolders", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parentId     String?  @db.ObjectId
+  // relation to user
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String   @db.ObjectId
+
+  @@unique([userId, name, parentId])
+}
+
+model File {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  index     Int
+  name      String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // relation
+  folder    Folder?  @relation("FolderFiles", fields: [folderId], references: [id])
+  folderId  String?  @db.ObjectId
+  // relations to user
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+
+  @@unique([userId, name, folderId])
+}
