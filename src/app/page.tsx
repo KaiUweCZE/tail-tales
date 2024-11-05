@@ -1,6 +1,13 @@
+"use client";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 export default function Home() {
+  const { data } = useSession();
+
+  const logData = () => {
+    console.log(data);
+  };
   return (
     <main className="mx-auto px-2">
       <article>
@@ -17,6 +24,7 @@ export default function Home() {
           consequuntur. Quae, reiciendis et.
         </p>
       </article>
+      <button onClick={logData}>clicky</button>
     </main>
   );
 }

@@ -12,7 +12,7 @@ const AsideMenu = () => {
   const context = useContext(FileContext);
 
   if (!context) return <span>Context is missing</span>;
-  const { newInput } = context;
+  const { newInput, isActive } = context;
   const newFile = () => {};
   return (
     <header className="">

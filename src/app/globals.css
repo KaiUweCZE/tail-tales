@@ -6,6 +6,9 @@
   --background: #0f172a;
   --foreground: #171717;
   --text-primary: #fffbeb;
+  --ok-color: #10b981;
+  --error-color: #fb7185;
+  --shadow-color: 255, 251, 235;
   --font-fredoka: "Fredoka", sans-serif;
   --max-size: 80rem;
 }
@@ -36,6 +39,10 @@ body > * {
   max-width: var(--max-size);
 }
 
+.maximum-w {
+  max-width: var(--max-size);
+}
+
 header {
   max-width: 100%;
 }
@@ -52,4 +59,63 @@ main {
 
 p {
   font-weight: 300;
+}
+
+.primary-shadow {
+  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13), 0 1px 1px 0 rgba(0, 0, 0, 0.11);*/
+  box-shadow: 0 2px 4px 0 rgba(var(--shadow-color), 0.23),
+    0 1px 1px 0 rgba(var(--shadow-color), 0.15);
+}
+
+.secondary-shadow {
+  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.13), 0 1px 2px 0 rgba(0, 0, 0, 0.11);
+}
+
+.successful-message {
+  display: grid;
+  line-height: 1.5rem;
+  position: fixed;
+  /*background-color: var(--ok-color);*/
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 0.35rem;
+  bottom: 0;
+  left: 0;
+  opacity: 1;
+  translate: 0 0;
+  transition: 0.4s;
+  h3 {
+    font-size: 1.5rem;
+  }
+  p {
+    font-size: 1rem;
+  }
+  @starting-style {
+    opacity: 0.2;
+    translate: 0 3rem;
+  }
+}
+
+.sub-menu {
+  display: none;
+  height: 10rem;
+  width: 8rem;
+  background-color: #203053;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  opacity: 0;
+
+  transition: display 0.3s, translate 0.3s, opacity 0.3s;
+  transition-behavior: allow-discrete;
+  &.active {
+    display: grid;
+    opacity: 1;
+    translate: 0 0;
+    z-index: -100;
+    @starting-style {
+      opacity: 0;
+      translate: 5rem;
+    }
+  }
 }
