@@ -1,8 +1,12 @@
 "use client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useState } from "react";
+
+const posibleClasses = ["bg-red-400", "bg-green-500"] as const;
 
 export default function Home() {
+  const [newClass, setNewClass] = useState("");
   const { data } = useSession();
 
   const logData = () => {
@@ -25,6 +29,17 @@ export default function Home() {
         </p>
       </article>
       <button onClick={logData}>clicky</button>
+      <input
+        type="text"
+        name=""
+        id=""
+        value={newClass}
+        className="h-6 w-24 text-slate-900"
+        onChange={(e) => setNewClass(e.target.value)}
+      />
+      <div
+        className={`bg-green-400 w-24 h-24 transition-all ${newClass}`}
+      ></div>
     </main>
   );
 }

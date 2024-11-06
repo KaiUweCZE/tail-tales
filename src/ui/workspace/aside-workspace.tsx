@@ -12,12 +12,15 @@ const AsideWorkspace = () => {
   const context = useContext(FileContext);
   if (!context) return <span>Context is missing</span>;
   const { isActive, files, folders } = context;
+  const rootFolders = folders.filter((folder) => folder.parentId === "null");
   return (
     <aside className="grid w-full h-fit bg-slate-800/30">
       <AsideMenu />
-      {isActive.active && <InputFilename inputType={isActive.inputType} />}
+      {isActive.active && isActive.parentId === undefined && (
+        <InputFilename inputType={isActive.inputType} />
+      )}
       <ul>
-        {folders.map((folder) => (
+        {rootFolders.map((folder) => (
           <UsersFolder key={folder.index} folder={folder} />
         ))}
         {files.map((file) => (

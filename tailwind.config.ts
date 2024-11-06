@@ -20,5 +20,21 @@ const config: Config = {
     },
   },
   plugins: [],
+  safelist: [
+    {
+      pattern:
+        /bg-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-[0-9]+/,
+    },
+    {
+      pattern:
+        /text-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-[0-9]+/,
+    },
+    {
+      pattern: /[wh]-([0-9]+|full|screen|min|max|fit)/,
+    },
+    {
+      pattern: /[mp][tlrxy]?-[0-9]+/,
+    },
+  ],
 };
 export default config;

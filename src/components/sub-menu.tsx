@@ -1,4 +1,5 @@
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 const SubMenu = ({ cssClass }: { cssClass: string }) => {
   const handleLogout = async () => {
@@ -14,10 +15,10 @@ const SubMenu = ({ cssClass }: { cssClass: string }) => {
   return (
     <nav className={cssClass}>
       <ul>
-        <li>settings</li>
+        <li>
+          <Link href={"/setting"}>setting</Link>
+        </li>
         <li onClick={handleLogout}>logout</li>
-        <li>articles</li>
-        <li>hooo</li>
       </ul>
     </nav>
   );

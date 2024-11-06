@@ -2,7 +2,13 @@ import { FileContext } from "@/contexts/files-context";
 import { InputTypes } from "@/types/types";
 import { useContext } from "react";
 
-const InputFilename = ({ inputType }: { inputType: InputTypes }) => {
+const InputFilename = ({
+  inputType,
+  parent,
+}: {
+  inputType: InputTypes;
+  parent?: string;
+}) => {
   const context = useContext(FileContext);
 
   if (!context) return <span>Context is missing</span>;
@@ -21,7 +27,7 @@ const InputFilename = ({ inputType }: { inputType: InputTypes }) => {
       onChange={(e) => setInputName(e.target.value)}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          createInput(inputType, inputName);
+          createInput(inputType, inputName, parent || undefined);
         }
       }}
     />

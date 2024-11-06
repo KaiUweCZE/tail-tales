@@ -67,6 +67,10 @@ p {
     0 1px 1px 0 rgba(var(--shadow-color), 0.15);
 }
 
+.primary-scroll-y {
+  overflow-y: auto;
+}
+
 .secondary-shadow {
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.13), 0 1px 2px 0 rgba(0, 0, 0, 0.11);
 }
