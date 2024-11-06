@@ -55,6 +55,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    session: ({ session, token }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: token.sub,
+      },
+    }),
+    jwt: ({ token, user }) => {
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
+      return token;
+    },
+  },
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/login",
+  },
 });
 
 /*declare module "next-auth" {

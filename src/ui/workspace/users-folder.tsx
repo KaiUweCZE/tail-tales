@@ -2,6 +2,7 @@ import { UserFolder, UserFolderWithoutId } from "@/types/types";
 import { ChevronDown, Settings, Settings2 } from "lucide-react";
 import { useState } from "react";
 import FolderOptions from "./folder-options";
+import clsx from "clsx";
 
 const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
   const [isEditable, setIsEditable] = useState(false);
@@ -15,10 +16,8 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
     console.log(folder);
   };
 
-  //const subFolders = allFolders.filter((f) => f.parentId === folder.name);
-  // const hasSubFolders = subFolders.length > 0;
   return (
-    <>
+    <ul>
       <li
         key={folder.index}
         className="flex px-2 justify-between items-center relative"
@@ -26,15 +25,13 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
       >
         <div className="flex">
           <ChevronDown
-            className="w-6 h-6 -rotate-90 cursor-pointer"
+            color={isExpanded ? "#FDD984" : "white"}
+            className={clsx("w-6 h-6 -rotate-90 cursor-pointer", {
+              //"-rotate-90": !isExpanded,
+              "rotate-0": isExpanded,
+            })}
             onClick={() => setIsExpanded(!isExpanded)}
           />
-          {/*<Image
-    src={IMAGES.ICONS.FOLDER_ICON}
-    alt="file icon"
-    width={24}
-    height={20}
-  />*/}
           <span
             onDoubleClick={() => setIsEditable(!isEditable)}
             contentEditable={isEditable}
@@ -59,7 +56,7 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
           ))}
         </ul>
       )}
-    </>
+    </ul>
   );
 };
 

@@ -3,24 +3,25 @@ import { useContext } from "react";
 import InputFilename from "./input-filename";
 
 const options = ["rename", "new file", "new folder"];
+const liClass = "px-4 cursor-pointer hover:bg-slate-800";
 
 const FolderOptions = ({ name }: { name: string }) => {
   const context = useContext(FileContext);
 
   if (!context) return <span>Context is missing...</span>;
 
-  const { isActive, newInput, createInput } = context;
+  const { isActive, newInput } = context;
   return (
-    <div className="grid absolute bg-slate-800 top-full right-0 z-10">
-      <ul className="flex flex-col gap-2">
-        <li>rename</li>
-        <li>new file</li>
-        <li onClick={() => newInput("folder", name)} className="cursor-pointer">
+    <div className="grid absolute top-full w-36 right-0 z-10 py-2 bg-slate-850 border border-slate-800 rounded-sm expander-wrap">
+      <ul className="flex flex-col gap expander-content">
+        <li className={liClass}>rename</li>
+        <li className={liClass}>new file</li>
+        <li onClick={() => newInput("folder", name)} className={liClass}>
           new folder
         </li>
       </ul>
-      {isActive.active && isActive.parentId === name && (
-        <InputFilename inputType="folder" parent={name} />
+      {isActive.active && isActive.parentName === name && (
+        <InputFilename size="sm" inputType="folder" parent={name} />
       )}
     </div>
   );

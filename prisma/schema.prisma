@@ -30,11 +30,14 @@ model Folder {
   name         String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  // for mongoDb
+  subFolderIds String[] @db.ObjectId @default([])
   // Relations to folder/file
   files        File[]   @relation("FolderFiles")
   subFolders   Folder[] @relation("FolderSubfolders")
   parentFolder Folder?  @relation("FolderSubfolders", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   parentId     String?  @db.ObjectId
+  parentName String?
   // relation to user
   user         User     @relation(fields: [userId], references: [id])
   userId       String   @db.ObjectId

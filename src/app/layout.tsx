@@ -4,6 +4,8 @@ import { Fredoka } from "next/font/google";
 import "./globals.css";
 import NavbarPrimary from "@/components/navbar-primary";
 import AuthProvider from "@/components/providers/auth-provider";
+import { FileProvider } from "@/contexts/files-context";
+import { FileProviderInit } from "@/components/providers/file-provider-init";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -36,8 +38,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${fredoka.variable} antialiased`}>
         <AuthProvider>
-          <NavbarPrimary />
-          {children}
+          <FileProvider>
+            <NavbarPrimary />
+            {children}
+          </FileProvider>
         </AuthProvider>
       </body>
     </html>

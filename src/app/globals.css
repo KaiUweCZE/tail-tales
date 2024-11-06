@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #0f172a;
+  --background: hsl(222, 47%, 11%);
   --foreground: #171717;
   --text-primary: #fffbeb;
   --ok-color: #10b981;
@@ -15,7 +15,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #0f172a;
     --foreground: #ededed;
   }
 }
@@ -122,4 +122,23 @@ p {
       translate: 5rem;
     }
   }
+}
+
+.expander-wrap {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition: grid-template-rows 0.4s;
+  @starting-style {
+    opacity: 0;
+    transition: grid-template-rows 0.4s;
+    grid-template-rows: 0fr;
+  }
+}
+
+.expander-content {
+  overflow: hidden;
+}
+
+.bg-slate-850 {
+  background-color: #131c2f;
 }
