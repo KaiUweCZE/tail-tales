@@ -4,7 +4,7 @@ import { InputTypes } from "@/types/types";
 import { cva } from "class-variance-authority";
 import { LoaderIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 
 const inputVariants = cva(
   `rounded shadow-sm p-1 text-slate-900 transition-colors focus:outline-cyan-300 focus:ring-0`,
@@ -49,6 +49,7 @@ const inputVariants = cva(
 );
 
 type InputVariantProps = {
+  onComplete: () => void;
   inputType: InputTypes;
   parent?: string;
   variant?: "default" | "filled" | "outline" | "error";
@@ -59,6 +60,7 @@ type InputVariantProps = {
 };
 
 const InputFilename = ({
+  onComplete,
   inputType,
   parent,
   variant,
@@ -69,7 +71,13 @@ const InputFilename = ({
 }: InputVariantProps) => {
   const context = useContext(FileContext);
   const { handleCreateFolder, isLoading } = useFolder();
+  const inputRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
+  useEffect(() => {
+    inputRef.current?.focus();
+    inputRef.current?.select();
+  }, []);
+
   if (!context || !session || !session.user)
     return <span>Context is missing</span>;
 
@@ -92,6 +100,7 @@ const InputFilename = ({
   return (
     <div className="grid place-items-center relative">
       <input
+        ref={inputRef}
         className={inputVariants({ variant, size })}
         aria-labelledby={`input-${inputType}`}
         disabled={isLoading}
@@ -104,6 +113,8 @@ const InputFilename = ({
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             handleSubmit();
+          } else if (e.key === "Escape") {
+            onComplete();
           }
         }}
       />

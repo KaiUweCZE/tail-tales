@@ -21,7 +21,8 @@ model User {
   updatedAt      DateTime               @updatedAt
   folders        Folder[]
   files          File[]
-  configurations DefaultConfiguration[]
+  configuration DefaultConfiguration?
+  configurationId String? @db.ObjectId
 }
 
 model Folder {
@@ -65,10 +66,10 @@ model File {
 
 model DefaultConfiguration {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String   @db.ObjectId
+  userId        String   @db.ObjectId @unique
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  elementStyles Json
+  elementStyles Json?
   user          User     @relation(fields: [userId], references: [id])
 
   @@map("defaultConfigurations")

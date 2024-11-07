@@ -81,10 +81,6 @@ const RenameFolderFile = ({
     }
   };
 
-  const handleBlur = () => {
-    onComplete();
-  };
-
   return (
     <div className="grid relative place-content-center ">
       <input

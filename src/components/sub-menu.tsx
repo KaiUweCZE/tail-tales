@@ -14,7 +14,7 @@ const SubMenu = ({ cssClass }: { cssClass: string }) => {
   };
   return (
     <nav className={cssClass}>
-      <ul>
+      <ul className="">
         <li>
           <Link href={"/setting"}>setting</Link>
         </li>

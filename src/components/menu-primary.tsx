@@ -46,7 +46,11 @@ const MenuPrimary = () => {
             onClick={() => setIsActive(!isActive)}
           >
             <span>{session?.user?.name}</span>
-            <ChevronDown className="h-4 w-4" />
+            <ChevronDown
+              className={clsx("h-4 w-4", {
+                "rotate-180": isActive,
+              })}
+            />
           </li>
         )}
         {isAuthenticated && (

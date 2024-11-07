@@ -3,11 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(222, 47%, 11%);
+  --background: #0f1729;
   --foreground: #171717;
   --text-primary: #fffbeb;
+  --bg-slate-850: #131c2f;
   --ok-color: #10b981;
-  --error-color: #fb7185;
+  --error-color: #c8384d;
+  --focus-color: #67e8f9;
   --shadow-color: 255, 251, 235;
   --font-fredoka: "Fredoka", sans-serif;
   --max-size: 80rem;
@@ -67,12 +69,17 @@ p {
     0 1px 1px 0 rgba(var(--shadow-color), 0.15);
 }
 
+.secondary-shadow {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
 .primary-scroll-y {
   overflow-y: auto;
 }
 
 .secondary-shadow {
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.13), 0 1px 2px 0 rgba(0, 0, 0, 0.11);
+  box-shadow: 0 0 6px var(--background);
 }
 
 .successful-message {
@@ -104,22 +111,34 @@ p {
   display: none;
   height: 10rem;
   width: 8rem;
-  background-color: #203053;
+  background-color: var(--bg-slate-850);
   position: absolute;
   right: 0;
   top: 100%;
   opacity: 0;
-
+  border-radius: 0 0 0.35rem 0.35rem;
   transition: display 0.3s, translate 0.3s, opacity 0.3s;
+  box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.45),
+    -25px 0 20px -20px rgba(0, 0, 0, 0.45);
+  box-shadow: -28px 19px 25px -32px rgba(0, 0, 0, 0.45),
+    0px 0px 0px -110px rgba(0, 0, 0, 0.45);
   transition-behavior: allow-discrete;
   &.active {
     display: grid;
     opacity: 1;
-    translate: 0 0;
     z-index: -100;
     @starting-style {
       opacity: 0;
-      translate: 5rem;
+    }
+  }
+
+  li {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--background);
     }
   }
 }
@@ -140,5 +159,47 @@ p {
 }
 
 .bg-slate-850 {
-  background-color: #131c2f;
+  background-color: var(--bg-slate-850);
+}
+
+.bg-error {
+  background-color: var(--error-color);
+}
+
+.bg-error-active {
+  background-color: var(--error-color);
+  transition: 0.4s;
+  &:hover {
+    background-color: #fb7185;
+  }
+}
+
+.primary-animation {
+  opacity: 1;
+  transition: 0.4s;
+
+  scale: 1;
+  @starting-style {
+    opacity: 0;
+
+    scale: 0;
+  }
+}
+
+.form-setting {
+  display: grid;
+  gap: 1rem;
+  width: fit-content;
+}
+
+.element-setting {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: span 2;
+  input[type="text"] {
+    width: 25rem;
+    &:focus {
+      outline-color: var(--focus-color);
+    }
+  }
 }

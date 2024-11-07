@@ -1,4 +1,5 @@
 "use client";
+import { DefaultConfiguration } from "@/app/setting/types";
 import useClose from "@/hooks/useClose";
 import { InputState, InputTypes, UserFolderWithoutId } from "@/types/types";
 import {
@@ -13,8 +14,16 @@ interface InputStateWithParentId extends InputState {
   parentName: string | undefined;
 }
 
+interface SuccessMessageType {
+  success: boolean;
+  text: string;
+  headline: string;
+}
+
 interface FileContextType {
   isInit: boolean;
+  isSuccess: SuccessMessageType;
+  setIsSuccess: Dispatch<SetStateAction<SuccessMessageType>>;
   setIsInit: Dispatch<SetStateAction<boolean>>;
   isActive: InputStateWithParentId;
   setIsActive: Dispatch<SetStateAction<InputStateWithParentId>>;
@@ -26,6 +35,8 @@ interface FileContextType {
   folders: UserFolderWithoutId[];
   setFolders: Dispatch<SetStateAction<UserFolderWithoutId[]>>;
   newInput: (e: InputTypes, parent?: string) => void;
+  userSetting: DefaultConfiguration | null;
+  setUserSetting: Dispatch<SetStateAction<DefaultConfiguration | null>>;
 }
 
 export const FileContext = createContext<FileContextType | undefined>(
@@ -34,6 +45,11 @@ export const FileContext = createContext<FileContextType | undefined>(
 
 export const FileProvider = ({ children }: { children: ReactNode }) => {
   const [isInit, setIsInit] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<SuccessMessageType>({
+    success: false,
+    text: "",
+    headline: "",
+  });
   const [files, setFiles] = useState<string[]>([]);
   const [folders, setFolders] = useState<UserFolderWithoutId[]>([]);
   const [inputName, setInputName] = useState("");
@@ -42,6 +58,9 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     inputType: "none",
     parentName: "",
   });
+  const [userSetting, setUserSetting] = useState<DefaultConfiguration | null>(
+    null
+  );
   const { isOpen } = useClose(isActive.active);
 
   const newInput = (e: InputTypes, parent?: string) => {
@@ -58,6 +77,8 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
   const contextValues = {
     isInit,
     setIsInit,
+    isSuccess,
+    setIsSuccess,
     files,
     setFiles,
     folders,
@@ -67,7 +88,8 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     setIsActive,
     inputName,
     setInputName,
-    //createInput,
+    userSetting,
+    setUserSetting,
   };
 
   return (

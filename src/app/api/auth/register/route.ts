@@ -30,10 +30,18 @@ export async function POST(req: Request) {
       data: {
         name,
         hashedPassword: hashedPassword,
+        configuration: {
+          create: {},
+        },
       },
       select: {
         id: true,
         name: true,
+        configuration: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 

@@ -158,6 +158,7 @@ export async function changeFolderName(
   userId: string
 ) {
   try {
+    await connectToDatabase();
     const result = await prisma.$transaction(async (tx) => {
       const updatedFolder = await tx.folder.update({
         where: {
@@ -191,6 +192,8 @@ export async function changeFolderName(
   } catch (error) {
     console.error("Error updating folder name:", error);
     return { success: false, error: "Failed to update folder name" };
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
@@ -201,6 +204,7 @@ export async function changeFileName(
   userId: string
 ) {
   try {
+    await connectToDatabase();
     const updatedFile = await prisma.file.update({
       where: {
         userId_name_index: {
@@ -219,5 +223,127 @@ export async function changeFileName(
   } catch (error) {
     console.error("Error updating file name:", error);
     return { success: false, error: "Failed to update file name" };
+  } finally {
+    await prisma.$disconnect();
   }
 }
+
+type DeleteResult = {
+  success: boolean;
+  error?: string;
+  deletedId?: string;
+};
+
+export const deleteFile = async (
+  index: number,
+  userId: string,
+  name: string
+): Promise<DeleteResult> => {
+  try {
+    await connectToDatabase();
+
+    const deletedFile = await prisma.file.delete({
+      where: {
+        userId_name_index: {
+          index,
+          userId,
+          name,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return {
+      success: true,
+      deletedId: deletedFile.id,
+    };
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    return {
+      success: false,
+      error: "Failed to delete file",
+    };
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+export const deleteFolder = async (
+  index: number,
+  userId: string,
+  name: string
+): Promise<DeleteResult> => {
+  try {
+    await connectToDatabase();
+
+    const result = await prisma.$transaction(async (tx) => {
+      // find folder
+      const folder = await tx.folder.findFirst({
+        where: {
+          userId,
+          name,
+          index,
+        },
+        include: {
+          files: true,
+          subFolders: true,
+        },
+      });
+
+      if (!folder) throw new Error("Folder not found");
+
+      // get all subfolder
+      const getAllSubfolderIds = async (
+        folderId: string
+      ): Promise<string[]> => {
+        const subFolders = await tx.folder.findMany({
+          where: { parentId: folderId },
+          select: { id: true, subFolderIds: true },
+        });
+
+        const ids = [folderId];
+
+        for (const subFolder of subFolders) {
+          const subIds = await getAllSubfolderIds(subFolder.id);
+          ids.push(...subIds);
+        }
+        return ids;
+      };
+
+      const allFolderIds = await getAllSubfolderIds(folder.id);
+
+      // delete files in subfolders
+      await tx.file.deleteMany({
+        where: {
+          folderId: { in: allFolderIds },
+        },
+      });
+
+      // delete all subfolders
+      await tx.folder.deleteMany({
+        where: {
+          id: { in: allFolderIds },
+        },
+      });
+
+      return folder.id;
+    });
+
+    return {
+      success: true,
+      deletedId: result,
+    };
+  } catch (error) {
+    console.error("Error deleting folder:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to delete folder";
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  } finally {
+    await prisma.$disconnect();
+  }
+};
