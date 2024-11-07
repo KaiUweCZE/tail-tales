@@ -45,7 +45,9 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
           className="w-4 h-4 cursor-pointer color-"
           onClick={() => setIsConfigurated(!isCofigurated)}
         />
-        {isCofigurated && <FolderOptions name={folder.name} />}
+        {isCofigurated && (
+          <FolderOptions name={folder.name} index={folder.index} />
+        )}
       </li>
       {isExpanded && (
         <ul className="">

@@ -151,27 +151,64 @@ export const getFolders = async (userId: string) => {
   }
 };
 
-export async function changeFolderName(folderId: string, newName: string) {
+export async function changeFolderName(
+  index: number,
+  newName: string,
+  oldName: string,
+  userId: string
+) {
   try {
-    const updatedFolder = await prisma.folder.update({
-      where: { id: folderId },
-      data: {
-        name: newName,
-        updatedAt: new Date(),
-      },
+    const result = await prisma.$transaction(async (tx) => {
+      const updatedFolder = await tx.folder.update({
+        where: {
+          userId_name_index: {
+            userId,
+            name: oldName,
+            index,
+          },
+        },
+        data: {
+          name: newName,
+          updatedAt: new Date(),
+        },
+      });
+
+      if (updatedFolder.subFolderIds.length > 0) {
+        const subFolders = await tx.folder.updateMany({
+          where: {
+            id: { in: updatedFolder.subFolderIds },
+          },
+          data: {
+            parentName: newName,
+            updatedAt: new Date(),
+          },
+        });
+      }
+      return updatedFolder;
     });
 
-    return { success: true, folder: updatedFolder };
+    return { success: true, folder: result };
   } catch (error) {
     console.error("Error updating folder name:", error);
     return { success: false, error: "Failed to update folder name" };
   }
 }
 
-export async function changeFileName(fileId: string, newName: string) {
+export async function changeFileName(
+  index: number,
+  newName: string,
+  oldName: string,
+  userId: string
+) {
   try {
     const updatedFile = await prisma.file.update({
-      where: { id: fileId },
+      where: {
+        userId_name_index: {
+          userId,
+          name: oldName,
+          index,
+        },
+      },
       data: {
         name: newName,
         updatedAt: new Date(),

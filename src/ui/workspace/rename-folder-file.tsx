@@ -1,90 +1,82 @@
 import { changeFileName, changeFolderName } from "@/app/workspace/action";
-import { FileContext } from "@/contexts/files-context";
-import { InputTypes } from "@/types/types";
-import { useContext, useRef, useState } from "react";
+import useLocalState from "@/utils/updateLocalState";
+import { validateName } from "@/utils/validate-name";
+import { useSession } from "next-auth/react";
+import { useEffect, useRef, useState } from "react";
 
 interface RenameFolderFileProps {
   type: "folder" | "file";
-  id: string;
+  index: number;
   currentName: string;
   onComplete: () => void;
 }
 
 const RenameFolderFile = ({
   type,
-  id,
+  index,
   currentName,
   onComplete,
 }: RenameFolderFileProps) => {
+  const { data: session } = useSession();
   const [newName, setNewName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const context = useContext(FileContext);
+  const { updateFileName, updateFolderName } = useLocalState();
 
   useEffect(() => {
     inputRef.current?.focus();
     inputRef.current?.select();
   }, []);
 
-  const validateName = (name: string): boolean => {
-    if (name.trim().length === 0) {
-      setError("Name cannot be empty");
-      return false;
-    }
-    if (name.length > 50) {
-      setError("Name is too long (max 50 characters)");
-      return false;
-    }
-    if (/[<>:"/\\|?*]/.test(name)) {
-      setError("Name contains invalid characters");
-      return false;
-    }
-    return true;
-  };
-
-  const updateLocalState = (id: string, newName: string) => {
-    if (!context) return;
-
-    const { folders, setFolders } = context;
-
-    if (type === "folder") {
-      const updateFolderName = (items: UserFolder[]): UserFolder[] => {
-        return items.map((folder) => {
-          if (folder.id === id) {
-            return { ...folder, name: newName };
-          }
-          if (folder.subFolders.length > 0) {
-            return {
-              ...folder,
-              subFolders: updateFolderName(folder.subFolders),
-            };
-          }
-          return folder;
-        });
-      };
-
-      setFolders(updateFolderName(folders));
-    } else {
-      // Update file name logic here if needed
-    }
-  };
-
   const handleSubmit = async () => {
-    if (!validateName(newName)) return;
+    if (newName === currentName) {
+      onComplete();
+      return;
+    }
+
+    const [isValid, error] = validateName(newName);
+    if (!isValid) {
+      setError(error);
+      return;
+    }
+
+    if (!session?.user?.id) {
+      setError("Not authenticated");
+      return;
+    }
+
+    const userId = session.user.id;
 
     try {
+      // optimistic update
+      if (type === "folder") {
+        updateFolderName(index, newName);
+      } else {
+        updateFileName(index, newName);
+      }
+
       const result =
         type === "folder"
-          ? await changeFolderName(id, newName)
-          : await changeFileName(id, newName);
+          ? await changeFolderName(index, newName, currentName, userId)
+          : await changeFileName(index, newName, currentName, userId);
 
-      if (result.success) {
-        updateLocalState(id, newName);
-        onComplete();
-      } else {
+      if (!result.success) {
+        if (type === "folder") {
+          updateFolderName(index, currentName);
+        } else {
+          updateFileName(index, currentName);
+        }
         setError(result.error || "Failed to update name");
+        return;
       }
+
+      onComplete();
     } catch (err) {
+      if (type === "folder") {
+        updateFolderName(index, currentName);
+      } else {
+        updateFileName(index, currentName);
+      }
       setError("An error occurred while updating name");
     }
   };
@@ -94,11 +86,12 @@ const RenameFolderFile = ({
   };
 
   return (
-    <div className="relative">
+    <div className="grid relative place-content-center ">
       <input
         ref={inputRef}
-        className="absolute w-32 h-8 px-2 border rounded shadow-sm"
+        className=" rounded-md shadow-sm w-32 p-1 border text-sm text-slate-900 focus:outline-cyan-300 focus:ring-0 "
         aria-label={`Change ${type} name`}
+        placeholder="type new name"
         type="text"
         value={newName}
         onChange={(e) => {
@@ -112,7 +105,6 @@ const RenameFolderFile = ({
             onComplete();
           }
         }}
-        onBlur={handleBlur}
       />
       {error && (
         <div className="absolute top-full left-0 mt-1 text-xs text-red-500">
