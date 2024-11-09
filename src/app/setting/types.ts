@@ -7,7 +7,7 @@ export interface HTMLElementConfig {
 export interface DefaultConfiguration {
   id: string;
   userId: string;
-  createAt: Date;
+  createdAt: Date;
   updatedAt: Date;
   div?: HTMLElementConfig;
   span?: HTMLElementConfig;
@@ -28,3 +28,20 @@ export interface DefaultConfiguration {
   article?: HTMLElementConfig;
   hr?: HTMLElementConfig;
 }
+
+export const htmlElements = [
+  "h1",
+  "h2",
+  "h3",
+  "p",
+  "span",
+  "div",
+  "ul",
+  "li",
+  "article",
+  "hr",
+  "button",
+  "a",
+] as const;
+
+export type HtmlElements = (typeof htmlElements)[number];
