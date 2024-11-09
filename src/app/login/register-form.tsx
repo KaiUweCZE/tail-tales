@@ -3,11 +3,24 @@ import { useRouter } from "next/navigation";
 import { signUp } from "./action";
 import { FormEvent, useState } from "react";
 import SuccessfulMessage from "@/components/successfull-message";
+import Input from "@/ui/primitives/input";
+import Button from "@/ui/primitives/button";
+import clsx from "clsx";
+import { error } from "console";
+
+type ValidInput = {
+  length: number;
+  status: "valid" | "invalid" | "default";
+};
 
 const RegisterForm = () => {
   const [isOk, setIsOk] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [responseError, setResponseError] = useState(false);
+  const [userName, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const isUsernameOk = userName ? userName.length >= 3 : "default";
+  const isPasswordOk = password ? password.length >= 6 : "default";
   const router = useRouter();
 
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
@@ -37,32 +50,58 @@ const RegisterForm = () => {
   return (
     <form
       onSubmit={handleSignUp}
-      className="flex flex-col relative gap-4 p-8 mx-auto bg-amber-100/30 rounded-lg max-w-md w-full"
+      className="grid gap-4 w-full max-w-xl mx-auto my-8"
     >
-      <input
-        type="text"
+      <Input
+        label="Username"
+        size="md"
         name="name"
-        placeholder="Username"
-        className="p-2 text-slate-900 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+        placeholder="Type username"
         required
-        minLength={1}
+        autoFocus
+        minLength={3}
+        onChange={(e) => setUsername(e.target.value)}
       />
 
-      <input
+      <Input
+        label="Password"
+        size="md"
         type="password"
         name="password"
-        placeholder="Password"
-        className="p-2 text-slate-900 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+        placeholder="Type password"
         required
-        minLength={1}
+        minLength={6}
+        onChange={(e) => setPassword(e.target.value)}
       />
-
-      <button
+      <Button
         type="submit"
-        className="p-2 rounded text-white font-semibold bg-blue-500 hover:bg-blue-600"
+        variant="light"
+        disabled={!isUsernameOk || !isPasswordOk}
       >
-        Register
-      </button>
+        Sign Up
+      </Button>
+
+      <div className="grid">
+        <span
+          className={clsx(
+            "text-xs",
+            isUsernameOk && isUsernameOk !== "default" && "text-green-300",
+            !isUsernameOk && "text-error"
+          )}
+        >
+          Username: At least 3 characters
+        </span>
+        <span
+          className={clsx(
+            "text-xs",
+            isPasswordOk && isPasswordOk !== "default" && "text-green-300",
+            !isPasswordOk && "text-error"
+          )}
+        >
+          Password: At least 6 characters{" "}
+          {`(actual length: ${password.length})`}
+        </span>
+      </div>
       {isOk && (
         <SuccessfulMessage
           headline="Register is ok"

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { getUser } from "./action";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Button from "@/ui/primitives/button";
+import Input from "@/ui/primitives/input";
 
 const inputClass =
   "h-8 w-full bg-amber-50/60 text-slate-900 px-2 border rounded-sm border-amber-100 focus:outline-none focus:outline-1 focus:outline-amber-300";
@@ -85,39 +87,37 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid gap-4 p-4 bg-amber-100/10 backdrop-blur-sm h-fit w-1/2 min-w-24 rounded-sm place-self-center border-2 border-amber-100 primary-shadow"
+      className="grid gap-4 w-full max-w-xl mx-auto my-8 "
     >
-      <fieldset className="flex flex-col">
-        <label htmlFor="Name" className="">
-          Username
-        </label>
-        <input
-          type="text"
-          name="Name"
-          value={username}
-          className={inputClass}
-          onChange={(e) => setUsername(e.target.value)}
-          disabled={status === "loading"}
-          autoComplete="username"
-          autoFocus
-        />
-      </fieldset>
-      <fieldset className="flex flex-col">
-        <label htmlFor="Password">Password</label>
-        <input
-          type="password"
-          name="Password"
-          value={password}
-          id=""
-          className={inputClass}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={status === "loading"}
-          autoComplete="current-password"
-        />
-      </fieldset>
-      <button type="submit" className="bg-slate-900 w-fit px-2 rounded ">
-        <span>Sing Up</span>
-      </button>
+      <Input
+        size="md"
+        name="Name"
+        label="Username"
+        placeholder="Type Username"
+        disabled={status === "loading"}
+        autoComplete="username"
+        autoFocus
+        onChange={(e) => setUsername(e.target.value)}
+      />
+
+      <Input
+        size="md"
+        name="Password"
+        label="Password"
+        type="password"
+        placeholder="Type Password"
+        onChange={(e) => setPassword(e.target.value)}
+        disabled={status === "loading"}
+        autoComplete="current-password"
+      />
+      <Button
+        isLoading={status === "loading"}
+        loadingText="Logining..."
+        type="submit"
+        variant="light"
+      >
+        Sign In
+      </Button>
     </form>
   );
 };
