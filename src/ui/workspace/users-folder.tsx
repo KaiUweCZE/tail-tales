@@ -1,16 +1,19 @@
 import { UserFolder, UserFolderWithoutId } from "@/types/types";
 import { ChevronDown, Settings, Settings2 } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import FolderOptions from "./folder-options";
 import clsx from "clsx";
+import { FileContext } from "@/contexts/files-context";
 
 const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
   const [isEditable, setIsEditable] = useState(false);
   const [isCofigurated, setIsConfigurated] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const changeName = () => {};
+  const context = useContext(FileContext);
 
-  const handleEditable = () => {};
+  if (!context) return <span>Context is missing</span>;
+
+  const { activeFolder, setActiveFolder } = context;
 
   const logInfo = () => {
     console.log(folder);
@@ -33,9 +36,20 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
             onClick={() => setIsExpanded(!isExpanded)}
           />
           <span
-            onDoubleClick={() => setIsEditable(!isEditable)}
-            contentEditable={isEditable}
-            className="focus:outline-cyan-300 focus:outline-offset-1"
+            onClick={() =>
+              context?.setActiveFolder({
+                name: folder.name,
+                index: folder.index,
+              })
+            }
+            className={clsx(
+              "focus:outline-cyan-300 focus:outline-offset-1 cursor-pointer",
+              {
+                "text-amber-200":
+                  activeFolder.name == folder.name &&
+                  activeFolder.index === folder.index,
+              }
+            )}
           >
             {folder.name}
           </span>

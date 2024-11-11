@@ -4,7 +4,8 @@ import { forwardRef, InputHTMLAttributes, ReactNode } from "react";
 
 const inputVariants = cva(
   `w-full rounded border bg-amber-50 px-3 text-slate-900 transition duration-200 
-  placeholder:text-gray-400 
+  placeholder:text-gray-400
+  focus:ring-none 
   focus:outline focus:outline-offset-1
   :user-invalid-border-red-500
   [&:-webkit-autofill]:!appearance-none
@@ -19,9 +20,12 @@ const inputVariants = cva(
       },
       size: {
         default: "py-2 text-base",
-        sm: "py-1 text-sm",
+        sm: "py-0 px-1 text-xs focus:outline-offset focus:outline-amber-100 focus:border-none",
         md: "max-w-96",
         lg: "py-3 text-lg",
+      },
+      variant: {
+        editor: "bg-slate-700 text-amber-50",
       },
       icon: {
         true: "pl-10", // extra padding když je ikona
@@ -55,6 +59,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       type = "text",
       placeholder,
       intent,
+      variant,
       size,
       icon,
       leftIcon,
@@ -117,6 +122,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               inputVariants({
                 intent: error ? "error" : intent,
                 size,
+                variant,
                 icon: !!leftIcon,
               }),
               className

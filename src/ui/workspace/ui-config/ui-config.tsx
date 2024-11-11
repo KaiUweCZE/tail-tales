@@ -3,9 +3,8 @@ import { useContext, useState } from "react";
 import UiConfigNav from "./ui-config-nav";
 import StructureTab from "./structure-tab";
 import StylesTab from "./styles-tab";
-import ConfigTab from "./config-tab";
 import { ActiveTabType } from "./types";
-import Button from "@/ui/primitives/button";
+import OverviewTab from "./overview-tab";
 
 const UiConfig = () => {
   const context = useContext(FileContext);
@@ -27,7 +26,7 @@ const UiConfig = () => {
 
         {activeTab === "styles" && <StylesTab userConfig={htmlElements} />}
 
-        {activeTab === "config" && <ConfigTab currentFile={currentFile} />}
+        {activeTab === "config" && <OverviewTab currentFile={currentFile} />}
       </div>
     </div>
   );

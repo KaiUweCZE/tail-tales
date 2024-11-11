@@ -29,6 +29,11 @@ export interface DefaultConfiguration {
   hr?: HTMLElementConfig;
 }
 
+type HtmlKeys = keyof Omit<
+  DefaultConfiguration,
+  "id" | "userId" | "createdAt" | "updatedAt"
+>;
+
 export const htmlElements = [
   "h1",
   "h2",
@@ -44,4 +49,7 @@ export const htmlElements = [
   "a",
 ] as const;
 
-export type HtmlElements = (typeof htmlElements)[number];
+export type HtmlElements = Omit<
+  DefaultConfiguration,
+  "id" | "userId" | "createdAt" | "updatedAt"
+>;

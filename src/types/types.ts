@@ -1,3 +1,5 @@
+import { FileElement } from "@/ui/workspace/file-workspace/types";
+
 export type InputState = {
   active: boolean;
   inputType: "folder" | "file" | "none";
@@ -37,9 +39,8 @@ export interface ApiFile {
 export interface UserFile {
   id: string;
   name: string;
-  size: number;
-  type: string;
-  folderId: string;
+  elements: FileElement[];
+  folderId?: string;
   userId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -81,12 +82,11 @@ export interface UserFolderWithoutId extends FolderWithoutIds {
 export interface UserFileWithoudId extends Omit<UserFile, "id" | "userId"> {}
 
 // convertors
-
+/*
 export const convertFile = (file: ApiFile): UserFile => {
   return {
     id: file.id,
     name: file.name,
-    size: file.size,
     type: file.type,
     folderId: file.folderId,
     userId: file.userId,
@@ -94,7 +94,7 @@ export const convertFile = (file: ApiFile): UserFile => {
     updatedAt: file.updatedAt,
   };
 };
-
+*/
 export const convertFolder = (folder: UserFolder): UserFolderWithoutId => {
   const { id, userId, ...rest } = folder;
   return {

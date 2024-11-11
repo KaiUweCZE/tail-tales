@@ -1,8 +1,6 @@
-import { useCallback } from "react";
 import { FileElement } from "../file-workspace/types";
 import ElementStructureWrap from "./element-structure-wrap";
 import { ActiveTabType } from "./types";
-import { SquareMousePointer } from "lucide-react";
 
 interface StructureTabProps {
   activeTab: ActiveTabType;

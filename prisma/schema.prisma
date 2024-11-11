@@ -51,7 +51,7 @@ model File {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   index     Int
   name      String
-  content   String
+  elements Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   // relation

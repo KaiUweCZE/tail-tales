@@ -7,6 +7,7 @@
   --foreground: #171717;
   --text-primary: #fffbeb;
   --bg-slate-850: #131c2f;
+  --bg-slate-750: #212c40;
   --ok-color: #10b981;
   --error-color: #c8384d;
   --focus-color: #67e8f9;
@@ -162,6 +163,10 @@ p {
   background-color: var(--bg-slate-850);
 }
 
+.bg-slate-750 {
+  background-color: var(--bg-slate-750);
+}
+
 .bg-error {
   background-color: var(--error-color);
 }
@@ -172,6 +177,10 @@ p {
   &:hover {
     background-color: #fb7185;
   }
+}
+
+.text-error {
+  color: #c8384d;
 }
 
 .primary-animation {
@@ -202,4 +211,26 @@ p {
       outline-color: var(--focus-color);
     }
   }
+}
+
+.file-wrapper {
+  display: grid;
+  grid-column: span 2;
+  grid-template-rows: max-content 1fr;
+  border-radius: 0.375rem;
+  /* box-shadow: 0 7px 15px 0 rgba(0, 0, 0, 0.13), 0 1px 4px 0 rgba(0, 0, 0, 0.11); */
+  height: fit-content;
+}
+
+.file-navigation {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 0.5rem;
+}
+
+.element-structure-center {
+  display: grid;
+  /*grid-template-columns: min-content 1fr;*/
+  column-gap: 0.5rem;
 }

@@ -1,6 +1,10 @@
 import { FileElement } from "../file-workspace/types";
 
-const ConfigTab = ({ currentFile }: { currentFile: FileElement[] | null }) => {
+const OverviewTab = ({
+  currentFile,
+}: {
+  currentFile: FileElement[] | null;
+}) => {
   return (
     <div>
       <h2 className="text-lg font-medium mb-4">Statistics</h2>
@@ -11,12 +15,9 @@ const ConfigTab = ({ currentFile }: { currentFile: FileElement[] | null }) => {
             return acc;
           }, {} as Record<string, number>) || {}
         ).map(([type, count]) => (
-          <div
-            key={type}
-            className="flex justify-between items-center bg-slate-700 p-2 rounded"
-          >
-            <span>{type}</span>
-            <span className="px-2 py-0.5 rounded bg-slate-600">{count}</span>
+          <div key={type} className="flex  items-center  p-2 rounded">
+            <span className="text-amber-200">{type}:</span>
+            <span className=" px-2">{count}</span>
           </div>
         ))}
       </div>
@@ -24,4 +25,4 @@ const ConfigTab = ({ currentFile }: { currentFile: FileElement[] | null }) => {
   );
 };
 
-export default ConfigTab;
+export default OverviewTab;

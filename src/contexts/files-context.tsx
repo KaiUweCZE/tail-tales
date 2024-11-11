@@ -2,6 +2,7 @@
 import { DefaultConfiguration } from "@/app/setting/types";
 import useClose from "@/hooks/useClose";
 import { InputState, InputTypes, UserFolderWithoutId } from "@/types/types";
+import { FileElement } from "@/ui/workspace/file-workspace/types";
 import {
   createContext,
   Dispatch,
@@ -20,7 +21,7 @@ interface SuccessMessageType {
   headline: string;
 }
 
-interface FileContextType {
+export interface FileContextType {
   isInit: boolean;
   isSuccess: SuccessMessageType;
   setIsSuccess: Dispatch<SetStateAction<SuccessMessageType>>;
@@ -29,14 +30,17 @@ interface FileContextType {
   setIsActive: Dispatch<SetStateAction<InputStateWithParentId>>;
   inputName: string;
   setInputName: Dispatch<SetStateAction<string>>;
-  //createInput: (type: InputTypes, name: string, parent?: string) => void;
   files: string[];
   setFiles: Dispatch<SetStateAction<string[]>>;
   folders: UserFolderWithoutId[];
   setFolders: Dispatch<SetStateAction<UserFolderWithoutId[]>>;
   newInput: (e: InputTypes, parent?: string) => void;
-  userSetting: DefaultConfiguration | null;
-  setUserSetting: Dispatch<SetStateAction<DefaultConfiguration | null>>;
+  userConfig: DefaultConfiguration | null;
+  setUserConfig: Dispatch<SetStateAction<DefaultConfiguration | null>>;
+  currentFile: FileElement[] | null;
+  setCurrentFile: Dispatch<SetStateAction<FileElement[] | null>>;
+  activeFolder: { name: string; index: number };
+  setActiveFolder: Dispatch<SetStateAction<{ name: string; index: number }>>;
 }
 
 export const FileContext = createContext<FileContextType | undefined>(
@@ -58,9 +62,11 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     inputType: "none",
     parentName: "",
   });
-  const [userSetting, setUserSetting] = useState<DefaultConfiguration | null>(
+  const [userConfig, setUserConfig] = useState<DefaultConfiguration | null>(
     null
   );
+  const [currentFile, setCurrentFile] = useState<FileElement[] | null>(null);
+  const [activeFolder, setActiveFolder] = useState({ name: "", index: 0 });
   const { isOpen } = useClose(isActive.active);
 
   const newInput = (e: InputTypes, parent?: string) => {
@@ -79,6 +85,8 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     setIsInit,
     isSuccess,
     setIsSuccess,
+    currentFile,
+    setCurrentFile,
     files,
     setFiles,
     folders,
@@ -88,8 +96,10 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     setIsActive,
     inputName,
     setInputName,
-    userSetting,
-    setUserSetting,
+    userConfig,
+    setUserConfig,
+    activeFolder,
+    setActiveFolder,
   };
 
   return (

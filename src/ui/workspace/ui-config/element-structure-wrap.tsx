@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FileElement } from "../file-workspace/types";
 import ElementStructure from "./element-structure";
 import ChildStructure from "./child-structure";
+import Button from "@/ui/primitives/button";
 
 const ElementStructureWrap = ({
   element,
@@ -13,6 +14,9 @@ const ElementStructureWrap = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const hasChildren = element.children && element.children.length > 0;
+
+  // root element is not editable
+  if (element.id === "rootElement") return;
 
   return (
     <div>

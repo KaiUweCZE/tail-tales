@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Fredoka } from "next/font/google";
+import { Fredoka, Inter } from "next/font/google";
 import "./globals.css";
 import NavbarPrimary from "@/components/navbar-primary";
 import AuthProvider from "@/components/providers/auth-provider";
@@ -12,6 +12,8 @@ const fredoka = Fredoka({
   variable: "--font-fredoka",
   weight: ["300", "500", "700"],
 });
+
+const inter = Inter();
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
