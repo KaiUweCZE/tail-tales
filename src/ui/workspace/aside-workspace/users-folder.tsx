@@ -1,9 +1,10 @@
-import { UserFolder, UserFolderWithoutId } from "@/types/types";
+import { UserFile, UserFolder, UserFolderWithoutId } from "@/types/types";
 import { ChevronDown, Settings, Settings2 } from "lucide-react";
 import { useContext, useState } from "react";
 import FolderOptions from "./folder-options";
 import clsx from "clsx";
 import { FileContext } from "@/contexts/files-context";
+import { FileElement } from "../file-workspace/types";
 
 const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
   const [isEditable, setIsEditable] = useState(false);
@@ -13,10 +14,26 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
 
   if (!context) return <span>Context is missing</span>;
 
-  const { activeFolder, setActiveFolder } = context;
+  const {
+    activeFolder,
+    setActiveFolder,
+    files,
+    setCurrentFile,
+    setCurrentFileName,
+  } = context;
 
   const logInfo = () => {
-    console.log(folder);
+    console.log(folderFiles, folder.index, folder.name);
+  };
+
+  const folderFiles = files.filter(
+    (file) =>
+      file.folderIndex === folder.index && file.folderName === folder.name
+  );
+
+  const handleSelectFile = (file: UserFile) => {
+    setCurrentFile(file.elements);
+    setCurrentFileName(file.name);
   };
 
   return (
@@ -64,13 +81,26 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
         )}
       </li>
       {isExpanded && (
-        <ul className="">
-          {folder?.subFolders.map((folder) => (
-            <li key={folder.index} className="pl-4">
-              <UsersFolder folder={folder} />
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="">
+            {folder?.subFolders.map((folder) => (
+              <li key={folder.index} className="pl-4">
+                <UsersFolder folder={folder} />
+              </li>
+            ))}
+          </ul>
+          <ul>
+            {folderFiles.map((file) => (
+              <li
+                key={file.id}
+                className="pl-4 cursor-pointer hover:text-amber-200"
+                onClick={() => handleSelectFile(file)}
+              >
+                {file.name}
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </ul>
   );

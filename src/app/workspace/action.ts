@@ -3,17 +3,98 @@ import { connectToDatabase } from "@/utils/server-helpers";
 import prisma from "../../../prisma";
 import { UserFolderWithoutId } from "@/types/types";
 import { auth } from "@/auth";
+import { FileElement } from "@/ui/workspace/file-workspace/types";
 
 export const createFile = async (
   userId: string,
   name: string,
   index: number,
+  folderName?: string,
+  folderIndex?: number,
   parentId?: string
 ) => {
   try {
+    const session = await auth();
+    console.log(session);
+
+    if (!session || !session.user || session.user.id !== userId) {
+      throw new Error("Unauthorized");
+    }
     await connectToDatabase();
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const initialElements = [
+      {
+        id: "rootElement",
+        type: "div",
+        cssClass: "w-full h-[80dvh] max-h-80dvh overflow-y-auto",
+        content: "",
+        children: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        order: 0,
+        additionalCss: "",
+      },
+    ];
+
+    const newFile = await prisma.file.create({
+      data: {
+        name,
+        index,
+        elements: initialElements,
+        userId,
+        folderId: parentId ?? undefined,
+        folderName: folderName ?? undefined,
+        folderIndex: folderIndex ?? undefined,
+      },
+    });
+
+    return {
+      id: newFile.id,
+      name: newFile.name,
+      elements: newFile.elements as unknown as FileElement[],
+      folderId: newFile.folderId || undefined,
+      folderIndex: newFile.folderIndex || undefined,
+      folderName: newFile.folderName || undefined,
+      userId: newFile.userId,
+      createdAt: newFile.createdAt,
+      updatedAt: newFile.updatedAt,
+    };
   } catch (error) {
     console.error("The file could not be created.", error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+export const getFiles = async (userId: string) => {
+  if (!userId) {
+    throw new Error("User ID is required");
+  }
+
+  try {
+    await connectToDatabase();
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        files: true,
+      },
+    });
+
+    if (!userId) return null;
+
+    console.log("files: ", user?.files);
+    return user?.files ?? [];
+  } catch (error) {
+    console.error("Error fetching files:", error);
+    throw new Error("Failed to fetch files");
   } finally {
     await prisma.$disconnect();
   }

@@ -26,12 +26,21 @@ const inputVariants = cva(
       },
       variant: {
         editor: "bg-slate-700 text-amber-50",
+        folder: "mx-auto",
+        file: "mx-auto",
       },
       icon: {
-        true: "pl-10", // extra padding když je ikona
+        true: "pl-10", // extra padding
         false: "",
       },
     },
+    compoundVariants: [
+      {
+        variant: "folder",
+        size: "md",
+        className: "max-w-full w-36 px-1",
+      },
+    ],
     defaultVariants: {
       intent: "primary",
       size: "default",

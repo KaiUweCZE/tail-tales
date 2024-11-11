@@ -1,7 +1,7 @@
 // hooks/useFolder.ts
 import { createFolder } from "@/app/workspace/action";
 import { FileContext } from "@/contexts/files-context";
-import { InputTypes, UserFolderWithoutId } from "@/types/types";
+import { UserFolderWithoutId } from "@/types/types";
 import { useContext, useState } from "react";
 
 export const useFolder = () => {

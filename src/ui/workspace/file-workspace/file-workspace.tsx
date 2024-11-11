@@ -10,7 +10,7 @@ const FileWorkspace = ({
   userConfig: DefaultConfiguration;
 }) => {
   const editableRef = useRef<HTMLDivElement>(null);
-  const { currentFile, addElement } = useEditFile(userConfig);
+  const { currentFile, addElement, currentFileName } = useEditFile(userConfig);
 
   useEffect(() => {
     if (editableRef.current) {
@@ -76,6 +76,11 @@ const FileWorkspace = ({
             handleKeyDown(e as unknown as KeyboardEvent, editableRef)
           }
         ></div>
+        {currentFile && (
+          <span className="text-sm text-slate-400 absolute">
+            {`actual file: ${currentFileName}`}
+          </span>
+        )}
         <div className="flex justify-end">
           <Button onClick={() => console.log(currentFile)}>Save</Button>
         </div>

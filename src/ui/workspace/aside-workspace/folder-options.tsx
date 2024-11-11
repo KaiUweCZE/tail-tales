@@ -1,13 +1,18 @@
 import { FileContext } from "@/contexts/files-context";
 import { useContext, useState } from "react";
-import InputFilename from "./input-filename";
 import RenameFolderFile from "./rename-folder-file";
-import DeleteAlert from "./delete-alert";
-import SuccessfulMessage from "@/components/successfull-message";
+import DeleteAlert from "../delete-alert";
 import { UserFolderWithoutId } from "@/types/types";
+import FolderInput from "./folder-input";
+import FileInput from "./file-input";
 
-const options = ["rename", "new file", "new folder"];
 const liClass = "px-4 cursor-pointer hover:bg-slate-800";
+
+type ParentFolder = {
+  parentId?: string;
+  parentName?: string;
+  parentIndex?: number;
+};
 
 const FolderOptions = ({ name, index }: { name: string; index: number }) => {
   const context = useContext(FileContext);
@@ -59,7 +64,9 @@ const FolderOptions = ({ name, index }: { name: string; index: number }) => {
           <li className={liClass} onClick={handleRenameClick}>
             rename
           </li>
-          <li className={liClass}>new file</li>
+          <li onClick={() => newInput("file", name)} className={liClass}>
+            new file
+          </li>
           <li onClick={() => newInput("folder", name)} className={liClass}>
             new folder
           </li>
@@ -67,16 +74,39 @@ const FolderOptions = ({ name, index }: { name: string; index: number }) => {
             delete
           </li>
         </ul>
-        {isActive.active && isActive.parentName === name && (
-          <InputFilename
-            size="sm"
-            inputType="folder"
-            parent={name}
-            onComplete={() =>
-              setIsActive({ active: false, inputType: "none", parentName: "" })
-            }
-          />
-        )}
+        {isActive.inputType === "folder" &&
+          isActive.active &&
+          isActive.parentName === name && (
+            <FolderInput
+              size="md"
+              variant="folder"
+              parent={name}
+              onComplete={() =>
+                setIsActive({
+                  active: false,
+                  inputType: "none",
+                  parentName: "",
+                })
+              }
+            />
+          )}
+        {isActive.inputType === "file" &&
+          isActive.active &&
+          isActive.parentName === name && (
+            <FileInput
+              size="md"
+              variant="file"
+              parentIndex={index}
+              parentName={name}
+              onComplete={() =>
+                setIsActive({
+                  active: false,
+                  inputType: "none",
+                  parentName: "",
+                })
+              }
+            />
+          )}
         {isRenaming && (
           <RenameFolderFile
             type="folder"

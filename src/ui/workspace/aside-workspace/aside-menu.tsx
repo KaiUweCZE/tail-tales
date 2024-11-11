@@ -16,6 +16,7 @@ const AsideMenu = () => {
   const { newInput, isActive, folders } = context;
   const newFile = () => {};
 
+  //const handleAddFile
   return (
     <header className="">
       <nav>

@@ -13,8 +13,6 @@ const fredoka = Fredoka({
   weight: ["300", "500", "700"],
 });
 
-const inter = Inter();
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",

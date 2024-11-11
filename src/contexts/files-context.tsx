@@ -1,7 +1,12 @@
 "use client";
 import { DefaultConfiguration } from "@/app/setting/types";
 import useClose from "@/hooks/useClose";
-import { InputState, InputTypes, UserFolderWithoutId } from "@/types/types";
+import {
+  InputState,
+  InputTypes,
+  UserFile,
+  UserFolderWithoutId,
+} from "@/types/types";
 import { FileElement } from "@/ui/workspace/file-workspace/types";
 import {
   createContext,
@@ -23,15 +28,17 @@ interface SuccessMessageType {
 
 export interface FileContextType {
   isInit: boolean;
+  setIsInit: Dispatch<SetStateAction<boolean>>;
+  isInitFile: boolean;
+  setIsInitFile: Dispatch<SetStateAction<boolean>>;
   isSuccess: SuccessMessageType;
   setIsSuccess: Dispatch<SetStateAction<SuccessMessageType>>;
-  setIsInit: Dispatch<SetStateAction<boolean>>;
   isActive: InputStateWithParentId;
   setIsActive: Dispatch<SetStateAction<InputStateWithParentId>>;
   inputName: string;
   setInputName: Dispatch<SetStateAction<string>>;
-  files: string[];
-  setFiles: Dispatch<SetStateAction<string[]>>;
+  files: UserFile[];
+  setFiles: Dispatch<SetStateAction<UserFile[]>>;
   folders: UserFolderWithoutId[];
   setFolders: Dispatch<SetStateAction<UserFolderWithoutId[]>>;
   newInput: (e: InputTypes, parent?: string) => void;
@@ -39,6 +46,8 @@ export interface FileContextType {
   setUserConfig: Dispatch<SetStateAction<DefaultConfiguration | null>>;
   currentFile: FileElement[] | null;
   setCurrentFile: Dispatch<SetStateAction<FileElement[] | null>>;
+  currentFileName: string;
+  setCurrentFileName: Dispatch<SetStateAction<string>>;
   activeFolder: { name: string; index: number };
   setActiveFolder: Dispatch<SetStateAction<{ name: string; index: number }>>;
 }
@@ -49,12 +58,13 @@ export const FileContext = createContext<FileContextType | undefined>(
 
 export const FileProvider = ({ children }: { children: ReactNode }) => {
   const [isInit, setIsInit] = useState(false);
+  const [isInitFile, setIsInitFile] = useState(false);
   const [isSuccess, setIsSuccess] = useState<SuccessMessageType>({
     success: false,
     text: "",
     headline: "",
   });
-  const [files, setFiles] = useState<string[]>([]);
+  const [files, setFiles] = useState<UserFile[]>([]);
   const [folders, setFolders] = useState<UserFolderWithoutId[]>([]);
   const [inputName, setInputName] = useState("");
   const [isActive, setIsActive] = useState<InputStateWithParentId>({
@@ -66,6 +76,7 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     null
   );
   const [currentFile, setCurrentFile] = useState<FileElement[] | null>(null);
+  const [currentFileName, setCurrentFileName] = useState("");
   const [activeFolder, setActiveFolder] = useState({ name: "", index: 0 });
   const { isOpen } = useClose(isActive.active);
 
@@ -83,10 +94,14 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
   const contextValues = {
     isInit,
     setIsInit,
+    isInitFile,
+    setIsInitFile,
     isSuccess,
     setIsSuccess,
     currentFile,
     setCurrentFile,
+    currentFileName,
+    setCurrentFileName,
     files,
     setFiles,
     folders,

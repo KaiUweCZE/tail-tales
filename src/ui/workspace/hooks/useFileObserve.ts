@@ -23,7 +23,7 @@ const useFileObserver = ({
   const context = useContext(FileContext);
   if (!context) throw new Error("FileContext is missing");
 
-  const { currentFile, setCurrentFile } = context;
+  const { currentFile, setCurrentFile, currentFileName } = context;
   const observerRef = useRef<MutationObserver | null>(null);
 
   const processChildren = useCallback(
@@ -81,6 +81,7 @@ const useFileObserver = ({
   }, [rootElementId, config, updateFileState]);
 
   return {
+    currentFileName,
     currentFile,
     updateFileState,
   };

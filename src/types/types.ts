@@ -41,6 +41,8 @@ export interface UserFile {
   name: string;
   elements: FileElement[];
   folderId?: string;
+  folderIndex?: number;
+  folderName?: string;
   userId: string;
   createdAt: Date;
   updatedAt: Date;

@@ -3,7 +3,6 @@ import { getFolders } from "@/app/workspace/action";
 import { FileContext } from "@/contexts/files-context";
 import {
   convertFetchedFolders,
-  convertFolder,
   convertToUserFolderWithoutId,
 } from "@/types/types";
 import { useSession } from "next-auth/react";
