@@ -6,7 +6,7 @@ interface OutsideProps {
   setState: Dispatch<SetStateAction<{ index: number; active: boolean }>>;
 }
 
-const useClickOutside = ({ state, setState, className }: OutsideProps) => {
+const useClickOutside = ({ setState, className }: OutsideProps) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;

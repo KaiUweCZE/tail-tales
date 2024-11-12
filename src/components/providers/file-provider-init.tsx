@@ -1,7 +1,7 @@
 "use client";
-import { PropsWithChildren } from "react";
+//import { PropsWithChildren } from "react";
 
-export function FileProviderInit({ children }: PropsWithChildren) {
+export function FileProviderInit() {
   return (
     <div className="grid fixed inset-0 items-center justify-center maximum-w mx-auto">
       <div className="grid place-items-center">

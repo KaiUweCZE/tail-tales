@@ -18,7 +18,7 @@ const useFetchFolders = () => {
     throw new Error("useFetchFolders must be used within FileProvider");
   }
 
-  const { isInit, setIsInit, folders, setFolders } = context;
+  const { isInit, setIsInit, setFolders } = context;
 
   const fetchFolders = useCallback(async () => {
     if (status === "loading") return;

@@ -5,15 +5,13 @@ import { useRouter } from "next/navigation";
 import Button from "@/ui/primitives/button";
 import Input from "@/ui/primitives/input";
 
-const inputClass =
-  "h-8 w-full bg-amber-50/60 text-slate-900 px-2 border rounded-sm border-amber-100 focus:outline-none focus:outline-1 focus:outline-amber-300";
 type LoginStatus = "idle" | "loading" | "success" | "error";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<LoginStatus>("idle");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // eslint-disable-line @typescript-eslint/no-unused-vars
   const router = useRouter();
 
   const validateForm = () => {

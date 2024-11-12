@@ -6,19 +6,21 @@ import { Prisma } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useCallback, useContext, useEffect, useState } from "react";
 
-const isFileElement = (obj: any): obj is FileElement => {
-  return (
-    obj &&
-    typeof obj.id === "string" &&
-    typeof obj.type === "string" &&
-    typeof obj.cssClass === "string" &&
-    typeof obj.content === "string" &&
-    (obj.children === null || Array.isArray(obj.children)) &&
-    obj.createdAt instanceof Date &&
-    obj.updatedAt instanceof Date &&
-    typeof obj.order === "number" &&
-    typeof obj.additionalCss === "string"
-  );
+const convertElement = (element: any): FileElement => {
+  return {
+    id: element.id,
+    type: element.type,
+    cssClass: element.cssClass,
+    content: element.content,
+    children: element.children || [],
+    createdAt: new Date(element.createdAt),
+    updatedAt: new Date(element.updatedAt),
+    order: element.order,
+    additionalCss: element.additionalCss,
+    variants: element.variants || undefined,
+    parentId: element.parentId || undefined,
+    attributes: element.attributes || undefined,
+  };
 };
 
 const useFetchFiles = () => {
@@ -51,19 +53,24 @@ const useFetchFiles = () => {
         return;
       }
 
-      const transformedFiles: UserFile[] =
-        fetchedFiles.map((file) => ({
+      const transformedFiles: UserFile[] = fetchedFiles.map((file) => {
+        // Převedení elements na správný formát
+        const elements = Array.isArray(file.elements)
+          ? file.elements.map(convertElement)
+          : [];
+
+        return {
           id: file.id,
           name: file.name,
-          elements:
-            file.elements as Prisma.JsonValue as Array<any> as FileElement[],
+          elements,
           folderId: file.folderId || undefined,
-          folderIndex: file.folderIndex ?? undefined,
-          folderName: file.folderName ?? undefined,
+          folderIndex: file.index, // Používáme index ze souboru
+          folderName: file.name,
           userId: file.userId,
-          createdAt: file.createdAt,
-          updatedAt: file.updatedAt,
-        })) ?? [];
+          createdAt: new Date(file.createdAt),
+          updatedAt: new Date(file.updatedAt),
+        };
+      });
 
       console.log("transformed files", transformedFiles);
 

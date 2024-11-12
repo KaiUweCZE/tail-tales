@@ -1,5 +1,4 @@
 import { FileContext } from "@/contexts/files-context";
-import { useFolder } from "@/ui/workspace/hooks/useCreateFolder";
 import Input from "@/ui/primitives/input";
 import { cva, VariantProps } from "class-variance-authority";
 import { useSession } from "next-auth/react";
@@ -33,7 +32,6 @@ interface FolderInputProps extends FolderInput {
 }
 
 const FileInput = ({
-  parentId,
   parentIndex,
   parentName,
   onComplete,

@@ -9,7 +9,6 @@ import { saveConfig } from "./action";
 import SuccessfulMessage from "@/components/successfull-message";
 import { htmlElements, HtmlElements } from "./types";
 import Button from "@/ui/primitives/button";
-import Input from "@/ui/primitives/input";
 
 const iconStyle = "h-6 w-6";
 
@@ -18,7 +17,7 @@ const SettingPage = () => {
   const { isLoading, userConfig } = useFetchConfig();
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   if (!context) return <FileProviderInit></FileProviderInit>;
 

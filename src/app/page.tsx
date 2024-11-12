@@ -1,9 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useState } from "react";
-
-const posibleClasses = ["bg-red-400", "bg-green-500"] as const;
 
 export default function Home() {
   const [newClass, setNewClass] = useState("");

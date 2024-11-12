@@ -1,26 +1,19 @@
-import { UserFile, UserFolder, UserFolderWithoutId } from "@/types/types";
-import { ChevronDown, Settings, Settings2 } from "lucide-react";
+import { UserFile, UserFolderWithoutId } from "@/types/types";
+import { ChevronDown, Settings2 } from "lucide-react";
 import { useContext, useState } from "react";
 import FolderOptions from "./folder-options";
 import clsx from "clsx";
 import { FileContext } from "@/contexts/files-context";
-import { FileElement } from "../file-workspace/types";
 
 const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
-  const [isEditable, setIsEditable] = useState(false);
+  //const [isEditable, setIsEditable] = useState(false);
   const [isCofigurated, setIsConfigurated] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const context = useContext(FileContext);
 
   if (!context) return <span>Context is missing</span>;
 
-  const {
-    activeFolder,
-    setActiveFolder,
-    files,
-    setCurrentFile,
-    setCurrentFileName,
-  } = context;
+  const { activeFolder, files, setCurrentFile, setCurrentFileName } = context;
 
   const logInfo = () => {
     console.log(folderFiles, folder.index, folder.name);

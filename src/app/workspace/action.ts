@@ -73,6 +73,87 @@ export const createFile = async (
   }
 };
 
+const validateFileElements = (elements: FileElement[]): boolean => {
+  return elements.every(
+    (element) =>
+      element.id &&
+      element.type &&
+      typeof element.cssClass === "string" &&
+      typeof element.content === "string" &&
+      (element.children === null || Array.isArray(element.children)) &&
+      element.createdAt instanceof Date &&
+      element.updatedAt instanceof Date &&
+      typeof element.order === "number" &&
+      typeof element.additionalCss === "string"
+  );
+};
+
+export const editFile = async (
+  fileId: string,
+  userId: string,
+  updateData: {
+    elements: FileElement[];
+    name?: string;
+  }
+) => {
+  try {
+    const session = await auth();
+
+    if (!session || !session.user || session.user.id !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    // Validace elementů
+    if (!validateFileElements(updateData.elements)) {
+      throw new Error("Invalid elements structure");
+    }
+
+    // Převedeme datumy na ISO string pro uložení
+    const elementsForDb = updateData.elements.map((element) => ({
+      ...element,
+      createdAt: element.createdAt.toISOString(),
+      updatedAt: element.updatedAt.toISOString(),
+    }));
+
+    const updatedFile = await prisma.file.update({
+      where: {
+        id: fileId,
+        userId, // Přidáno pro dodatečnou bezpečnost
+      },
+      data: {
+        elements: elementsForDb,
+        name: updateData.name,
+        updatedAt: new Date(),
+      },
+    });
+
+    // Převedeme zpět na FileElement[] s Date objekty
+    const transformedElements = updatedFile.elements as any[];
+    const elementsWithDates = transformedElements.map((element) => ({
+      ...element,
+      createdAt: new Date(element.createdAt),
+      updatedAt: new Date(element.updatedAt),
+    }));
+
+    return {
+      id: updatedFile.id,
+      name: updatedFile.name,
+      elements: elementsWithDates,
+      folderId: updatedFile.folderId || undefined,
+      folderIndex: updatedFile.folderIndex || undefined,
+      folderName: updatedFile.folderName || undefined,
+      userId: updatedFile.userId,
+      createdAt: updatedFile.createdAt,
+      updatedAt: updatedFile.updatedAt,
+    };
+  } catch (error) {
+    console.error("Failed to update file:", error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
 export const getFiles = async (userId: string) => {
   if (!userId) {
     throw new Error("User ID is required");
@@ -256,6 +337,7 @@ export async function changeFolderName(
       });
 
       if (updatedFolder.subFolderIds.length > 0) {
+        // eslint-disable-line @typescript-eslint/no-unused-vars
         const subFolders = await tx.folder.updateMany({
           where: {
             id: { in: updatedFolder.subFolderIds },

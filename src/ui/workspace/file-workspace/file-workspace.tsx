@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "@/ui/primitives/button";
 import { DefaultConfiguration } from "@/app/setting/types";
 import { handleKeyDown } from "./utils/handleKeyDown";
 import useEditFile from "../hooks/useEditFile";
+import { FileElement } from "./types";
+import useSave from "../hooks/useSave";
 
 const FileWorkspace = ({
   userConfig,
@@ -10,8 +12,24 @@ const FileWorkspace = ({
   userConfig: DefaultConfiguration;
 }) => {
   const editableRef = useRef<HTMLDivElement>(null);
+  const [isSuccses, setIsSuccess] = useState<"default" | "success" | "error">(
+    "default"
+  );
   const { currentFile, addElement, currentFileName } = useEditFile(userConfig);
-
+  const {
+    saveFile,
+    isSaving,
+    error: saveError,
+  } = useSave({
+    currentFile,
+    onSaveSuccess: () => {
+      setIsSuccess("success");
+    },
+    onSaveError: (error) => {
+      console.error(error);
+      setIsSuccess("error");
+    },
+  });
   useEffect(() => {
     if (editableRef.current) {
       editableRef.current.focus();

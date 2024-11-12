@@ -1,9 +1,7 @@
 "use server";
-
 import { connectToDatabase } from "@/utils/server-helpers";
 import prisma from "../../../prisma";
 import { hashPassword } from "@/utils/password";
-import { redirect } from "next/navigation";
 
 export const signUp = async (formData: FormData) => {
   const name = formData.get("name") as string;

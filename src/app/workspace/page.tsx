@@ -9,9 +9,9 @@ import UiConfig from "@/ui/workspace/ui-config/ui-config";
 import React from "react";
 
 const WorkspacePage = () => {
-  const { isInit, error } = useFetchFolders();
+  const { isInit, error } = useFetchFolders(); // eslint-disable-line @typescript-eslint/no-unused-vars
   const { isInitFile } = useFetchFiles();
-  const { isLoading, userConfig } = useFetchConfig();
+  const { isLoading, userConfig } = useFetchConfig(); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   if (!isInit || !userConfig || !isInitFile)
     return <FileProviderInit></FileProviderInit>;

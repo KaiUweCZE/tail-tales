@@ -29,7 +29,7 @@ export interface DefaultConfiguration {
   hr?: HTMLElementConfig;
 }
 
-type HtmlKeys = keyof Omit<
+export type HtmlKeys = keyof Omit<
   DefaultConfiguration,
   "id" | "userId" | "createdAt" | "updatedAt"
 >;

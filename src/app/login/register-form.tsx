@@ -6,44 +6,38 @@ import SuccessfulMessage from "@/components/successfull-message";
 import Input from "@/ui/primitives/input";
 import Button from "@/ui/primitives/button";
 import clsx from "clsx";
-import { error } from "console";
-
-type ValidInput = {
-  length: number;
-  status: "valid" | "invalid" | "default";
-};
 
 const RegisterForm = () => {
   const [isOk, setIsOk] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [responseError, setResponseError] = useState(false);
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const isUsernameOk = userName ? userName.length >= 3 : "default";
   const isPasswordOk = password ? password.length >= 6 : "default";
-  const router = useRouter();
+  const router = useRouter(); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    setIsOk((prev) => false);
-    setResponseError((prev) => false);
-    setIsLoading((prev) => true);
+    setIsOk(() => false);
+    setResponseError(() => false);
+    setIsLoading(() => true);
     try {
-      const { user, success } = await signUp(formData);
+      const { user, success } = await signUp(formData); // eslint-disable-line @typescript-eslint/no-unused-vars
 
       if (success) {
-        setIsOk((prev) => true);
+        setIsOk(() => true);
         setTimeout(() => setIsOk(() => false), 2500);
       }
 
       console.log(success);
     } catch (error) {
-      setResponseError((prev) => false);
+      setResponseError(() => false);
       console.error(error);
     } finally {
-      setIsLoading((prev) => false);
+      setIsLoading(() => false);
     }
   };
 

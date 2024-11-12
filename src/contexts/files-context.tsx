@@ -78,7 +78,6 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
   const [currentFile, setCurrentFile] = useState<FileElement[] | null>(null);
   const [currentFileName, setCurrentFileName] = useState("");
   const [activeFolder, setActiveFolder] = useState({ name: "", index: 0 });
-  const { isOpen } = useClose(isActive.active);
 
   const newInput = (e: InputTypes, parent?: string) => {
     setInputName("");

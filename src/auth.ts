@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 // Your own logic for dealing with plaintext password strings; be careful!
-import { hashPassword, verifyPassword } from "@/utils/password";
+import { verifyPassword } from "@/utils/password";
 import prisma from "../prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -20,7 +20,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
       },
       authorize: async (credentials, request) => {
-        let user = null;
+        // eslint-disable-line @typescript-eslint/no-unused-vars
+        let user = null; // eslint-disable-line @typescript-eslint/no-unused-vars
 
         if (!credentials?.name || !credentials?.password) {
           throw new Error("Missing credentials");
@@ -80,16 +81,3 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/login",
   },
 });
-
-/*declare module "next-auth" {
-  interface User {
-    id: string;
-    name: string;
-  }
-  
-  interface Session extends DefaultSession {
-    user: User & {
-      id: string;
-    }
-  }
-}*/

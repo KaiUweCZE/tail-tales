@@ -7,12 +7,6 @@ export type InputState = {
 
 export type InputTypes = InputState["inputType"];
 
-interface FolderContent {
-  index: number;
-  name: string;
-  type: InputTypes;
-}
-
 type FetchedFolder = {
   id: string;
   userId: string;
@@ -61,20 +55,6 @@ export interface UserFolder {
   subFolders: UserFolder[];
 }
 
-/*
-const fetchedFolders: {
-    parentName: string | null;
-    id: string;
-    userId: string;
-    index: number;
-    name: string;
-    parentId: string | null;
-    createdAt: Date;
-    updatedAt: Date;
-    subFolderIds: string[];
-}[] | null
-*/
-
 type FolderWithoutIds = Omit<UserFolder, "id" | "userId" | "subFolders">;
 
 export interface UserFolderWithoutId extends FolderWithoutIds {
@@ -83,20 +63,6 @@ export interface UserFolderWithoutId extends FolderWithoutIds {
 
 export interface UserFileWithoudId extends Omit<UserFile, "id" | "userId"> {}
 
-// convertors
-/*
-export const convertFile = (file: ApiFile): UserFile => {
-  return {
-    id: file.id,
-    name: file.name,
-    type: file.type,
-    folderId: file.folderId,
-    userId: file.userId,
-    createdAt: file.createdAt,
-    updatedAt: file.updatedAt,
-  };
-};
-*/
 export const convertFolder = (folder: UserFolder): UserFolderWithoutId => {
   const { id, userId, ...rest } = folder;
   return {
