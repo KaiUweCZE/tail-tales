@@ -7,7 +7,7 @@ import useElementHighlight from "./useElementHighlight";
 
 const useEditFile = (userConfig: any) => {
   // Později můžeme přidat proper typ pro userConfig
-  const { currentFile, currentFileName } = useFileObserver({
+  const { currentFile, currentFileState } = useFileObserver({
     rootElementId: "rootElement",
   });
   const [elementIds, setElementIds] = useState<string[]>(["rootElement"]);
@@ -59,7 +59,7 @@ const useEditFile = (userConfig: any) => {
 
   return {
     currentFile,
-    currentFileName,
+    currentFileState,
     selectedElementId,
     addElement: handleAddElement,
     isElementSelected: (id: string) => selectedElementId === id,

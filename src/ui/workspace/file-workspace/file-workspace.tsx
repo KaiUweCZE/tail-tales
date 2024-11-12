@@ -5,6 +5,7 @@ import { handleKeyDown } from "./utils/handleKeyDown";
 import useEditFile from "../hooks/useEditFile";
 import { FileElement } from "./types";
 import useSave from "../hooks/useSave";
+import SuccessfulMessage from "@/components/successfull-message";
 
 const FileWorkspace = ({
   userConfig,
@@ -15,15 +16,17 @@ const FileWorkspace = ({
   const [isSuccses, setIsSuccess] = useState<"default" | "success" | "error">(
     "default"
   );
-  const { currentFile, addElement, currentFileName } = useEditFile(userConfig);
+  const { currentFile, addElement, currentFileState } = useEditFile(userConfig);
   const {
     saveFile,
     isSaving,
     error: saveError,
   } = useSave({
-    currentFile,
     onSaveSuccess: () => {
       setIsSuccess("success");
+      setTimeout(() => {
+        setIsSuccess("default");
+      }, 3000);
     },
     onSaveError: (error) => {
       console.error(error);
@@ -67,6 +70,22 @@ const FileWorkspace = ({
           intent="secondary"
           variant="light"
           size="sm"
+          onClick={() => addElement("ul")}
+        >
+          ul
+        </Button>
+        <Button
+          intent="secondary"
+          variant="light"
+          size="sm"
+          onClick={() => addElement("li")}
+        >
+          li
+        </Button>
+        <Button
+          intent="secondary"
+          variant="light"
+          size="sm"
           onClick={() => addElement("p")}
         >
           p
@@ -96,13 +115,38 @@ const FileWorkspace = ({
         ></div>
         {currentFile && (
           <span className="text-sm text-slate-400 absolute">
-            {`actual file: ${currentFileName}`}
+            {`actual file: ${currentFileState.name}`}
           </span>
         )}
         <div className="flex justify-end">
-          <Button onClick={() => console.log(currentFile)}>Save</Button>
+          <Button
+            onClick={() =>
+              console.log(
+                "File name: ",
+                currentFileState.id,
+                "File elements: ",
+                currentFile
+              )
+            }
+          >
+            Check state
+          </Button>
+          <Button
+            onClick={saveFile}
+            disabled={isSaving}
+            isLoading={isSaving}
+            loadingText="Saving..."
+          >
+            Save
+          </Button>
         </div>
       </div>
+      {isSuccses === "success" && (
+        <SuccessfulMessage
+          headline="Success Save"
+          text="Your file was saved to database"
+        />
+      )}
     </div>
   );
 };

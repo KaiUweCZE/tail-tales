@@ -13,7 +13,7 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
 
   if (!context) return <span>Context is missing</span>;
 
-  const { activeFolder, files, setCurrentFile, setCurrentFileName } = context;
+  const { activeFolder, files, setCurrentFile, setCurrentFileState } = context;
 
   const logInfo = () => {
     console.log(folderFiles, folder.index, folder.name);
@@ -25,8 +25,10 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
   );
 
   const handleSelectFile = (file: UserFile) => {
+    console.log("file:", file);
+
     setCurrentFile(file.elements);
-    setCurrentFileName(file.name);
+    setCurrentFileState({ name: file.name, id: file.id });
   };
 
   return (

@@ -1,4 +1,4 @@
-import { SquareMousePointer } from "lucide-react";
+import { Palette, SquareMousePointer } from "lucide-react";
 import { FileElement } from "../file-workspace/types";
 import { selectedElement } from "./utils/selectElement";
 import Input from "@/ui/primitives/input";
@@ -8,7 +8,7 @@ import { FileContext } from "@/contexts/files-context";
 const ElementStructureCenter = ({ element }: { element: FileElement }) => {
   const context = useContext(FileContext);
   const [newClass, setNewClass] = useState(element.additionalCss);
-
+  const [isEditable, setIsEditable] = useState(false);
   if (!context) return <span>Context is missing</span>;
 
   const { currentFile, setCurrentFile } = context;
@@ -76,6 +76,10 @@ const ElementStructureCenter = ({ element }: { element: FileElement }) => {
             className="w-4 h-4 cursor-pointer hover:scale-110 transition duration-300"
             onClick={() => selectedElement(element.id)}
           />
+          <Palette
+            className="w-4 h-4 cursor-pointer hover:scale-110 transition duration-300"
+            onClick={() => setIsEditable(!isEditable)}
+          />
         </span>
       </div>
       {element.cssClass && (
@@ -83,13 +87,15 @@ const ElementStructureCenter = ({ element }: { element: FileElement }) => {
           <span className="col-span-2 text-xs px-1.5 py-0.5 rounded bg-slate-700">
             {element.cssClass}
           </span>
-          <Input
-            size="sm"
-            variant="editor"
-            aria-label="add tailwind class"
-            value={newClass}
-            onChange={(e) => handleAddClass(e.target.value)}
-          />
+          {isEditable && (
+            <Input
+              size="sm"
+              variant="editor"
+              aria-label="add tailwind class"
+              value={newClass}
+              onChange={(e) => handleAddClass(e.target.value)}
+            />
+          )}
         </div>
       )}
     </div>

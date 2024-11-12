@@ -46,8 +46,8 @@ export interface FileContextType {
   setUserConfig: Dispatch<SetStateAction<DefaultConfiguration | null>>;
   currentFile: FileElement[] | null;
   setCurrentFile: Dispatch<SetStateAction<FileElement[] | null>>;
-  currentFileName: string;
-  setCurrentFileName: Dispatch<SetStateAction<string>>;
+  currentFileState: { name: string; id: string };
+  setCurrentFileState: Dispatch<SetStateAction<{ name: string; id: string }>>;
   activeFolder: { name: string; index: number };
   setActiveFolder: Dispatch<SetStateAction<{ name: string; index: number }>>;
 }
@@ -76,7 +76,10 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     null
   );
   const [currentFile, setCurrentFile] = useState<FileElement[] | null>(null);
-  const [currentFileName, setCurrentFileName] = useState("");
+  const [currentFileState, setCurrentFileState] = useState({
+    name: "",
+    id: "",
+  });
   const [activeFolder, setActiveFolder] = useState({ name: "", index: 0 });
 
   const newInput = (e: InputTypes, parent?: string) => {
@@ -99,8 +102,8 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     setIsSuccess,
     currentFile,
     setCurrentFile,
-    currentFileName,
-    setCurrentFileName,
+    currentFileState,
+    setCurrentFileState,
     files,
     setFiles,
     folders,

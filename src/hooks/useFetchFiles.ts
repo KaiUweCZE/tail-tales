@@ -64,8 +64,8 @@ const useFetchFiles = () => {
           name: file.name,
           elements,
           folderId: file.folderId || undefined,
-          folderIndex: file.index, // Používáme index ze souboru
-          folderName: file.name,
+          folderIndex: file.folderIndex || undefined, // Používáme index ze souboru
+          folderName: file.folderName || undefined,
           userId: file.userId,
           createdAt: new Date(file.createdAt),
           updatedAt: new Date(file.updatedAt),
