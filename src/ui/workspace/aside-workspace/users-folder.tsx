@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import FolderOptions from "./folder-options";
 import clsx from "clsx";
 import { FileContext } from "@/contexts/files-context";
+import UsersFile from "./users-file";
 
 const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
   //const [isEditable, setIsEditable] = useState(false);
@@ -13,7 +14,14 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
 
   if (!context) return <span>Context is missing</span>;
 
-  const { activeFolder, files, setCurrentFile, setCurrentFileState } = context;
+  const {
+    activeFolder,
+    files,
+    setCurrentFile,
+    setCurrentFileState,
+    currentFileState,
+    selectedElementId,
+  } = context;
 
   const logInfo = () => {
     console.log(folderFiles, folder.index, folder.name);
@@ -77,22 +85,20 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
       </li>
       {isExpanded && (
         <>
-          <ul className="">
-            {folder?.subFolders.map((folder) => (
-              <li key={folder.index} className="pl-4">
-                <UsersFolder folder={folder} />
-              </li>
+          <ul className="pl-4">
+            {folderFiles.map((file) => (
+              <UsersFile
+                key={file.id}
+                currentFileState={currentFileState}
+                file={file}
+                setCurrentFile={setCurrentFile}
+                setCurrentFileState={setCurrentFileState}
+              />
             ))}
           </ul>
-          <ul>
-            {folderFiles.map((file) => (
-              <li
-                key={file.id}
-                className="pl-4 cursor-pointer hover:text-amber-200"
-                onClick={() => handleSelectFile(file)}
-              >
-                {file.name}
-              </li>
+          <ul className="pl-4">
+            {folder?.subFolders.map((folder) => (
+              <UsersFolder key={folder.index} folder={folder} />
             ))}
           </ul>
         </>

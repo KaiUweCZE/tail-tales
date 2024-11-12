@@ -4,6 +4,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { useSession } from "next-auth/react";
 import { useContext, useEffect, useRef } from "react";
 import useCreateFile from "../hooks/useCreateFile";
+import { Loader } from "lucide-react";
 
 const fileInputVariants = cva(``, {
   variants: {
@@ -22,9 +23,9 @@ const fileInputVariants = cva(``, {
   },
 });
 
-type FolderInput = VariantProps<typeof fileInputVariants>;
+type FileInput = VariantProps<typeof fileInputVariants>;
 
-interface FolderInputProps extends FolderInput {
+interface FileInputProps extends FileInput {
   parentId?: string;
   parentName: string;
   parentIndex: number;
@@ -37,7 +38,7 @@ const FileInput = ({
   onComplete,
   size,
   variant,
-}: FolderInputProps) => {
+}: FileInputProps) => {
   const context = useContext(FileContext);
   const { isLoading, createFile } = useCreateFile();
   const { data: session } = useSession();
@@ -64,7 +65,7 @@ const FileInput = ({
         parentIndex
       );
     } catch (error) {
-      console.error("Failed to create folder:", error);
+      console.error("Failed to create file:", error);
     } finally {
       console.log("Ok");
     }
@@ -74,6 +75,8 @@ const FileInput = ({
       size={size}
       variant={variant}
       ref={inputRef}
+      isLoading={isLoading}
+      rightIcon={isLoading && <Loader className="h-5 w-5" color="#0F1729" />}
       placeholder="file"
       onChange={(e) => setInputName(e.target.value)}
       onKeyDown={(e) => {

@@ -1,5 +1,6 @@
 import { cn } from "@/utils/ui/utils";
 import { cva, VariantProps } from "class-variance-authority";
+import clsx from "clsx";
 import { forwardRef, InputHTMLAttributes, ReactNode } from "react";
 
 const inputVariants = cva(
@@ -40,6 +41,11 @@ const inputVariants = cva(
         size: "md",
         className: "max-w-full w-36 px-1",
       },
+      {
+        variant: "file",
+        size: "md",
+        className: "max-w-full w-36 px-1",
+      },
     ],
     defaultVariants: {
       intent: "primary",
@@ -56,6 +62,8 @@ export interface InputProps
     InputVariantProps {
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
+  isLoading?: boolean;
+  loadingText?: string;
   error?: string;
   label?: string;
   helperText?: string;
@@ -73,6 +81,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       icon,
       leftIcon,
       rightIcon,
+      loadingText,
+      isLoading,
       error,
       label,
       helperText,
@@ -86,7 +96,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const errorId = `${id}-error`;
     const labelId = `${id}-label`;
     return (
-      <div className="grid w-full gap-0">
+      <div
+        className={clsx("grid w-full gap-0", {
+          "justify-center": variant === "folder" || variant === "file",
+        })}
+      >
         {/*hidden label*/}
         {!label && ariaLabel && (
           <span id={labelId} className="sr-only">

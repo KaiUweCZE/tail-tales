@@ -48,7 +48,7 @@ const SettingPage = () => {
 
     setIsSaving(true);
     try {
-      const { id, userId, createdAt, updatedAt, ...configToSave } = userConfig;
+      const { id, userId, createdAt, updatedAt, ...configToSave } = userConfig; // eslint-disable-line @typescript-eslint/no-unused-vars
       const result = await saveConfig(configToSave);
 
       if (result.error) {

@@ -14,7 +14,7 @@ const UiConfig = () => {
 
   const { currentFile, userConfig } = context;
 
-  const { id, userId, createdAt, updatedAt, ...htmlElements } = userConfig;
+  const { id, userId, createdAt, updatedAt, ...htmlElements } = userConfig; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return (
     <div className="bg-slate-800 p-4">

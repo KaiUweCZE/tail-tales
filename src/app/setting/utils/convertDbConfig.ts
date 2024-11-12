@@ -12,8 +12,7 @@ export const convertDbConfig = (dbConfig: any): DefaultConfiguration => {
 
   if (elementStyles) {
     Object.entries(elementStyles).forEach(([key, value]) => {
-      console.log(key, value);
-
+      const htmlKey = key as HtmlElements;
       if (htmlElements.includes(key as HtmlElements)) {
         (clientConfig as any)[key] = value;
       }

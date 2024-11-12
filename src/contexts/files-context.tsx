@@ -1,6 +1,5 @@
 "use client";
 import { DefaultConfiguration } from "@/app/setting/types";
-import useClose from "@/hooks/useClose";
 import {
   InputState,
   InputTypes,
@@ -31,6 +30,8 @@ export interface FileContextType {
   setIsInit: Dispatch<SetStateAction<boolean>>;
   isInitFile: boolean;
   setIsInitFile: Dispatch<SetStateAction<boolean>>;
+  selectedElementId: string;
+  setSelectedElementId: Dispatch<SetStateAction<string>>;
   isSuccess: SuccessMessageType;
   setIsSuccess: Dispatch<SetStateAction<SuccessMessageType>>;
   isActive: InputStateWithParentId;
@@ -59,6 +60,7 @@ export const FileContext = createContext<FileContextType | undefined>(
 export const FileProvider = ({ children }: { children: ReactNode }) => {
   const [isInit, setIsInit] = useState(false);
   const [isInitFile, setIsInitFile] = useState(false);
+  const [selectedElementId, setSelectedElementId] = useState("");
   const [isSuccess, setIsSuccess] = useState<SuccessMessageType>({
     success: false,
     text: "",
@@ -98,6 +100,8 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     setIsInit,
     isInitFile,
     setIsInitFile,
+    selectedElementId,
+    setSelectedElementId,
     isSuccess,
     setIsSuccess,
     currentFile,

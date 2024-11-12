@@ -1,6 +1,7 @@
 import { DefaultConfiguration } from "@/app/setting/types";
 import { ElementType } from "../types";
 import { createId } from "./create-id";
+import { selectedElement } from "../../ui-config/utils/selectElement";
 
 interface AddElementOptions {
   element: ElementType;
@@ -34,13 +35,14 @@ export const addElement = ({
   newElement.id = itemId;
   newElement.textContent = `New ${element}`;
 
-  // Přidáme event listener pro kliknutí
+  // add event listener for click
   newElement.addEventListener("click", handleElementClick);
 
   range.deleteContents();
   range.insertNode(newElement);
-  // Nastavíme focus na nový element
+  // set focus on newElement
   setSelectedElementId(itemId);
+  selectedElement(newElement.id);
 
   const newRange = document.createRange();
   newRange.setStartAfter(newElement);

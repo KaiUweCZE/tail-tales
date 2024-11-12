@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { FileContext } from "@/contexts/files-context";
+import { useContext, useEffect, useState } from "react";
 
 // Highlighte element after click
 const useElementHighlight = () => {
-  const [selectedElementId, setSelectedElementId] = useState<string | null>(
+  const context = useContext(FileContext);
+  /*const [selectedElementId, setSelectedElementId] = useState<string | null>(
     null
-  );
+  );*/
+
+  if (!context) throw new Error("Context is missing");
+  const { selectedElementId, setSelectedElementId } = context;
   const [lastHighlightedElement, setLastHighlightedElement] = useState("");
   const handleElementClick = (e: Event) => {
     e.stopPropagation();

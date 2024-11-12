@@ -4,14 +4,21 @@ import { selectedElement } from "./utils/selectElement";
 import Input from "@/ui/primitives/input";
 import { useContext, useState } from "react";
 import { FileContext } from "@/contexts/files-context";
+import clsx from "clsx";
 
-const ElementStructureCenter = ({ element }: { element: FileElement }) => {
+const ElementStructureCenter = ({
+  element,
+  child,
+}: {
+  element: FileElement;
+  child?: boolean;
+}) => {
   const context = useContext(FileContext);
   const [newClass, setNewClass] = useState(element.additionalCss);
   const [isEditable, setIsEditable] = useState(false);
   if (!context) return <span>Context is missing</span>;
 
-  const { currentFile, setCurrentFile } = context;
+  const { currentFile, setCurrentFile, selectedElementId } = context;
 
   // Helper for DOM manipulation - DOM rewrites context states
   const updateDOMClasses = (
@@ -70,19 +77,27 @@ const ElementStructureCenter = ({ element }: { element: FileElement }) => {
     <div className="grid gap-1">
       <div className="flex gap-2">
         <span className="text-amber-200">{element.type}</span>
-        <span className="flex items-center gap-2">
+        <span
+          className={clsx("flex items-center gap-2", {
+            "text-amber-200": selectedElementId === element.id,
+          })}
+        >
           {`#${element.id}`}{" "}
-          <SquareMousePointer
-            className="w-4 h-4 cursor-pointer hover:scale-110 transition duration-300"
-            onClick={() => selectedElement(element.id)}
-          />
-          <Palette
-            className="w-4 h-4 cursor-pointer hover:scale-110 transition duration-300"
-            onClick={() => setIsEditable(!isEditable)}
-          />
+          {!child && (
+            <>
+              <SquareMousePointer
+                className="w-4 h-4 cursor-pointer hover:scale-110 transition duration-300"
+                onClick={() => selectedElement(element.id)}
+              />
+              <Palette
+                className="w-4 h-4 cursor-pointer hover:scale-110 transition duration-300"
+                onClick={() => setIsEditable(!isEditable)}
+              />
+            </>
+          )}
         </span>
       </div>
-      {element.cssClass && (
+      {element.cssClass && !child && (
         <div>
           <span className="col-span-2 text-xs px-1.5 py-0.5 rounded bg-slate-700">
             {element.cssClass}
