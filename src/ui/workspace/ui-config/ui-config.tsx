@@ -17,7 +17,7 @@ const UiConfig = () => {
   const { id, userId, createdAt, updatedAt, ...htmlElements } = userConfig; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return (
-    <div className="bg-slate-800 p-4">
+    <div className="bg-slate-800 p-4 h-fit">
       <UiConfigNav activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="mt-4">
         {activeTab === "structure" && (

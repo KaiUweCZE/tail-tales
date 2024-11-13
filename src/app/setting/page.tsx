@@ -19,7 +19,8 @@ const SettingPage = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null); // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  if (!context) return <FileProviderInit></FileProviderInit>;
+  if (!context)
+    return <FileProviderInit text="Loading your setting..."></FileProviderInit>;
 
   const { setUserConfig } = context;
 
@@ -67,7 +68,10 @@ const SettingPage = () => {
     }
   };
 
-  if (isLoading) return <FileProviderInit></FileProviderInit>;
+  if (isLoading)
+    return (
+      <FileProviderInit text="Loading your workspace..."></FileProviderInit>
+    );
 
   return (
     <main className="grid grid-cols-2 mt-4" role="main">
@@ -86,6 +90,11 @@ const SettingPage = () => {
                 name={`style-${element}`}
                 id={`style-${element}`}
                 aria-describedby={`hint-${element}`}
+                value={
+                  userConfig && element in userConfig
+                    ? userConfig[element]?.className
+                    : ""
+                }
                 placeholder="Enter Tailwind classes"
                 className="rounded-sm bg-slate-300 focus:bg-slate-100 text-sm text-slate-900 px-2"
                 onChange={(e) => setSetting(element, e.target.value)}

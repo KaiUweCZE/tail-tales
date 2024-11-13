@@ -14,7 +14,9 @@ const WorkspacePage = () => {
   const { isLoading, userConfig } = useFetchConfig(); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   if (!isInit || !userConfig || !isInitFile)
-    return <FileProviderInit></FileProviderInit>;
+    return (
+      <FileProviderInit text="Loading your workspace..."></FileProviderInit>
+    );
 
   return (
     <main className="grid grid-cols-4 gap-2 h-min-50">

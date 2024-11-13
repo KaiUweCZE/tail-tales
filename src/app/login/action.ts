@@ -2,6 +2,7 @@
 import { connectToDatabase } from "@/utils/server-helpers";
 import prisma from "../../../prisma";
 import { hashPassword } from "@/utils/password";
+import { isValidUsername } from "./utils/is-valid-username";
 
 export const signUp = async (formData: FormData) => {
   const name = formData.get("name") as string;
@@ -12,6 +13,9 @@ export const signUp = async (formData: FormData) => {
     return { error: "Missing username or password" };
   }
 
+  if (!isValidUsername(name)) {
+    return { error: "Invalid username format" };
+  }
   try {
     await connectToDatabase();
     // Check if user already exists
@@ -20,6 +24,8 @@ export const signUp = async (formData: FormData) => {
     });
 
     if (existingUser) {
+      console.log("User already  exists");
+
       return { error: "User already exists" };
     }
 

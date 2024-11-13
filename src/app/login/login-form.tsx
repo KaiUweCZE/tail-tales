@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Button from "@/ui/primitives/button";
 import Input from "@/ui/primitives/input";
+import ErrorMessage from "@/components/error-message";
 
 type LoginStatus = "idle" | "loading" | "success" | "error";
 
@@ -17,14 +18,23 @@ const LoginForm = () => {
   const validateForm = () => {
     if (!username.trim()) {
       setError("Username is required");
+      setTimeout(() => {
+        setError("");
+      }, 2500);
       return false;
     }
     if (!password.trim()) {
       setError("Password is required");
+      setTimeout(() => {
+        setError("");
+      }, 2500);
       return false;
     }
     if (password.length < 1) {
       setError("Password must be at least 6 characters");
+      setTimeout(() => {
+        setError("");
+      }, 2500);
       return false;
     }
     return true;
@@ -38,18 +48,23 @@ const LoginForm = () => {
     try {
       setStatus("loading");
       setError("");
-
       // Check if user exists
       const user = await getUser(username);
 
       if (!user) {
         setError("User not found");
+        setTimeout(() => {
+          setError("");
+        }, 2500);
         setStatus("error");
         return;
       }
 
       if ("error" in user) {
         setError("An error occurred while checking user");
+        setTimeout(() => {
+          setError("");
+        }, 2500);
         setStatus("error");
         return;
       }
@@ -63,6 +78,9 @@ const LoginForm = () => {
 
       if (result?.error) {
         setError("Invalid credentials");
+        setTimeout(() => {
+          setError("");
+        }, 2500);
         setStatus("error");
         return;
       }
@@ -78,6 +96,9 @@ const LoginForm = () => {
     } catch (err) {
       console.error("Login error:", err);
       setError("An unexpected error occurred");
+      setTimeout(() => {
+        setError("");
+      }, 2500);
       setStatus("error");
     }
   };
@@ -116,6 +137,7 @@ const LoginForm = () => {
       >
         Sign In
       </Button>
+      {error && <ErrorMessage headline="Error" text={error} />}
     </form>
   );
 };

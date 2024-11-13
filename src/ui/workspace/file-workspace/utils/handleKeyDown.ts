@@ -50,16 +50,16 @@ export const handleKeyDown = (
     })();
 
     if (e.shiftKey) {
-      // Vždy vytvoříme <br>
+      // create <br>
       const br = document.createElement("br");
       range.deleteContents();
       range.insertNode(br);
 
       // Pokud jsme na konci elementu, přidáme druhý <br> pro vizuální mezeru
-      if (isAtEnd) {
+      /*if (isAtEnd) {
         const extraBr = document.createElement("br");
         range.insertNode(extraBr);
-      }
+      }*/
 
       const newRange = document.createRange();
       newRange.setStartAfter(br);
@@ -75,7 +75,7 @@ export const handleKeyDown = (
       range.deleteContents();
       range.insertNode(br);
 
-      // Posuneme kurzor za <br>
+      // set cursor after br
       const newRange = document.createRange();
       newRange.setStartAfter(br);
       newRange.collapse(true);
@@ -85,7 +85,7 @@ export const handleKeyDown = (
       return;
     } else {
       if (currentElement && currentElement.parentElement) {
-        // Vytvoříme nový range za současným elementem
+        // create new range after current element
         const newRange = document.createRange();
         newRange.setStartAfter(currentElement);
         newRange.collapse(true);

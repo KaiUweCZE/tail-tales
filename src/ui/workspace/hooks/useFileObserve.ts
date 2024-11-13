@@ -72,13 +72,13 @@ const useFileObserver = ({
 
       const rootElement = document.getElementById(rootElementId);
       if (selectedFile && rootElement) {
-        // Dočasně odpojíme observer
+        // temporary disconnect observer
         observerRef.current?.disconnect();
 
-        // Vyčistíme existující obsah
+        // clean existing content
         rootElement.innerHTML = "";
 
-        // Najdeme a načteme rootElement z dat souboru
+        // find and fetch rootElement from file data
         const fileRootElement = selectedFile.elements.find(
           (el) => el.id === rootElementId
         );
@@ -86,12 +86,12 @@ const useFileObserver = ({
           rootElement.innerHTML = fileRootElement.content;
         }
 
-        // Znovu připojíme observer
+        // again connect observer
         if (observerRef.current) {
           observerRef.current.observe(rootElement, config);
         }
 
-        // Aktualizujeme stav
+        // sync state
         setCurrentFile(selectedFile.elements);
         isInitialLoadRef.current = false;
       }

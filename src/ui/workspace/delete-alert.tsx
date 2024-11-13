@@ -1,11 +1,12 @@
-import { deleteFolder } from "@/app/workspace/action";
+import { deleteFile, deleteFolder } from "@/app/workspace/action";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
 interface DeleteAlertProps {
   type: "folder" | "file";
-  name: string;
-  index: number;
+  fileId?: string;
+  name?: string;
+  index?: number;
   onDeleteSuccess?: () => void;
   handleCancel: () => void;
 }
@@ -14,6 +15,7 @@ export const DeleteAlert = ({
   type,
   name,
   index,
+  fileId,
   onDeleteSuccess,
   handleCancel,
 }: DeleteAlertProps) => {
@@ -27,7 +29,11 @@ export const DeleteAlert = ({
     modalRef.current?.focus();
   }, []);
 
-  const handleDeleteFolder = async (userId: string) => {
+  const handleDeleteFolder = async (
+    userId: string,
+    index: number,
+    name: string
+  ) => {
     setIsDeleting(true);
     setError(null);
     try {
@@ -48,6 +54,27 @@ export const DeleteAlert = ({
     }
   };
 
+  const handleDeleteFile = async (fileId: string) => {
+    setIsDeleting(true);
+    setError(null);
+    try {
+      const result = await deleteFile(fileId);
+
+      if (!result.success) {
+        setError(result.error || "Failed to delete file");
+        return;
+      }
+
+      onDeleteSuccess?.();
+      handleCancel();
+    } catch (error) {
+      console.error("Delete folder error:", error);
+      setError("An unexpected error occurred while deleting the file");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const handleDelete = () => {
     if (!session?.user?.id) {
       setError("Authentication required");
@@ -55,9 +82,11 @@ export const DeleteAlert = ({
     }
 
     if (type === "folder") {
-      handleDeleteFolder(session.user.id);
+      if (!index || !name) return;
+      handleDeleteFolder(session.user.id, index, name);
     } else {
-      console.log("there will be delete file logic");
+      if (!fileId) return;
+      handleDeleteFile(fileId);
     }
   };
 

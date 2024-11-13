@@ -97,11 +97,13 @@ const ElementStructureCenter = ({
           )}
         </span>
       </div>
-      {element.cssClass && !child && (
+      {!child && (
         <div>
-          <span className="col-span-2 text-xs px-1.5 py-0.5 rounded bg-slate-700">
-            {element.cssClass}
-          </span>
+          {element.cssClass && (
+            <span className="col-span-2 text-xs px-1.5 py-0.5 rounded bg-slate-700">
+              {element.cssClass}
+            </span>
+          )}
           {isEditable && (
             <Input
               size="sm"

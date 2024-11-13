@@ -13,6 +13,7 @@
   --focus-color: #67e8f9;
   --shadow-color: 255, 251, 235;
   --font-fredoka: "Fredoka", sans-serif;
+  --font-inter: "Inter", monospace;
   --max-size: 80rem;
 }
 
@@ -108,6 +109,30 @@ p {
   }
 }
 
+.error-message {
+  display: grid;
+  line-height: 1.5rem;
+  position: fixed;
+  background-color: var(--error-color);
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 0.35rem;
+  bottom: 0;
+  left: 0;
+  opacity: 1;
+  translate: 0 0;
+  transition: 0.4s;
+  h3 {
+    font-size: 1.5rem;
+  }
+  p {
+    font-size: 1rem;
+  }
+  @starting-style {
+    opacity: 0.2;
+    translate: 0 3rem;
+  }
+}
 .sub-menu {
   display: none;
   height: 10rem;
@@ -233,4 +258,8 @@ p {
   display: grid;
   /*grid-template-columns: min-content 1fr;*/
   column-gap: 0.5rem;
+}
+
+.inter * {
+  font-family: var(--font-inter);
 }

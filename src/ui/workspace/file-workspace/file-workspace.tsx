@@ -5,6 +5,7 @@ import { handleKeyDown } from "./utils/handleKeyDown";
 import useEditFile from "../hooks/useEditFile";
 import useSave from "../hooks/useSave";
 import SuccessfulMessage from "@/components/successfull-message";
+import FileWorkspaceNav from "./file-workspace-nav";
 
 const FileWorkspace = ({
   userConfig,
@@ -12,7 +13,7 @@ const FileWorkspace = ({
   userConfig: DefaultConfiguration;
 }) => {
   const editableRef = useRef<HTMLDivElement>(null);
-  const [isSuccses, setIsSuccess] = useState<"default" | "success" | "error">(
+  const [isSuccses, setIsSuccess] = useState<"default" | "saved" | "error">(
     "default"
   );
   const { currentFile, addElement, currentFileState } = useEditFile(userConfig);
@@ -22,7 +23,7 @@ const FileWorkspace = ({
     error: saveError, // eslint-disable-line @typescript-eslint/no-unused-vars
   } = useSave({
     onSaveSuccess: () => {
-      setIsSuccess("success");
+      setIsSuccess("saved");
       setTimeout(() => {
         setIsSuccess("default");
       }, 3000);
@@ -40,96 +41,41 @@ const FileWorkspace = ({
 
   return (
     <div className="file-wrapper rounded">
-      <nav className="file-navigation bg-slate-850 h-8 p-1 rounded-t border-b border-b-gray-400/50">
-        <Button
-          intent="secondary"
-          variant="light"
-          size="sm"
-          onClick={() => addElement("div")}
-        >
-          div
-        </Button>
-        <Button
-          intent="secondary"
-          variant="light"
-          size="sm"
-          onClick={() => addElement("span")}
-        >
-          span
-        </Button>
-        <Button
-          intent="secondary"
-          variant="light"
-          size="sm"
-          onClick={() => addElement("h1")}
-        >
-          h1
-        </Button>
-        <Button
-          intent="secondary"
-          variant="light"
-          size="sm"
-          onClick={() => addElement("ul")}
-        >
-          ul
-        </Button>
-        <Button
-          intent="secondary"
-          variant="light"
-          size="sm"
-          onClick={() => addElement("li")}
-        >
-          li
-        </Button>
-        <Button
-          intent="secondary"
-          variant="light"
-          size="sm"
-          onClick={() => addElement("p")}
-        >
-          p
-        </Button>
-        <Button
-          variant="light"
-          size="sm"
-          onClick={() => console.log(currentFile)}
-        ></Button>
-      </nav>
+      <div className="bg-slate-800">
+        <FileWorkspaceNav addElement={addElement} />
+
+        {currentFile ? (
+          <div
+            ref={editableRef}
+            id="rootElement"
+            className="w-full relative inter h-[80dvh] max-h-80dvh overflow-y-auto  bg-slate-800 text-amber-50 p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1"
+            contentEditable
+            autoFocus
+            suppressContentEditableWarning
+            onPaste={(e) => {
+              e.preventDefault();
+              const text = e.clipboardData.getData("text/plain");
+              document.execCommand("insertText", false, text);
+            }}
+            onKeyDown={(e) =>
+              handleKeyDown(e as unknown as KeyboardEvent, editableRef)
+            }
+          ></div>
+        ) : (
+          <div className="full h-[80dvh]">
+            <span className="flex h-full w-full justify-center items-center text-3xl text-center fond-bold text-slate-300">
+              CREATE A NEW FILE OR EDIT AN EXISTING ONE
+            </span>
+          </div>
+        )}
+      </div>
       <div className="block relative">
-        <div
-          ref={editableRef}
-          id="rootElement"
-          className="w-full h-[80dvh] max-h-80dvh overflow-y-auto  bg-slate-800 text-amber-50 p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1"
-          contentEditable
-          autoFocus
-          suppressContentEditableWarning
-          onPaste={(e) => {
-            e.preventDefault();
-            const text = e.clipboardData.getData("text/plain");
-            document.execCommand("insertText", false, text);
-          }}
-          onKeyDown={(e) =>
-            handleKeyDown(e as unknown as KeyboardEvent, editableRef)
-          }
-        ></div>
         {currentFile && (
           <span className="text-sm text-slate-400 absolute">
             {`actual file: ${currentFileState.name}`}
           </span>
         )}
-        <div className="flex justify-end">
-          <Button
-            onClick={() =>
-              console.log(
-                "File name: ",
-                currentFileState.id,
-                "File elements: ",
-                currentFile
-              )
-            }
-          >
-            Check state
-          </Button>
+        <div className="flex justify-end my-1">
           <Button
             onClick={saveFile}
             disabled={isSaving}
@@ -140,7 +86,7 @@ const FileWorkspace = ({
           </Button>
         </div>
       </div>
-      {isSuccses === "success" && (
+      {isSuccses === "saved" && (
         <SuccessfulMessage
           headline="Success Save"
           text="Your file was saved to database"

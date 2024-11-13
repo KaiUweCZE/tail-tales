@@ -361,21 +361,12 @@ export async function changeFolderName(
   }
 }
 
-export async function changeFileName(
-  index: number,
-  newName: string,
-  oldName: string,
-  userId: string
-) {
+export async function changeFileName(fileId: string, newName: string) {
   try {
     await connectToDatabase();
     const updatedFile = await prisma.file.update({
       where: {
-        userId_name_index: {
-          userId,
-          name: oldName,
-          index,
-        },
+        id: fileId,
       },
       data: {
         name: newName,
@@ -398,21 +389,13 @@ type DeleteResult = {
   deletedId?: string;
 };
 
-export const deleteFile = async (
-  index: number,
-  userId: string,
-  name: string
-): Promise<DeleteResult> => {
+export const deleteFile = async (fileId: string): Promise<DeleteResult> => {
   try {
     await connectToDatabase();
 
     const deletedFile = await prisma.file.delete({
       where: {
-        userId_name_index: {
-          index,
-          userId,
-          name,
-        },
+        id: fileId,
       },
       select: {
         id: true,

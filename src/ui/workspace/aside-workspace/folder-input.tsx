@@ -28,6 +28,7 @@ type FolderInput = VariantProps<typeof folderInputVariants>;
 /* eslint-enable @typescript-eslint/no-unused-vars */
 interface FolderInputProps extends FolderInput {
   parent: string;
+  parentIndex?: number;
   onComplete?: () => void;
 }
 
@@ -65,6 +66,7 @@ const FolderInput = ({
   };
   return (
     <Input
+      placeholder="folder"
       size={size}
       variant={variant}
       ref={inputRef}

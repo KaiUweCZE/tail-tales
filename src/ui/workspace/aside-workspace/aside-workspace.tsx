@@ -76,7 +76,7 @@ const AsideWorkspace = () => {
 
   return (
     <>
-      <aside className="grid w-full h-fit bg-slate-850">
+      <aside className="grid w-full h-fit bg-slate-800 pt-2 pb-4">
         <AsideMenu />
         {handleRenderInput()}
         <ul>

@@ -1,8 +1,9 @@
 import { UserFile } from "@/types/types";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { FileElement } from "../file-workspace/types";
-import { NotepadTextIcon } from "lucide-react";
+import { NotepadTextIcon, Settings2 } from "lucide-react";
 import clsx from "clsx";
+import FileOptions from "./file-options";
 
 interface UserFileInputs {
   file: UserFile;
@@ -17,6 +18,7 @@ const UsersFile = ({
   setCurrentFile,
   currentFileState,
 }: UserFileInputs) => {
+  const [isCofigurated, setIsConfigurated] = useState(false);
   const handleSelectFile = (file: UserFile) => {
     console.log("file:", file);
 
@@ -24,19 +26,27 @@ const UsersFile = ({
     setCurrentFileState({ name: file.name, id: file.id });
   };
   return (
-    <li className="flex gap-1 pl-2 items-center">
-      <NotepadTextIcon
-        className="h-4 w-4"
-        color={(currentFileState.id === file.id && "#F5E68A") || "white"}
+    <li className="flex gap-1 pr-2 items-center justify-between relative">
+      <div className="flex  pl-2 items-center">
+        <NotepadTextIcon
+          className="h-4 w-4"
+          color={(currentFileState.id === file.id && "#F5E68A") || "white"}
+        />
+        <span
+          onClick={() => handleSelectFile(file)}
+          className={clsx("cursor-pointer hover:text-amber-200", {
+            "text-amber-200": currentFileState.id === file.id,
+          })}
+        >
+          {file.name}
+        </span>
+      </div>
+      <Settings2
+        color={isCofigurated ? "#FDD984" : "white"}
+        className="w-4 h-4 cursor-pointer color-"
+        onClick={() => setIsConfigurated(!isCofigurated)}
       />
-      <span
-        onClick={() => handleSelectFile(file)}
-        className={clsx("cursor-pointer hover:text-amber-200", {
-          "text-amber-200": currentFileState.id === file.id,
-        })}
-      >
-        {file.name}
-      </span>
+      {isCofigurated && <FileOptions name={file.name} fileId={file.id} />}
     </li>
   );
 };

@@ -98,6 +98,11 @@ const config: Config = {
       // Z-index
       pattern: /z-[0-9]+/,
     },
+    {
+      // List styles
+      pattern:
+        /list-(none|disc|decimal|square|inside|outside)|list-image-[a-zA-Z0-9]+/,
+    },
   ],
 };
 export default config;

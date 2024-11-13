@@ -6,11 +6,12 @@ import SuccessfulMessage from "@/components/successfull-message";
 import Input from "@/ui/primitives/input";
 import Button from "@/ui/primitives/button";
 import clsx from "clsx";
+import ErrorMessage from "@/components/error-message";
 
 const RegisterForm = () => {
   const [isOk, setIsOk] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [responseError, setResponseError] = useState(false);
+  const [responseError, setResponseError] = useState<string | null>(null);
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const isUsernameOk = userName ? userName.length >= 3 : "default";
@@ -22,20 +23,23 @@ const RegisterForm = () => {
 
     const formData = new FormData(e.currentTarget);
     setIsOk(() => false);
-    setResponseError(() => false);
+    setResponseError(() => null);
     setIsLoading(() => true);
     try {
-      const { user, success } = await signUp(formData); // eslint-disable-line @typescript-eslint/no-unused-vars
+      const { user, success, error } = await signUp(formData); // eslint-disable-line @typescript-eslint/no-unused-vars
 
       if (success) {
         setIsOk(() => true);
         setTimeout(() => setIsOk(() => false), 2500);
       }
-
-      console.log(success);
+      if (!success && error) {
+        setResponseError(error);
+        setTimeout(() => setResponseError(() => null), 2500);
+      }
     } catch (error) {
-      setResponseError(() => false);
-      console.error(error);
+      setResponseError(() => "An error occured");
+      setTimeout(() => setResponseError(() => null), 2500);
+      console.error("wrong ", error);
     } finally {
       setIsLoading(() => false);
     }
@@ -54,6 +58,7 @@ const RegisterForm = () => {
         required
         autoFocus
         minLength={3}
+        maxLength={15}
         onChange={(e) => setUsername(e.target.value)}
       />
 
@@ -69,8 +74,10 @@ const RegisterForm = () => {
       />
       <Button
         type="submit"
-        variant="light"
+        variant={!isUsernameOk || !isPasswordOk ? "error" : "light"}
         disabled={!isUsernameOk || !isPasswordOk}
+        loadingText="Loaidng..."
+        isLoading={isLoading}
       >
         Sign Up
       </Button>
@@ -102,11 +109,7 @@ const RegisterForm = () => {
           text="Congratulations, now you can sign in!!"
         />
       )}
-      {responseError && (
-        <div className="flex h-fit w-fit p-4 bg-red-300">
-          <span className="font-bold">An error occured</span>
-        </div>
-      )}
+      {responseError && <ErrorMessage headline="Error" text={responseError} />}
     </form>
   );
 };

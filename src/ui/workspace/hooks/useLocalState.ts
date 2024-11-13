@@ -9,7 +9,7 @@ const useLocalState = () => {
     throw new Error("useLocalState must be used within FileContext");
   }
 
-  const { folders, setFolders } = context;
+  const { folders, setFolders, files, setFiles } = context;
 
   const updateFolderName = useCallback(
     (index: number, newName: string) => {
@@ -34,14 +34,23 @@ const useLocalState = () => {
     },
     [folders, setFolders]
   );
-  /*const updateFileName = useCallback((index: number, newName: string) => {
-    // logic for files
-    console.log("File update not implemented yet");
-  }, []);
-*/
+  const updateFileName = useCallback(
+    (id: string, newName: string) => {
+      const updatedFiles = files.map((file) => {
+        if (file.id === id) {
+          return { ...file, name: newName };
+        }
+        return file;
+      });
+
+      setFiles(updatedFiles);
+    },
+    [files, setFiles]
+  );
+
   return {
     updateFolderName,
-    //updateFileName,
+    updateFileName,
     folders,
   };
 };

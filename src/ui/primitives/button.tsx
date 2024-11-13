@@ -22,9 +22,11 @@ const buttonVariants = cva(
         default: "text-base",
         sm: "text-xs max-h-fit rounded-sm",
         md: "text-lg",
-        lg: "py-2 text-xl",
+        lg: "py-3 px-8 rounded-lg text-xl font-semibold",
       },
       variant: {
+        hero: "bg-cyan-400 hover:bg-cyan-600",
+        nav: "bg-transparent hover:bg-transparent ",
         error: "bg-error hover:bg-red-700 text-amber",
         light: "bg-slate-700 hover:bg-slate-950 disabled:hover:bg-slate-700",
         toggle:
@@ -44,6 +46,13 @@ const buttonVariants = cva(
         variant: "toggle",
         active: true,
         className: "border-b-2 border-amber-200 transparent",
+      },
+      {
+        /*
+        variant: "nav",
+        size: "sm",
+        className: "bg-transparent",
+      */
       },
     ],
     defaultVariants: {
@@ -108,7 +117,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             "flex items-center gap-2 px-2",
             isLoading && "invisible",
-            active && variant === "toggle" && "text-amber-200"
+            active && variant === "toggle" && "text-amber-200",
+            variant === "nav" &&
+              "hover:text-amber-200 border-b border-transparent  hover:border-b hover:border-amber-200"
           )}
         >
           {leftIcon}

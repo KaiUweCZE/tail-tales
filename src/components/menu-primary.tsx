@@ -10,7 +10,6 @@ import SubMenu from "./sub-menu";
 const links = [
   { name: "Home", href: "/" },
   { name: "Docs", href: "/docs" },
-  { name: "Workspace", href: "/workspace" },
   { name: "Login", href: "/login" },
 ];
 
@@ -40,6 +39,19 @@ const MenuPrimary = () => {
             </Link>
           </li>
         ))}
+        {isAuthenticated && (
+          <li key="workspace">
+            <Link href="/workspace">
+              <span
+                className={clsx(``, {
+                  "text-amber-200": pathname === "/workspace",
+                })}
+              >
+                Workspace
+              </span>
+            </Link>
+          </li>
+        )}
         {isAuthenticated && (
           <li
             className="flex justify-between w-min-16 items-center font-bold capitalize cursor-pointer hover:bg-amber-50/20 px-2"

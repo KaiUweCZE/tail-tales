@@ -14,13 +14,8 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
 
   if (!context) return <span>Context is missing</span>;
 
-  const {
-    activeFolder,
-    files,
-    setCurrentFile,
-    setCurrentFileState,
-    currentFileState,
-  } = context;
+  const { files, setCurrentFile, setCurrentFileState, currentFileState } =
+    context;
 
   const logInfo = () => {
     console.log(folderFiles, folder.index, folder.name);
@@ -57,9 +52,10 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
             className={clsx(
               "focus:outline-cyan-300 focus:outline-offset-1 cursor-pointer",
               {
+                /*
                 "text-amber-200":
                   activeFolder.name == folder.name &&
-                  activeFolder.index === folder.index,
+                  activeFolder.index === folder.index,*/
               }
             )}
           >
