@@ -78,11 +78,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       intent,
       variant,
       size,
-      icon,
+      icon, // eslint-disable-line @typescript-eslint/no-unused-vars
       leftIcon,
       rightIcon,
-      loadingText,
-      isLoading,
+      loadingText, // eslint-disable-line @typescript-eslint/no-unused-vars
+      isLoading, // eslint-disable-line @typescript-eslint/no-unused-vars
       error,
       label,
       helperText,

@@ -1,4 +1,4 @@
-import { UserFile, UserFolderWithoutId } from "@/types/types";
+import { UserFolderWithoutId } from "@/types/types";
 import { ChevronDown, Settings2 } from "lucide-react";
 import { useContext, useState } from "react";
 import FolderOptions from "./folder-options";
@@ -20,7 +20,6 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
     setCurrentFile,
     setCurrentFileState,
     currentFileState,
-    selectedElementId,
   } = context;
 
   const logInfo = () => {
@@ -31,13 +30,6 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
     (file) =>
       file.folderIndex === folder.index && file.folderName === folder.name
   );
-
-  const handleSelectFile = (file: UserFile) => {
-    console.log("file:", file);
-
-    setCurrentFile(file.elements);
-    setCurrentFileState({ name: file.name, id: file.id });
-  };
 
   return (
     <ul>

@@ -1,7 +1,6 @@
 import { editFile } from "@/app/workspace/action";
 import { FileContext } from "@/contexts/files-context";
 import { UserFile } from "@/types/types";
-import { FileElement } from "@/ui/workspace/file-workspace/types";
 import { useSession } from "next-auth/react";
 import { useContext, useState } from "react";
 

@@ -2,10 +2,11 @@ import { getFiles } from "@/app/workspace/action";
 import { FileContext } from "@/contexts/files-context";
 import { UserFile } from "@/types/types";
 import { FileElement } from "@/ui/workspace/file-workspace/types";
-import { Prisma } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useCallback, useContext, useEffect, useState } from "react";
 
+// look at better type guard
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const convertElement = (element: any): FileElement => {
   return {
     id: element.id,
@@ -64,7 +65,7 @@ const useFetchFiles = () => {
           name: file.name,
           elements,
           folderId: file.folderId || undefined,
-          folderIndex: file.folderIndex || undefined, // Používáme index ze souboru
+          folderIndex: file.folderIndex || undefined,
           folderName: file.folderName || undefined,
           userId: file.userId,
           createdAt: new Date(file.createdAt),

@@ -34,14 +34,14 @@ const useLocalState = () => {
     },
     [folders, setFolders]
   );
-  const updateFileName = useCallback((index: number, newName: string) => {
+  /*const updateFileName = useCallback((index: number, newName: string) => {
     // logic for files
     console.log("File update not implemented yet");
   }, []);
-
+*/
   return {
     updateFolderName,
-    updateFileName,
+    //updateFileName,
     folders,
   };
 };

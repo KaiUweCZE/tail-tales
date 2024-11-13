@@ -1,6 +1,7 @@
 "use client";
 //import { PropsWithChildren } from "react";
 
+// add text props
 export function FileProviderInit() {
   return (
     <div className="grid fixed inset-0 items-center justify-center maximum-w mx-auto">

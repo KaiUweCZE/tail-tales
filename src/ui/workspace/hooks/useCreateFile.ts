@@ -8,7 +8,7 @@ const useCreateFile = () => {
   const [error, setError] = useState<string | null>(null);
 
   if (!context) throw Error("context is missing");
-  const { setFiles, files } = context;
+  const { setFiles } = context;
 
   const handleCreateFile = async (
     userId: string,

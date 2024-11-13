@@ -4,13 +4,13 @@ import { ElementType } from "../file-workspace/types";
 import { addElement } from "../file-workspace/utils/add-element";
 import useFileObserver from "./useFileObserve";
 import useElementHighlight from "./useElementHighlight";
+import { DefaultConfiguration } from "@/app/setting/types";
 
-const useEditFile = (userConfig: any) => {
-  // Později můžeme přidat proper typ pro userConfig
+const useEditFile = (userConfig: DefaultConfiguration) => {
   const { currentFile, currentFileState } = useFileObserver({
     rootElementId: "rootElement",
   });
-  const [elementIds, setElementIds] = useState<string[]>(["rootElement"]);
+  const [elementIds, setElementIds] = useState<string[]>(["rootElement"]); // eslint-disable-line @typescript-eslint/no-unused-vars
   const { handleElementClick, selectedElementId, setSelectedElementId } =
     useElementHighlight();
 
@@ -43,7 +43,7 @@ const useEditFile = (userConfig: any) => {
     const rootElement = document.getElementById("rootElement");
     if (!rootElement) return;
 
-    // Přidáme click handler na root element pro delegaci událostí
+    //click handler on root element for action delegation
     rootElement.addEventListener("click", (e) => {
       const target = e.target as HTMLElement;
       if (target !== rootElement) {

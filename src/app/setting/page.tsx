@@ -7,7 +7,7 @@ import { Lock, Mail, Trash2, User } from "lucide-react";
 import { useContext, useState } from "react";
 import { saveConfig } from "./action";
 import SuccessfulMessage from "@/components/successfull-message";
-import { htmlElements, HtmlElements } from "./types";
+import { htmlElements, HtmlKeys } from "./types";
 import Button from "@/ui/primitives/button";
 
 const iconStyle = "h-6 w-6";
@@ -23,7 +23,7 @@ const SettingPage = () => {
 
   const { setUserConfig } = context;
 
-  const setSetting = (element: HtmlElements, value: string) => {
+  const setSetting = (element: HtmlKeys, value: string) => {
     setError(null);
     setUserConfig((prev) => {
       if (!prev) return prev;
@@ -78,8 +78,8 @@ const SettingPage = () => {
       >
         <fieldset className="grid gap-4" disabled={isSaving}>
           <legend className="mb-4 text-lg">HTML Elements Styles</legend>
-          {htmlElements.map((element) => (
-            <div key={element} className="element-setting">
+          {htmlElements.map((element, index) => (
+            <div key={`${element}${index}`} className="element-setting">
               <label htmlFor={`style-${element}`}>{element}</label>
               <input
                 type="text"

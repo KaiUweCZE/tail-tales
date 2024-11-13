@@ -74,7 +74,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       grow,
       size,
       variant,
-      icon,
+      icon, // eslint-disable-line @typescript-eslint/no-unused-vars
       leftIcon,
       rightIcon,
       isLoading,

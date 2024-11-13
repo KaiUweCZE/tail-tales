@@ -7,7 +7,7 @@ interface StructureTabProps {
   currentFile: FileElement[] | null;
 }
 
-const StructureTab = ({ activeTab, currentFile }: StructureTabProps) => {
+const StructureTab = ({ currentFile }: StructureTabProps) => {
   return (
     <div>
       <h2 className="text-lg font-medium mb-4">Document Structure</h2>

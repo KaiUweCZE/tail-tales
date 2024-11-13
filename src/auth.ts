@@ -5,6 +5,7 @@ import { verifyPassword } from "@/utils/password";
 import prisma from "../prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  secret: process.env.AUTH_SECRET,
   providers: [
     Credentials({
       // You can specify which fields should be submitted, by adding keys to the `credentials` object.
@@ -19,9 +20,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           type: "password",
         },
       },
-      authorize: async (credentials, request) => {
-        // eslint-disable-line @typescript-eslint/no-unused-vars
-        let user = null; // eslint-disable-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      authorize: async (credentials, _request) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        //let user = null;
 
         if (!credentials?.name || !credentials?.password) {
           throw new Error("Missing credentials");

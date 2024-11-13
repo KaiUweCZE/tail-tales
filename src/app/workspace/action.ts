@@ -128,6 +128,7 @@ export const editFile = async (
     });
 
     // Převedeme zpět na FileElement[] s Date objekty
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const transformedElements = updatedFile.elements as any[];
     const elementsWithDates = transformedElements.map((element) => ({
       ...element,
@@ -337,7 +338,7 @@ export async function changeFolderName(
       });
 
       if (updatedFolder.subFolderIds.length > 0) {
-        // eslint-disable-line @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const subFolders = await tx.folder.updateMany({
           where: {
             id: { in: updatedFolder.subFolderIds },

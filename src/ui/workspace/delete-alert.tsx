@@ -19,6 +19,7 @@ export const DeleteAlert = ({
 }: DeleteAlertProps) => {
   const { data: session } = useSession();
   const modalRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 

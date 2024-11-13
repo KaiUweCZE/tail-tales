@@ -11,9 +11,7 @@ const AsideMenu = () => {
 
   if (!context) return <span>Context is missing</span>;
   const { newInput } = context;
-  const newFile = () => {};
 
-  //const handleAddFile
   return (
     <header className="">
       <nav>

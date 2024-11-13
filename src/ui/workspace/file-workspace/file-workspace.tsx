@@ -3,7 +3,6 @@ import Button from "@/ui/primitives/button";
 import { DefaultConfiguration } from "@/app/setting/types";
 import { handleKeyDown } from "./utils/handleKeyDown";
 import useEditFile from "../hooks/useEditFile";
-import { FileElement } from "./types";
 import useSave from "../hooks/useSave";
 import SuccessfulMessage from "@/components/successfull-message";
 
@@ -20,7 +19,7 @@ const FileWorkspace = ({
   const {
     saveFile,
     isSaving,
-    error: saveError,
+    error: saveError, // eslint-disable-line @typescript-eslint/no-unused-vars
   } = useSave({
     onSaveSuccess: () => {
       setIsSuccess("success");

@@ -61,13 +61,13 @@ export interface UserFolderWithoutId extends FolderWithoutIds {
   subFolders: UserFolderWithoutId[];
 }
 
-export interface UserFileWithoudId extends Omit<UserFile, "id" | "userId"> {}
+//export interface UserFileWithoudId extends Omit<UserFile, "id" | "userId"> {}
 
 export const convertFolder = (folder: UserFolder): UserFolderWithoutId => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, userId, ...rest } = folder;
   return {
     ...rest,
-    //files: folder.files?.map(convertFile) ?? [],
     subFolders: folder.subFolders?.map(convertFolder) ?? [],
   };
 };
@@ -100,6 +100,7 @@ export const createUserFolderFromFetched = (
 export const convertToUserFolderWithoutId = (
   folder: UserFolder
 ): UserFolderWithoutId => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, userId, ...rest } = folder;
   return {
     ...rest,

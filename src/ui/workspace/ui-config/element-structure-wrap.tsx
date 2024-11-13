@@ -2,7 +2,6 @@ import { useState } from "react";
 import { FileElement } from "../file-workspace/types";
 import ElementStructure from "./element-structure";
 import ChildStructure from "./child-structure";
-import Button from "@/ui/primitives/button";
 
 const ElementStructureWrap = ({
   element,

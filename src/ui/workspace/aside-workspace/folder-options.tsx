@@ -1,18 +1,12 @@
 import { FileContext } from "@/contexts/files-context";
 import { useContext, useState } from "react";
-import RenameFolderFile from "./rename-folder-file";
+//import RenameFolderFile from "./rename-folder-file";
 import DeleteAlert from "../delete-alert";
 import { UserFolderWithoutId } from "@/types/types";
 import FolderInput from "./folder-input";
 import FileInput from "./file-input";
 
 const liClass = "px-4 cursor-pointer hover:bg-slate-800";
-
-type ParentFolder = {
-  parentId?: string;
-  parentName?: string;
-  parentIndex?: number;
-};
 
 const FolderOptions = ({ name, index }: { name: string; index: number }) => {
   const context = useContext(FileContext);
@@ -107,14 +101,14 @@ const FolderOptions = ({ name, index }: { name: string; index: number }) => {
               }
             />
           )}
-        {isRenaming && (
+        {/*isRenaming && (
           <RenameFolderFile
             type="folder"
             index={index}
             currentName={name}
             onComplete={() => setIsRenaming(false)}
           />
-        )}
+        )*/}
         {isDeleting && (
           <DeleteAlert
             name={name}

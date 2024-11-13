@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useContext, useEffect, useRef } from "react";
 import useCreateFile from "../hooks/useCreateFile";
 import { Loader } from "lucide-react";
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const fileInputVariants = cva(``, {
   variants: {
     variant: {
@@ -24,6 +24,7 @@ const fileInputVariants = cva(``, {
 });
 
 type FileInput = VariantProps<typeof fileInputVariants>;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 interface FileInputProps extends FileInput {
   parentId?: string;

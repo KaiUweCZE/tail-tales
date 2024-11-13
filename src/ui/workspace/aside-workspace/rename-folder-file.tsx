@@ -1,5 +1,5 @@
 import { changeFileName, changeFolderName } from "@/app/workspace/action";
-import useLocalState from "@/utils/updateLocalState";
+import useLocalState from "@/utils/useLocalState";
 import { validateName } from "@/utils/validate-name";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
@@ -21,7 +21,7 @@ const RenameFolderFile = ({
   const [newName, setNewName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { updateFileName, updateFolderName } = useLocalState();
+  const { updateFolderName } = useLocalState();
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -52,7 +52,7 @@ const RenameFolderFile = ({
       if (type === "folder") {
         updateFolderName(index, newName);
       } else {
-        updateFileName(index, newName);
+        //updateFileName(index, newName);
       }
 
       const result =
@@ -64,7 +64,7 @@ const RenameFolderFile = ({
         if (type === "folder") {
           updateFolderName(index, currentName);
         } else {
-          updateFileName(index, currentName);
+          //updateFileName(index, currentName);
         }
         setError(result.error || "Failed to update name");
         return;
@@ -72,10 +72,11 @@ const RenameFolderFile = ({
 
       onComplete();
     } catch (err) {
+      console.error(err);
       if (type === "folder") {
         updateFolderName(index, currentName);
       } else {
-        updateFileName(index, currentName);
+        //updateFileName(index, currentName);
       }
       setError("An error occurred while updating name");
     }

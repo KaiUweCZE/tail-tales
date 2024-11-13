@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useContext, useEffect, useRef } from "react";
 import { Loader } from "lucide-react";
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const folderInputVariants = cva(``, {
   variants: {
     variant: {
@@ -24,7 +25,7 @@ const folderInputVariants = cva(``, {
 });
 
 type FolderInput = VariantProps<typeof folderInputVariants>;
-
+/* eslint-enable @typescript-eslint/no-unused-vars */
 interface FolderInputProps extends FolderInput {
   parent: string;
   onComplete?: () => void;

@@ -1,5 +1,5 @@
 import { FileContext } from "@/contexts/files-context";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 // Highlighte element after click
 const useElementHighlight = () => {
@@ -10,7 +10,7 @@ const useElementHighlight = () => {
 
   if (!context) throw new Error("Context is missing");
   const { selectedElementId, setSelectedElementId } = context;
-  const [lastHighlightedElement, setLastHighlightedElement] = useState("");
+  const [lastHighlightedElement, setLastHighlightedElement] = useState(""); // eslint-disable-line @typescript-eslint/no-unused-vars
   const handleElementClick = (e: Event) => {
     e.stopPropagation();
     const target = e.target as HTMLElement;

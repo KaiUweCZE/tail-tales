@@ -1,6 +1,17 @@
-import { DefaultConfiguration, HtmlElements, htmlElements } from "../types";
+import { Prisma } from "@prisma/client";
+import { DefaultConfiguration, htmlElements, HtmlKeys } from "../types";
 
-export const convertDbConfig = (dbConfig: any): DefaultConfiguration => {
+interface PrismaDefaultConfiguration {
+  id: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  elementStyles?: Prisma.JsonValue | null;
+}
+
+export const convertDbConfig = (
+  dbConfig: PrismaDefaultConfiguration
+): DefaultConfiguration => {
   const { id, userId, createdAt, updatedAt, elementStyles } = dbConfig;
 
   const clientConfig: DefaultConfiguration = {
@@ -12,8 +23,8 @@ export const convertDbConfig = (dbConfig: any): DefaultConfiguration => {
 
   if (elementStyles) {
     Object.entries(elementStyles).forEach(([key, value]) => {
-      const htmlKey = key as HtmlElements;
-      if (htmlElements.includes(key as HtmlElements)) {
+      if (htmlElements.includes(key as HtmlKeys)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (clientConfig as any)[key] = value;
       }
     });

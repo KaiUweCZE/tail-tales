@@ -48,8 +48,6 @@ export const htmlElements = [
   "button",
   "a",
   "ol",
-  "ul",
-  "li",
   "img",
   "table",
   "tr",
@@ -57,7 +55,7 @@ export const htmlElements = [
   "td",
 ] as const;
 
-export type HtmlElements = keyof Omit<
+export type HtmlElements = Omit<
   DefaultConfiguration,
   "id" | "userId" | "createdAt" | "updatedAt"
 >;
