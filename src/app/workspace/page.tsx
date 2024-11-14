@@ -19,7 +19,7 @@ const WorkspacePage = () => {
     );
 
   return (
-    <main className="grid grid-cols-4 gap-2 h-min-50">
+    <main className="grid grid-cols-4 gap-2 h-min-50 overflow-hidden">
       <AsideWorkspace />
       <FileWorkspace userConfig={userConfig} />
       <UiConfig />

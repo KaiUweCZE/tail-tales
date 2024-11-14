@@ -8,7 +8,7 @@ interface UiConfigProps {
 
 const UiConfigNav = ({ activeTab, setActiveTab }: UiConfigProps) => {
   return (
-    <div className="flex gap-2 mb-4 border-b border-slate-700">
+    <div className="flex gap-2 pt-4 mb-4 border-b border-slate-700 sticky top-0 bg-slate-800">
       {(["structure", "styles", "config"] as const).map((tab) => (
         <button
           key={tab}

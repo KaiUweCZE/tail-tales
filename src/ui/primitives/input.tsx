@@ -37,6 +37,11 @@ const inputVariants = cva(
     },
     compoundVariants: [
       {
+        variant: "editor",
+        size: "sm",
+        className: "max-w-full",
+      },
+      {
         variant: "folder",
         size: "md",
         className: "max-w-full w-36 px-1",
