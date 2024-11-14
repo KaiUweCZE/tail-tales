@@ -43,19 +43,22 @@ const useEditFile = (userConfig: DefaultConfiguration) => {
     const rootElement = document.getElementById("rootElement");
     if (!rootElement) return;
 
-    //click handler on root element for action delegation
-    rootElement.addEventListener("click", (e) => {
+    // define handler, handler observe if click was outside of rootElement
+    const clickHandler = (e: Event) => {
       const target = e.target as HTMLElement;
       if (target !== rootElement) {
         handleElementClick(e);
       }
-    });
-
-    // Cleanup
-    return () => {
-      rootElement.removeEventListener("click", handleElementClick);
     };
-  }, []);
+
+    // add handler
+    rootElement.addEventListener("click", clickHandler);
+
+    // remove handler
+    return () => {
+      rootElement.removeEventListener("click", clickHandler);
+    };
+  }, [handleElementClick]);
 
   return {
     currentFile,

@@ -45,6 +45,7 @@ const useElementHighlight = () => {
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
+    console.log("activated effect useElement");
 
     // Cleanup on mount
     return () => {
