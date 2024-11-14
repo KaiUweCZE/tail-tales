@@ -31,8 +31,6 @@ const AsideWorkspace = () => {
   const rootFiles = files.filter((file) => !file.folderName);
 
   const handleRenderInput = () => {
-    console.log("isActive state: ", isActive);
-
     if (isActive.active && isActive.parentName === undefined) {
       switch (isActive.inputType) {
         case "file":

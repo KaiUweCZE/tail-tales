@@ -13,12 +13,12 @@ const SubMenu = ({ cssClass }: { cssClass: string }) => {
     }
   };
   return (
-    <nav className={cssClass}>
+    <nav className={`${cssClass} bg-slate-800`}>
       <ul className="">
         <li>
-          <Link href={"/setting"}>setting</Link>
+          <Link href={"/setting"}>Setting</Link>
         </li>
-        <li onClick={handleLogout}>logout</li>
+        <li onClick={handleLogout}>Logout</li>
       </ul>
     </nav>
   );

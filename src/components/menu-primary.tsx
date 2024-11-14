@@ -24,7 +24,7 @@ const MenuPrimary = () => {
     : links;
 
   return (
-    <nav className="pr-4 xlg:pr-0 relative">
+    <nav className="pr-4 xlg:pr-0 relative ">
       <ul className="flex gap-4 justify-end px-2 relative z-10">
         {reducedLinks.map((link) => (
           <li key={link.name}>

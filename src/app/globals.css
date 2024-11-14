@@ -135,9 +135,9 @@ p {
 }
 .sub-menu {
   display: none;
-  height: 10rem;
+
   width: 8rem;
-  background-color: var(--bg-slate-850);
+
   position: absolute;
   right: 0;
   top: 100%;
@@ -164,7 +164,7 @@ p {
     cursor: pointer;
 
     &:hover {
-      background-color: var(--background);
+      background-color: var(--bg-slate-850);
     }
   }
 }
@@ -262,4 +262,22 @@ p {
 
 .inter * {
   font-family: var(--font-inter);
+}
+
+.scroll-primary {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #1e293b; /* slate-800 */
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #475569; /* slate-600 */
+    border-radius: 4px;
+  }
+
+  /* Handle při hoveru */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #64748b; /* slate-500 */
+  }
 }

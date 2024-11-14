@@ -1,5 +1,4 @@
 "use client";
-
 import { FileProviderInit } from "@/components/providers/file-provider-init";
 import { FileContext } from "@/contexts/files-context";
 import useFetchConfig from "@/hooks/useFetchConfig";
@@ -9,6 +8,7 @@ import { saveConfig } from "./action";
 import SuccessfulMessage from "@/components/successfull-message";
 import { htmlElements, HtmlKeys } from "./types";
 import Button from "@/ui/primitives/button";
+import { useSession } from "next-auth/react";
 
 const iconStyle = "h-6 w-6";
 
@@ -17,12 +17,14 @@ const SettingPage = () => {
   const { isLoading, userConfig } = useFetchConfig();
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const { data: session } = useSession();
   const [error, setError] = useState<string | null>(null); // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  if (!context)
+  if (!context || !session)
     return <FileProviderInit text="Loading your setting..."></FileProviderInit>;
 
   const { setUserConfig } = context;
+  const { user } = session;
 
   const setSetting = (element: HtmlKeys, value: string) => {
     setError(null);
@@ -117,11 +119,15 @@ const SettingPage = () => {
         <div className="grid gap-4">
           <div className="flex gap-4">
             <User className={iconStyle} />
-            <span>Kai Uwe</span>
+            <span>{user?.name}</span>
           </div>
           <div className="flex gap-4">
             <Mail className={iconStyle} />
-            <span>example@gmail.com</span>
+            {user?.email ? (
+              <span>example@gmail.com</span>
+            ) : (
+              <Button variant="light">Add Email</Button>
+            )}
           </div>
           <div className="flex gap-4">
             <Lock className={iconStyle} />
@@ -132,7 +138,6 @@ const SettingPage = () => {
             <Button variant="error">Delete User</Button>
           </div>
         </div>
-        <button onClick={() => console.log(userConfig)}>log config</button>
       </div>
       {isSuccess && (
         <SuccessfulMessage

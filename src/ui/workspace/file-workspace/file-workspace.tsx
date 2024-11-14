@@ -48,7 +48,7 @@ const FileWorkspace = ({
           <div
             ref={editableRef}
             id="rootElement"
-            className="w-full relative inter h-[80dvh] max-h-80dvh overflow-y-auto  bg-slate-800 text-amber-50 p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1"
+            className="w-full scroll-primary relative inter h-[80dvh] max-h-80dvh overflow-y-auto  bg-slate-800 text-amber-50 p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1"
             contentEditable
             autoFocus
             suppressContentEditableWarning
