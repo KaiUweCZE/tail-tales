@@ -103,6 +103,14 @@ const config: Config = {
       pattern:
         /list-(none|disc|decimal|square|inside|outside)|list-image-[a-zA-Z0-9]+/,
     },
+    {
+      // Shadow
+      pattern: /shadow(-sm|-md|-lg|-xl|-2xl|-inner|-none)?/,
+    },
+    {
+      // Cursor
+      pattern: /cursor-(pointer|default|wait|text|move|not-allowed|help|none)/,
+    },
   ],
 };
 export default config;

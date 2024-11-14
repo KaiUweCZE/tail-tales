@@ -15,7 +15,7 @@ export const handleKeyDown = (
     const currentElement = selection.anchorNode?.parentElement;
 
     if (currentElement === ref.current.parentElement) {
-      console.log("root element: ", ref.current.parentElement);
+      //console.log("root element: ", ref.current.parentElement);
 
       const br = document.createElement("br");
       range.deleteContents();
@@ -48,6 +48,38 @@ export const handleKeyDown = (
 
       return position >= trimmedLength;
     })();
+
+    if (e.ctrlKey) {
+      if (
+        currentElement &&
+        currentElement !== ref.current &&
+        ref.current.contains(currentElement)
+      ) {
+        const br = document.createElement("br");
+
+        // Najít pozici za aktuálním elementem v root elementu
+        const newRange = document.createRange();
+        newRange.setStartAfter(currentElement);
+        newRange.collapse(true);
+        newRange.insertNode(br);
+
+        // Nastavit kurzor za nově vytvořený <br>
+        const cursorRange = document.createRange();
+        cursorRange.setStartAfter(br);
+        cursorRange.collapse(true);
+
+        selection.removeAllRanges();
+        selection.addRange(cursorRange);
+
+        // Odstranit highlight z předchozího elementu
+        const highlightedElements =
+          document.querySelectorAll(".bg-amber-50\\/10");
+        highlightedElements.forEach((el) =>
+          el.classList.remove("bg-amber-50/10")
+        );
+      }
+      return;
+    }
 
     if (e.shiftKey) {
       // create <br>
