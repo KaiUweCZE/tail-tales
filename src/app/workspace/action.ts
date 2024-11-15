@@ -23,47 +23,77 @@ export const createFile = async (
     await connectToDatabase();
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new Error("User not found");
 
-    if (!user) {
-      throw new Error("User not found");
-    }
+    // Vytvoříme transakci pro atomickou operaci
+    const result = await prisma.$transaction(async (tx) => {
+      let targetFolder;
 
-    const initialElements = [
-      {
-        id: "rootElement",
-        type: "div",
-        cssClass: "w-full h-[80dvh] max-h-80dvh overflow-y-auto",
-        content: "",
-        children: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        order: 0,
-        additionalCss: "",
-      },
-    ];
+      if (folderName && folderIndex) {
+        targetFolder = await tx.folder.findUnique({
+          where: {
+            userId_name_index: {
+              userId,
+              name: folderName,
+              index: folderIndex,
+            },
+          },
+        });
 
-    const newFile = await prisma.file.create({
-      data: {
-        name,
-        index,
-        elements: initialElements,
-        userId,
-        folderId: parentId ?? undefined,
-        folderName: folderName ?? undefined,
-        folderIndex: folderIndex ?? undefined,
-      },
+        if (!targetFolder) throw new Error("Folder not found");
+      }
+
+      const initialElements = [
+        {
+          id: "rootElement",
+          type: "div",
+          cssClass: "w-full h-[80dvh] max-h-80dvh overflow-y-auto",
+          content: "",
+          children: [],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          order: 0,
+          additionalCss: "",
+        },
+      ];
+
+      const newFile = await tx.file.create({
+        data: {
+          name,
+          index,
+          elements: initialElements,
+          userId,
+          folderId: parentId ?? undefined,
+          folderName: folderName ?? undefined,
+          folderIndex: folderIndex ?? undefined,
+        },
+      });
+
+      // Aktualizujeme folder a přidáme ID nového souboru
+      if (targetFolder) {
+        await tx.folder.update({
+          where: { id: targetFolder.id },
+          data: {
+            fileIds: {
+              push: newFile.id,
+            },
+          },
+        });
+      }
+
+      return newFile;
     });
 
     return {
-      id: newFile.id,
-      name: newFile.name,
-      elements: newFile.elements as unknown as FileElement[],
-      folderId: newFile.folderId || undefined,
-      folderIndex: newFile.folderIndex || undefined,
-      folderName: newFile.folderName || undefined,
-      userId: newFile.userId,
-      createdAt: newFile.createdAt,
-      updatedAt: newFile.updatedAt,
+      id: result.id,
+      name: result.name,
+      elements: result.elements as unknown as FileElement[],
+      folderId: result.folderId || undefined,
+      folderIndex: result.folderIndex || undefined,
+      folderName: result.folderName || undefined,
+      userId: result.userId,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
     };
   } catch (error) {
     console.error("The file could not be created.", error);
@@ -424,60 +454,103 @@ export const deleteFolder = async (
 ): Promise<DeleteResult> => {
   try {
     await connectToDatabase();
+    console.log("Starting delete folder operation:", { index, userId, name });
 
     const result = await prisma.$transaction(async (tx) => {
-      // find folder
+      // Find the main folder
       const folder = await tx.folder.findFirst({
-        where: {
-          userId,
-          name,
-          index,
-        },
-        include: {
-          files: true,
-          subFolders: true,
+        where: { userId, name, index },
+        select: {
+          id: true,
+          name: true,
+          fileIds: true,
+          subFolders: {
+            select: {
+              id: true,
+              fileIds: true,
+            },
+          },
         },
       });
 
       if (!folder) throw new Error("Folder not found");
+      console.log("Found main folder:", {
+        id: folder.id,
+        name: folder.name,
+        fileIds: folder.fileIds,
+        subFoldersCount: folder.subFolders.length,
+      });
 
-      // get all subfolder
-      const getAllSubfolderIds = async (
-        folderId: string
-      ): Promise<string[]> => {
-        const subFolders = await tx.folder.findMany({
-          where: { parentId: folderId },
-          select: { id: true, subFolderIds: true },
+      // Recursive function to delete a folder and all its files and subfolders
+      const deleteFolderRecursive = async (
+        folderId: string,
+        level: number = 0
+      ) => {
+        console.log(`${"-".repeat(level * 2)}Processing folder:`, folderId);
+
+        // Find the current folder with its fields and subfolders
+        const currentFolder = await tx.folder.findUnique({
+          where: { id: folderId },
+          select: {
+            id: true,
+            fileIds: true,
+            subFolders: {
+              select: {
+                id: true,
+                fileIds: true,
+              },
+            },
+          },
         });
 
-        const ids = [folderId];
-
-        for (const subFolder of subFolders) {
-          const subIds = await getAllSubfolderIds(subFolder.id);
-          ids.push(...subIds);
+        if (!currentFolder) {
+          console.log(`${"-".repeat(level * 2)}Folder not found:`, folderId);
+          return;
         }
-        return ids;
+
+        // First we recursively process all subflolders
+        for (const subFolder of currentFolder.subFolders) {
+          await deleteFolderRecursive(subFolder.id, level + 1);
+        }
+
+        // Then delete all files in the main folder by fieldIds
+        if (currentFolder.fileIds && currentFolder.fileIds.length > 0) {
+          console.log(
+            `${"-".repeat(level * 2)}Deleting files in folder ${folderId}:`,
+            currentFolder.fileIds
+          );
+
+          const deletedFiles = await tx.file.deleteMany({
+            where: {
+              id: { in: currentFolder.fileIds },
+            },
+          });
+          console.log(
+            `${"-".repeat(level * 2)}Deleted ${
+              deletedFiles.count
+            } files from folder ${folderId}`
+          );
+        } else {
+          console.log(
+            `${"-".repeat(level * 2)}No fileIds in folder ${folderId}`
+          );
+        }
+
+        // Delete main folder
+        console.log(`${"-".repeat(level * 2)}Deleting folder ${folderId}`);
+        await tx.folder.delete({
+          where: { id: folderId },
+        });
+        console.log(`${"-".repeat(level * 2)}Folder ${folderId} deleted`);
       };
 
-      const allFolderIds = await getAllSubfolderIds(folder.id);
-
-      // delete files in subfolders
-      await tx.file.deleteMany({
-        where: {
-          folderId: { in: allFolderIds },
-        },
-      });
-
-      // delete all subfolders
-      await tx.folder.deleteMany({
-        where: {
-          id: { in: allFolderIds },
-        },
-      });
+      // recursive deletion from the main folder
+      await deleteFolderRecursive(folder.id);
 
       return folder.id;
     });
 
+    console.log("Delete operation completed successfully");
     return {
       success: true,
       deletedId: result,

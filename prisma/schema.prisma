@@ -14,61 +14,65 @@ datasource db {
 }
 
 model User {
-  id             String                 @id @default(auto()) @map("_id") @db.ObjectId
-  name           String                 @unique
-  hashedPassword String?
-  createdAt      DateTime               @default(now())
-  updatedAt      DateTime               @updatedAt
-  folders        Folder[]
-  files          File[]
-  configuration DefaultConfiguration?
-  configurationId String? @db.ObjectId
+  id              String                @id @default(auto()) @map("_id") @db.ObjectId
+  name            String                @unique
+  hashedPassword  String?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  folders         Folder[]
+  files           File[]
+  configuration   DefaultConfiguration?
+  configurationId String?               @db.ObjectId
 }
 
 model Folder {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  index        Int
-  name         String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  // for mongoDb
-  subFolderIds String[] @db.ObjectId @default([])
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  index     Int
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // array for mongoDb
+  subFolderIds String[] @default([]) @db.ObjectId
+  fileIds      String[] @default([]) @db.ObjectId
+
   // Relations to folder/file
   files        File[]   @relation("FolderFiles")
   subFolders   Folder[] @relation("FolderSubfolders")
   parentFolder Folder?  @relation("FolderSubfolders", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   parentId     String?  @db.ObjectId
-  parentName String?
+  parentName   String?
+
   // relation to user
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String   @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
 
   @@unique([userId, name, parentId])
   @@unique([userId, name, index])
 }
 
 model File {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  index     Int
-  name      String
-  elements Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  index       Int
+  name        String
+  elements    Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   // relation
-  folder    Folder?  @relation("FolderFiles", fields: [folderId], references: [id])
-  folderId  String?  @db.ObjectId
-  folderName String?
+  folder      Folder?  @relation("FolderFiles", fields: [folderId], references: [id])
+  folderId    String?  @db.ObjectId
+  folderName  String?
   folderIndex Int?
   // relations to user
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @db.ObjectId
 
   @@unique([userId, name, index])
 }
 
 model DefaultConfiguration {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String   @db.ObjectId @unique
+  userId        String   @unique @db.ObjectId
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   elementStyles Json?
