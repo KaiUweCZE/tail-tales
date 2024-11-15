@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ElementType } from "../file-workspace/types";
 import { addElement } from "../file-workspace/utils/add-element";
 import useFileObserver from "./useFileObserve";
@@ -10,7 +10,6 @@ const useEditFile = (userConfig: DefaultConfiguration) => {
   const { currentFile, currentFileState } = useFileObserver({
     rootElementId: "rootElement",
   });
-  const [elementIds, setElementIds] = useState<string[]>(["rootElement"]); // eslint-disable-line @typescript-eslint/no-unused-vars
   const { handleElementClick, selectedElementId, setSelectedElementId } =
     useElementHighlight();
 

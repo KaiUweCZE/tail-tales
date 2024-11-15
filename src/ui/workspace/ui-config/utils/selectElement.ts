@@ -2,6 +2,10 @@ export const selectedElement = (elementId: string) => {
   const targetElement = document.getElementById(elementId);
 
   if (targetElement) {
+    // highlight
+    targetElement.classList.add("bg-amber-50/10");
+    console.log("add class");
+
     // Scrollneme na element
     targetElement.scrollIntoView({ behavior: "smooth" });
 

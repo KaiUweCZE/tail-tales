@@ -8,6 +8,7 @@
   --text-primary: #fffbeb;
   --bg-slate-850: #131c2f;
   --bg-slate-750: #212c40;
+  --light-shadow: #0000007a;
   --ok-color: #10b981;
   --error-color: #c8384d;
   --focus-color: #67e8f9;
@@ -140,13 +141,15 @@ p {
   right: 0;
   top: 100%;
   opacity: 0;
+  padding-bottom: 0.5rem;
   border-radius: 0 0 0.35rem 0.35rem;
   transition: display 0.3s, translate 0.3s, opacity 0.3s;
-  box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.45),
-    -25px 0 20px -20px rgba(0, 0, 0, 0.45);
-  box-shadow: -28px 19px 25px -32px rgba(0, 0, 0, 0.45),
-    0px 0px 0px -110px rgba(0, 0, 0, 0.45);
   transition-behavior: allow-discrete;
+  box-shadow: 17px 17px 20px -20px var(--light-shadow),
+    0px 14px 20px -20px var(--light-shadow),
+    -17px 14px 20px -20px var(--light-shadow);
+  border-inline: #fde68a10 1px solid;
+  border-bottom: #fde68a10 1px solid;
   &.active {
     display: grid;
     opacity: 1;

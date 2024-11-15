@@ -17,7 +17,12 @@ const ElementStructureCenter = ({
   const [isEditable, setIsEditable] = useState(false);
   if (!context) return <span>Context is missing</span>;
 
-  const { currentFile, setCurrentFile, selectedElementId } = context;
+  const {
+    currentFile,
+    setCurrentFile,
+    selectedElementId,
+    setSelectedElementId,
+  } = context;
 
   // Helper for DOM manipulation - DOM rewrites context states
   const updateDOMClasses = (
@@ -68,6 +73,11 @@ const ElementStructureCenter = ({
     });
   };
 
+  const handleClick = (elementId: string) => {
+    selectedElement(elementId);
+    setSelectedElementId(elementId);
+  };
+
   return (
     <div className="grid gap-1 w-full">
       <div className="flex gap-2">
@@ -82,7 +92,7 @@ const ElementStructureCenter = ({
             <>
               <SquareMousePointer
                 className="w-4 h-4 cursor-pointer hover:scale-110 transition duration-300"
-                onClick={() => selectedElement(element.id)}
+                onClick={() => handleClick(element.id)}
               />
               <Palette
                 className="w-4 h-4 cursor-pointer hover:scale-110 transition duration-300"
