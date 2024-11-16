@@ -34,7 +34,7 @@ const buttonVariants = cva(
       },
       icon: {
         false: "",
-        true: "flex items-center",
+        true: "flex items-center py-1",
       },
       active: {
         false: "",

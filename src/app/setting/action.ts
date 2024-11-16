@@ -6,6 +6,7 @@ import { DefaultConfiguration, HTMLElementConfig } from "./types";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 import { convertDbConfig } from "./utils/convertDbConfig";
+import { hashPassword, verifyPassword } from "@/utils/password";
 
 export const getConfig = async () => {
   try {
@@ -77,6 +78,84 @@ export const saveConfig = async (config: ConfigWithoutMetadata) => {
   } catch (error) {
     console.error("Error saving configuration:", error);
     return { error: "Failed to save configuration" };
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+export const changePassword = async (
+  userId: string,
+  newPassword: string,
+  oldPassword: string
+) => {
+  try {
+    const session = await auth();
+
+    if (userId === "6735c84978bdcdd795b71e6e") {
+      return {
+        success: false,
+        error: "You can not change password for this user.",
+      };
+    }
+
+    if (!session?.user?.id || userId !== session?.user.id) {
+      console.log("not authenticated");
+
+      return { success: false, error: "Not authenticated" };
+    }
+    await connectToDatabase();
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { hashedPassword: true },
+    });
+
+    if (!user) {
+      console.log("User not found");
+
+      return { success: false, error: "User not found" };
+    }
+
+    const isPasswordValid = await verifyPassword(
+      oldPassword,
+      user?.hashedPassword ?? ""
+    );
+    if (!isPasswordValid) {
+      console.log("Current password is incorrect");
+      return { success: false, error: "Current password is incorrect" };
+    }
+
+    const isSamePassword = await verifyPassword(
+      newPassword,
+      user?.hashedPassword ?? ""
+    );
+    if (isSamePassword) {
+      console.log("New password must be different from current password");
+
+      return {
+        success: false,
+        error: "New password must be different from current password",
+      };
+    }
+
+    const hashedPassword = await hashPassword(newPassword);
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { hashedPassword },
+      select: { id: true },
+    });
+
+    return {
+      success: true,
+      message: "Password successfully updated",
+    };
+  } catch (error) {
+    console.error("Error changing password:", error);
+    return {
+      success: false,
+      error: "Failed to change password. Please try again.",
+    };
   } finally {
     await prisma.$disconnect();
   }

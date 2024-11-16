@@ -2,15 +2,15 @@
 import { FileProviderInit } from "@/components/providers/file-provider-init";
 import { FileContext } from "@/contexts/files-context";
 import useFetchConfig from "@/hooks/useFetchConfig";
-import { Lock, Mail, Trash2, User } from "lucide-react";
+import { Loader2, Save } from "lucide-react";
 import { useContext, useState } from "react";
 import { saveConfig } from "./action";
 import SuccessfulMessage from "@/components/successfull-message";
 import { htmlElements, HtmlKeys } from "./types";
 import Button from "@/ui/primitives/button";
 import { useSession } from "next-auth/react";
-
-const iconStyle = "h-6 w-6";
+import ProfileSection from "@/ui/setting/profile-section";
+import Input from "@/ui/primitives/input";
 
 const SettingPage = () => {
   const context = useContext(FileContext);
@@ -71,22 +71,74 @@ const SettingPage = () => {
   };
 
   if (isLoading)
-    return (
-      <FileProviderInit text="Loading your workspace..."></FileProviderInit>
-    );
+    return <FileProviderInit text="Loading your setting..."></FileProviderInit>;
 
   return (
-    <main className="grid grid-cols-2 mt-4" role="main">
+    <main className="grid grid-cols-2 mt-4 p-4" role="main">
       <form
         onSubmit={handleSubmit}
-        className="form-setting"
+        className="form-setting  "
         aria-label="Element styles configuration"
       >
-        <fieldset className="grid gap-4" disabled={isSaving}>
-          <legend className="mb-4 text-lg">HTML Elements Styles</legend>
+        <fieldset
+          className="grid gap-4 pr-8 overflow-y-auto max-h-[90dvh] scroll-primary"
+          disabled={isSaving}
+        >
+          <legend className="text-2xl mb-4">HTML Elements Styles</legend>
           {htmlElements.map((element, index) => (
             <div key={`${element}${index}`} className="element-setting">
               <label htmlFor={`style-${element}`}>{element}</label>
+              <Input
+                intent="secondary"
+                size="md"
+                aria-label={element}
+                type="text"
+                name={`style-${element}`}
+                id={`style-${element}`}
+                aria-describedby={`hint-${element}`}
+                value={
+                  userConfig && element in userConfig
+                    ? userConfig[element]?.className
+                    : ""
+                }
+                placeholder="Enter Tailwind classes"
+                onChange={(e) => setSetting(element, e.target.value)}
+              />
+            </div>
+          ))}
+        </fieldset>
+        <Button
+          type="submit"
+          variant="light"
+          disabled={isSaving}
+          loadingText="Saving..."
+          className="place-self-end mr-8"
+          leftIcon={
+            isSaving ? (
+              <Loader2 className="h-4 w-4 animate-spin " />
+            ) : (
+              <Save className="h-4 w-4" />
+            )
+          }
+        >
+          Save
+        </Button>
+      </form>
+      {user && <ProfileSection user={user} />}
+      {isSuccess && (
+        <SuccessfulMessage
+          text="Configuration was saved"
+          headline="Successful Configuration"
+        />
+      )}
+    </main>
+  );
+};
+
+export default SettingPage;
+
+/*
+<label htmlFor={`style-${element}`}>{element}</label>
               <input
                 type="text"
                 name={`style-${element}`}
@@ -101,60 +153,5 @@ const SettingPage = () => {
                 className="rounded-sm bg-slate-300 focus:bg-slate-100 text-sm text-slate-900 px-2"
                 onChange={(e) => setSetting(element, e.target.value)}
               />
-            </div>
-          ))}
-        </fieldset>
-        <Button
-          type="submit"
-          variant="light"
-          disabled={isSaving}
-          loadingText="Saving..."
-          className="place-self-end"
-        >
-          Save
-        </Button>
-      </form>
-      <div>
-        <h2>Profile</h2>
-        <div className="grid gap-4">
-          <div className="flex gap-4">
-            <User className={iconStyle} />
-            <span>{user?.name}</span>
-          </div>
-          <div className="flex gap-4">
-            <Mail className={iconStyle} />
-            {user?.email ? (
-              <span>example@gmail.com</span>
-            ) : (
-              <Button variant="light">Add Email</Button>
-            )}
-          </div>
-          <div className="flex gap-4">
-            <Lock className={iconStyle} />
-            <Button variant="light">Change Password</Button>
-          </div>
-          <div className="flex gap-4">
-            <Trash2 className={iconStyle} />
-            <Button variant="error">Delete User</Button>
-          </div>
-        </div>
-      </div>
-      {isSuccess && (
-        <SuccessfulMessage
-          text="Configuration was saved"
-          headline="Successful Configuration"
-        />
-      )}
-    </main>
-  );
-};
 
-export default SettingPage;
-
-/*
-<Input
-                size="md"
-                label={element}
-                onChange={(e) => setSetting(element, e.target.value)}
-              />
 */

@@ -232,9 +232,9 @@ p {
   grid-column: span 2;
   input[type="text"] {
     width: 25rem;
-    &:focus {
+    /* &:focus {
       outline-color: var(--focus-color);
-    }
+    }*/
   }
 }
 
