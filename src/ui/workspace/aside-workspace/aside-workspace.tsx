@@ -9,7 +9,7 @@ import FolderInput from "./folder-input";
 import FileInput from "./file-input";
 import UsersFile from "./users-file";
 
-const AsideWorkspace = () => {
+const AsideWorkspace = ({ isAsideOpen }: { isAsideOpen: boolean }) => {
   const { data: session } = useSession();
   const context = useContext(FileContext);
   if (!context || !session || !session.user)
@@ -74,7 +74,11 @@ const AsideWorkspace = () => {
 
   return (
     <>
-      <aside className="grid w-full h-fit bg-slate-800 pt-2 relative pb-4">
+      <aside
+        className={`grid w-full h-fit bg-slate-800 pt-2 relative z-20 pb-4 media-aside ${
+          isAsideOpen && "opened"
+        }`}
+      >
         <AsideMenu />
         {handleRenderInput()}
         <ul>

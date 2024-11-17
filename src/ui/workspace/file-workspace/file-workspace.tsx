@@ -54,11 +54,6 @@ const FileWorkspace = ({
             contentEditable
             autoFocus
             suppressContentEditableWarning
-            /*onPaste={(e) => {
-              e.preventDefault();
-              const text = e.clipboardData.getData("text/plain");
-              document.execCommand("insertText", false, text);
-            }}*/
             onPaste={(e) =>
               handlePaste(
                 e as unknown as ClipboardEvent,

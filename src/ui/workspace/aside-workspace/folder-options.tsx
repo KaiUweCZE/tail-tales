@@ -53,7 +53,7 @@ const FolderOptions = ({ name, index }: { name: string; index: number }) => {
 
   return (
     <>
-      <div className="grid absolute top-full w-36 right-0 z-10 py-2 bg-slate-850 border border-slate-800 rounded-sm expander-wrap">
+      <div className="grid absolute top-full w-36 right-0 z-10 py-2 bg-slate-850 border border-slate-800 rounded-sm expander-wrap primary-shadow">
         <ul className="flex flex-col gap expander-content">
           <li className={liClass} onClick={handleRenameClick}>
             rename

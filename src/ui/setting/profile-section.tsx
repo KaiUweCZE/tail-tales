@@ -10,7 +10,7 @@ const ProfileSection = ({ user }: { user: UserType }) => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   return (
-    <section className="bg-slate-85 rounded h-fit p-4 shadow-m">
+    <section className="bg-slate-85 rounded h-fit p-4 shadow-m profile">
       <h2 className="text-2xl mb-2 capitalize">{user.name}</h2>
       <div className="grid gap-4">
         <div className="flex gap-4">

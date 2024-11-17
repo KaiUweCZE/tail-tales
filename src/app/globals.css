@@ -16,6 +16,9 @@
   --font-fredoka: "Fredoka", sans-serif;
   --font-inter: "Inter", monospace;
   --max-size: 80rem;
+  --primary-shadow: 17px 17px 20px -20px var(--light-shadow),
+    0px 14px 20px -20px var(--light-shadow),
+    -17px 14px 20px -20px var(--light-shadow);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -67,9 +70,9 @@ p {
 }
 
 .primary-shadow {
-  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13), 0 1px 1px 0 rgba(0, 0, 0, 0.11);*/
-  box-shadow: 0 2px 4px 0 rgba(var(--shadow-color), 0.23),
-    0 1px 1px 0 rgba(var(--shadow-color), 0.15);
+  box-shadow: 17px 17px 20px -20px var(--light-shadow),
+    0px 14px 20px -20px var(--light-shadow),
+    -17px 14px 20px -20px var(--light-shadow);
 }
 
 .secondary-shadow {
@@ -279,5 +282,64 @@ p {
   /* Handle při hoveru */
   &::-webkit-scrollbar-thumb:hover {
     background: #64748b; /* slate-500 */
+  }
+}
+
+.mobile-nav {
+  display: none;
+}
+
+.media-workspace {
+  @media (52rem < width < 80rem) {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: min-content 1fr;
+    .media-config {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .file-wrapper {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+    }
+  }
+  @media (width < 52rem) {
+    grid-template-columns: 1fr 1fr;
+    padding-inline: 1rem;
+    .media-aside {
+      display: none;
+      position: absolute;
+      width: fit-content;
+      min-width: 15rem;
+      &.opened {
+        display: grid;
+        box-shadow: var(--primary-shadow);
+      }
+    }
+    .media-config {
+      display: none;
+      position: absolute;
+
+      &.opened {
+        display: grid;
+        box-shadow: var(--primary-shadow);
+        right: 0;
+      }
+    }
+    .mobile-nav {
+      display: grid;
+    }
+  }
+}
+
+.media-setting {
+  @media (width < 65rem) {
+    grid-template-columns: 1fr;
+    width: max-content;
+    place-items: center;
+    .profile {
+      grid-row: 1;
+      place-self: start;
+      margin-bottom: 2rem;
+    }
   }
 }

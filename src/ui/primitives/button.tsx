@@ -3,7 +3,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { ButtonHTMLAttributes, forwardRef, ReactNode } from "react";
 
 const buttonVariants = cva(
-  `rounded w-fit px-2 transition duration-300
+  `rounded-sm w-fit px-2 transition duration-300
   disabled:hover:bg-slate-950
   focus:outline
   focus:outline-amber-200

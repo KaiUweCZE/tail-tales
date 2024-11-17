@@ -74,7 +74,7 @@ const SettingPage = () => {
     return <FileProviderInit text="Loading your setting..."></FileProviderInit>;
 
   return (
-    <main className="grid grid-cols-2 mt-4 p-4" role="main">
+    <main className="grid grid-cols-2 mt-4 p-4 media-setting" role="main">
       <form
         onSubmit={handleSubmit}
         className="form-setting  "

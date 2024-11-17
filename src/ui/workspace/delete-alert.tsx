@@ -1,6 +1,8 @@
 import { deleteFile, deleteFolder } from "@/app/workspace/action";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
+import Button from "../primitives/button";
+import { Loader2, Trash2 } from "lucide-react";
 
 interface DeleteAlertProps {
   type: "folder" | "file";
@@ -117,19 +119,24 @@ export const DeleteAlert = ({
             )}
           </div>
           <div className="flex gap-2 mt-2 justify-end">
-            <button
-              className="bg-error-active px-2 rounded-sm"
+            <Button
+              size="md"
+              variant="error"
               onClick={handleDelete}
               disabled={isDeleting}
+              leftIcon={
+                isDeleting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Trash2 className="h-4 w-4 " />
+                )
+              }
             >
               Delete
-            </button>
-            <button
-              className="bg-slate-700  px-2 rounded-sm hover:bg-slate-800 transition"
-              onClick={handleCancel}
-            >
+            </Button>
+            <Button variant="light" onClick={handleCancel}>
               Cancel
-            </button>
+            </Button>
           </div>
         </div>
       </div>
