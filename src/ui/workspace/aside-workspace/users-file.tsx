@@ -27,8 +27,9 @@ const UsersFile = ({
   };
   return (
     <li className="flex gap-1 pr-2 items-center justify-between relative">
-      <div className="flex  pl-2 items-center">
+      <div className="flex gap-1 pl-2 items-center">
         <NotepadTextIcon
+          strokeWidth={1}
           className="h-4 w-4"
           color={(currentFileState.id === file.id && "#F5E68A") || "white"}
         />

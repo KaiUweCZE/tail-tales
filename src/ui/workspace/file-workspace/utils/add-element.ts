@@ -50,4 +50,6 @@ export const addElement = ({
 
   selection.removeAllRanges();
   selection.addRange(newRange);
+
+  return itemId ?? null;
 };

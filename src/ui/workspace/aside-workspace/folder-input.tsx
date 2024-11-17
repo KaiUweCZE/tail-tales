@@ -4,7 +4,7 @@ import Input from "@/ui/primitives/input";
 import { cva, VariantProps } from "class-variance-authority";
 import { useSession } from "next-auth/react";
 import { useContext, useEffect, useRef } from "react";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const folderInputVariants = cva(``, {
@@ -72,7 +72,11 @@ const FolderInput = ({
       ref={inputRef}
       disabled={isLoading}
       isLoading={isLoading}
-      rightIcon={isLoading && <Loader className="h-5 w-5" color="#0F1729" />}
+      rightIcon={
+        isLoading && (
+          <Loader2 className="h-5 w-5 animate-spin" color="#0F1729" />
+        )
+      }
       onChange={(e) => setInputName(e.target.value)}
       onKeyDown={(e) => {
         if (e.key === "Enter") {

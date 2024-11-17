@@ -33,10 +33,11 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
         className="flex px-2 justify-between items-center relative"
         onClick={logInfo}
       >
-        <div className="flex">
+        <div className="flex gap-1 items-center">
           <ChevronDown
+            strokeWidth={4}
             color={isExpanded ? "#FDD984" : "white"}
-            className={clsx("w-6 h-6 -rotate-90 cursor-pointer", {
+            className={clsx("w-4 h-4 -rotate-90 cursor-pointer", {
               //"-rotate-90": !isExpanded,
               "rotate-0": isExpanded,
             })}

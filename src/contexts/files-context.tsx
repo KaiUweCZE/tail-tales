@@ -86,7 +86,11 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
 
   const newInput = (e: InputTypes, parent?: string) => {
     setInputName("");
-    if (isActive.active && isActive.inputType === e) {
+    if (
+      isActive.active &&
+      isActive.inputType === e &&
+      isActive.parentName === parent
+    ) {
       setIsActive({ active: false, inputType: "none", parentName: undefined });
     } else if (!isActive.active) {
       setIsActive({ active: true, inputType: e, parentName: parent });

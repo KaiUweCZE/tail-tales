@@ -6,6 +6,8 @@ import useEditFile from "../hooks/useEditFile";
 import useSave from "../hooks/useSave";
 import SuccessfulMessage from "@/components/successfull-message";
 import FileWorkspaceNav from "./file-workspace-nav";
+import { Loader2, Save } from "lucide-react";
+import { handlePaste } from "./utils/handlePaste";
 
 const FileWorkspace = ({
   userConfig,
@@ -52,11 +54,18 @@ const FileWorkspace = ({
             contentEditable
             autoFocus
             suppressContentEditableWarning
-            onPaste={(e) => {
+            /*onPaste={(e) => {
               e.preventDefault();
               const text = e.clipboardData.getData("text/plain");
               document.execCommand("insertText", false, text);
-            }}
+            }}*/
+            onPaste={(e) =>
+              handlePaste(
+                e as unknown as ClipboardEvent,
+                editableRef,
+                addElement
+              )
+            }
             onKeyDown={(e) =>
               handleKeyDown(e as unknown as KeyboardEvent, editableRef)
             }
@@ -80,6 +89,13 @@ const FileWorkspace = ({
             onClick={saveFile}
             disabled={isSaving}
             isLoading={isSaving}
+            leftIcon={
+              isSaving ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )
+            }
             loadingText="Saving..."
           >
             Save

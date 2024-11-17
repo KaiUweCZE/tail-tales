@@ -4,7 +4,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { useSession } from "next-auth/react";
 import { useContext, useEffect, useRef } from "react";
 import useCreateFile from "../hooks/useCreateFile";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const fileInputVariants = cva(``, {
   variants: {
@@ -77,7 +77,11 @@ const FileInput = ({
       variant={variant}
       ref={inputRef}
       isLoading={isLoading}
-      rightIcon={isLoading && <Loader className="h-5 w-5" color="#0F1729" />}
+      rightIcon={
+        isLoading && (
+          <Loader2 className="h-5 w-5 animate-spin" color="#0F1729" />
+        )
+      }
       placeholder="file"
       onChange={(e) => setInputName(e.target.value)}
       onKeyDown={(e) => {

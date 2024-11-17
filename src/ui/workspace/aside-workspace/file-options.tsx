@@ -8,7 +8,7 @@ interface FileOptionsProps {
   fileId: string;
 }
 
-const liClass = "px-4 cursor-pointer hover:bg-slate-800";
+const liClass = "px-4 cursor-pointer hover:text-amber-200";
 const FileOptions = ({ name, fileId }: FileOptionsProps) => {
   const context = useContext(FileContext);
   const [isRenaming, setIsRenaming] = useState(false);
@@ -61,6 +61,7 @@ const FileOptions = ({ name, fileId }: FileOptionsProps) => {
       )}
       {isDeleting && (
         <DeleteAlert
+          name={name}
           fileId={fileId}
           type="file"
           onDeleteSuccess={handleOnDeleteSuccess}

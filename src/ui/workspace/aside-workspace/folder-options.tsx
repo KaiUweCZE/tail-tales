@@ -6,7 +6,7 @@ import FolderInput from "./folder-input";
 import FileInput from "./file-input";
 import RenameFolderFile from "./rename-folder-file";
 
-const liClass = "px-4 cursor-pointer hover:bg-slate-800";
+const liClass = "px-4 cursor-pointer hover:text-amber-200 ";
 
 const FolderOptions = ({ name, index }: { name: string; index: number }) => {
   const context = useContext(FileContext);

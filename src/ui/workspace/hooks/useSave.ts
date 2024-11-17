@@ -26,15 +26,14 @@ const useSave = ({ onSaveSuccess, onSaveError }: UseSaveProps) => {
 
   // updates file on backend and frontend
   const saveFile = async () => {
+    setIsSaving(true);
+    setError(null);
     if (!currentFile || !session?.user?.id) {
       setError("No file to save or user not authenticated");
       return;
     }
 
     try {
-      setIsSaving(true);
-      setError(null);
-
       const updatedFile = await editFile(currentFileState.id, session.user.id, {
         elements: currentFile,
       });
