@@ -82,7 +82,7 @@ const FileWorkspace = ({
         <div className="flex justify-end my-1">
           <Button
             onClick={saveFile}
-            disabled={isSaving}
+            disabled={isSaving || !currentFile}
             isLoading={isSaving}
             leftIcon={
               isSaving ? (

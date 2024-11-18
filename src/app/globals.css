@@ -309,20 +309,38 @@ p {
       display: none;
       position: absolute;
       width: fit-content;
+      transition: display 0.5s, opacity 0.5s, left 0.5s;
+      transition-behavior: allow-discrete;
+      opacity: 0;
       min-width: 15rem;
+      left: -17rem;
       &.opened {
         display: grid;
+        left: 0;
         box-shadow: var(--primary-shadow);
+        opacity: 1;
+        @starting-style {
+          opacity: 0;
+          left: -17rem;
+        }
       }
     }
     .media-config {
       display: none;
       position: absolute;
-
+      transition: display 0.5s, opacity 0.5s, right 0.5s;
+      transition-behavior: allow-discrete;
+      opacity: 0;
+      right: -20rem;
       &.opened {
         display: grid;
         box-shadow: var(--primary-shadow);
         right: 0;
+        opacity: 1;
+        @starting-style {
+          opacity: 0;
+          right: -20rem;
+        }
       }
     }
     .mobile-nav {

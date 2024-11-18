@@ -13,6 +13,7 @@ const buttonVariants = cva(
       intent: {
         primary: "bg-slate-950 hover:bg-slate-800 text-amber-100",
         secondary: "bg-gray-200 hover:bg-gray-300 text-gray-900",
+        ternary: "transparent justify-center items-center",
       },
       grow: {
         false: "w-fit",
@@ -31,6 +32,7 @@ const buttonVariants = cva(
         light: "bg-slate-700 hover:bg-slate-950 disabled:hover:bg-slate-700",
         toggle:
           "bg-transparent rounded-none border-b-amber-50/50 border-b-2 pb-1",
+        column: "",
       },
       icon: {
         false: "",
@@ -117,9 +119,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             "flex items-center gap-2 px-2",
             isLoading && "invisible",
-            active && variant === "toggle" && "text-amber-200",
+            active &&
+              (variant === "toggle" || variant === "column") &&
+              "text-amber-200",
             variant === "nav" &&
-              "hover:text-amber-200 border-b border-transparent  hover:border-b hover:border-amber-200"
+              "hover:text-amber-200 border-b border-transparent  hover:border-b hover:border-amber-200",
+            variant === "column" && "flex-col gap-1"
           )}
         >
           {leftIcon}
