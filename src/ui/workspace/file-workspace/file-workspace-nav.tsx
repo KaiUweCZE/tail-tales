@@ -18,7 +18,7 @@ const FileWorkspaceNav = ({
     "article",
   ];
   return (
-    <nav className="file-navigation bg-slate-800 border-b mb-1 border-slate-400 h-fit p-1 rounded-t ">
+    <nav className="file-navigation bg-slate-800 border-b mb-1 border-slate-400 h-fit p-1 rounded-t-lg">
       {elements.map((element) => (
         <Button
           key={element}

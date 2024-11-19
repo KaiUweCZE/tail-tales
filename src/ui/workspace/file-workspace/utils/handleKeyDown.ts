@@ -1,12 +1,12 @@
 import { RefObject } from "react";
 import {
   addBr,
+  addBrToParent,
   addBrToRoot,
   addIndentation,
   isCursorAtEnd,
   moveElementInParent,
   removeHighlights,
-  setCursorInsideAtEnd,
 } from "./utils";
 
 const handleEnterKey = (
@@ -36,8 +36,10 @@ const handleEnterKey = (
   }
 
   // Handle cursor at end of element
-  if (currentElement?.parentElement) {
-    setCursorInsideAtEnd(selection, currentElement);
+  if (currentElement?.parentElement && isCursorAtEnd(selection)) {
+    addBrToParent(selection, currentElement);
+  } else {
+    addBr(selection, range);
   }
 };
 
@@ -75,8 +77,6 @@ export const handleKeyDown = (
 ) => {
   if (!["Enter", "Tab"].includes(e.key) && !e.altKey) return;
   e.preventDefault();
-
-  console.log("ref: ", ref.current);
 
   const selection = window.getSelection();
   const range = selection?.getRangeAt(0);

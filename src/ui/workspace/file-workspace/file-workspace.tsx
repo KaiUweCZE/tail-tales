@@ -42,8 +42,8 @@ const FileWorkspace = ({
   }, []);
 
   return (
-    <div className="file-wrapper rounded">
-      <div className="bg-slate-800">
+    <div className="file-wrapper rounded-lg">
+      <div className="bg-slate-800 rounded-lg">
         <FileWorkspaceNav addElement={addElement} />
 
         {currentFile ? (

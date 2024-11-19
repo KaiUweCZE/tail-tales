@@ -53,6 +53,21 @@ export const addBr = (selection: Selection, range: Range) => {
 };
 
 /**
+ * Create and insert a BR element at the parent
+ * and moves cursor after it
+ */
+
+export const addBrToParent = (selection: Selection, element: Element) => {
+  const parent = element.parentElement;
+  if (!parent) return;
+
+  const br = document.createElement("br");
+  parent.appendChild(br);
+  setCursorAfter(selection, br);
+  return br;
+};
+
+/**
  * Adds a BR element directly to the root element after any nested elements
  * and moves cursor there
  */
