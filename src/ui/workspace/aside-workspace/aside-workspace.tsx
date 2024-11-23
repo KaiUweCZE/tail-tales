@@ -9,7 +9,13 @@ import FolderInput from "./folder-input";
 import FileInput from "./file-input";
 import UsersFile from "./users-file";
 
-const AsideWorkspace = ({ isAsideOpen }: { isAsideOpen: boolean }) => {
+const AsideWorkspace = ({
+  isAsideOpen,
+  isExpanded,
+}: {
+  isAsideOpen: boolean;
+  isExpanded: boolean;
+}) => {
   const { data: session } = useSession();
   const context = useContext(FileContext);
   if (!context || !session || !session.user)
@@ -74,28 +80,30 @@ const AsideWorkspace = ({ isAsideOpen }: { isAsideOpen: boolean }) => {
 
   return (
     <>
-      <aside
-        className={`grid w-full h-fit bg-slate-800 pt-2 relative z-20 pb-4 media-aside ${
-          isAsideOpen && "opened"
-        }`}
-      >
-        <AsideMenu />
-        {handleRenderInput()}
-        <ul>
-          {rootFolders.map((folder) => (
-            <UsersFolder key={folder.index} folder={folder} />
-          ))}
-          {rootFiles.map((file) => (
-            <UsersFile
-              key={file.id}
-              file={file}
-              currentFileState={currentFileState}
-              setCurrentFile={setCurrentFile}
-              setCurrentFileState={setCurrentFileState}
-            />
-          ))}
-        </ul>
-      </aside>
+      {(!isExpanded || isAsideOpen) && (
+        <aside
+          className={`grid w-full h-fit bg-slate-800 pt-2 relative z-20 pb-4 media-aside ${
+            isAsideOpen && "opened"
+          }`}
+        >
+          <AsideMenu />
+          {handleRenderInput()}
+          <ul>
+            {rootFolders.map((folder) => (
+              <UsersFolder key={folder.index} folder={folder} />
+            ))}
+            {rootFiles.map((file) => (
+              <UsersFile
+                key={file.id}
+                file={file}
+                currentFileState={currentFileState}
+                setCurrentFile={setCurrentFile}
+                setCurrentFileState={setCurrentFileState}
+              />
+            ))}
+          </ul>
+        </aside>
+      )}
       {isSuccess.success && isSuccess.headline === "Deleted!" && (
         <SuccessfulMessage
           text="Delete is completed"
