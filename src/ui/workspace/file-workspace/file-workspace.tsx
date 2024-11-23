@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import Button from "@/ui/primitives/button";
 import { DefaultConfiguration } from "@/app/setting/types";
 import { handleKeyDown } from "./utils/handleKeyDown";
@@ -6,14 +6,21 @@ import useEditFile from "../hooks/useEditFile";
 import useSave from "../hooks/useSave";
 import SuccessfulMessage from "@/components/successfull-message";
 import FileWorkspaceNav from "./file-workspace-nav";
-import { Loader2, Save } from "lucide-react";
+import { Expand, Loader2, Minimize, Save } from "lucide-react";
 import { handlePaste } from "./utils/handlePaste";
 
 const FileWorkspace = ({
   userConfig,
+  setIsExpanded,
+  isExpanded,
+  largeWindow,
 }: {
   userConfig: DefaultConfiguration;
+  setIsExpanded: Dispatch<SetStateAction<boolean>>;
+  isExpanded: boolean;
+  largeWindow: boolean;
 }) => {
+  const addCss = isExpanded ? "expanded" : "";
   const editableRef = useRef<HTMLDivElement>(null);
   const [isSuccses, setIsSuccess] = useState<"default" | "saved" | "error">(
     "default"
@@ -42,7 +49,22 @@ const FileWorkspace = ({
   }, []);
 
   return (
-    <div className="file-wrapper rounded-lg">
+    <div className={`file-wrapper rounded-lg ${addCss}`}>
+      {largeWindow &&
+        (isExpanded ? (
+          <Minimize
+            className="cursor-pointer absolute h-5 w-5 inset-1 z-10"
+            color="currentColor"
+            onClick={() => setIsExpanded((prev) => !prev)}
+          />
+        ) : (
+          <Expand
+            className="cursor-pointer absolute h-5 w-5 inset-1 z-10"
+            color="currentColor"
+            onClick={() => setIsExpanded((prev) => !prev)}
+          />
+        ))}
+
       <div className="bg-slate-800 rounded-lg">
         <FileWorkspaceNav addElement={addElement} />
 
