@@ -1,17 +1,26 @@
-import { Lock, Mail, Trash2 } from "lucide-react";
+import { Hammer, Lock, Mail, Trash2 } from "lucide-react";
 import Button from "../primitives/button";
 import { useState } from "react";
 import { User as UserType } from "next-auth";
 import ChangePasswordForm from "./change-password-form";
+import { MetaConfiguration } from "@/app/setting/types";
 
 const iconStyle = "h-4 w-4";
 
-const ProfileSection = ({ user }: { user: UserType }) => {
+const ProfileSection = ({
+  user,
+  configs,
+}: {
+  user: UserType;
+  configs: MetaConfiguration[];
+}) => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   return (
-    <section className="bg-slate-85 rounded h-fit p-4 shadow-m profile">
-      <h2 className="text-2xl mb-2 capitalize">{user.name}</h2>
+    <section className="bg-slate-800 rounded-lg h-fit p-6 shadow-lg profile">
+      <h2 className="text-xl capitalize font-semibold text-amber-100 mb-4">
+        {`${user.name} Profile`}
+      </h2>
       <div className="grid gap-4">
         <div className="flex gap-4">
           <Button
@@ -45,6 +54,23 @@ const ProfileSection = ({ user }: { user: UserType }) => {
             Delete User
           </Button>
         </div>
+        <div className="flex gap-4">
+          <Button
+            variant="error"
+            className="w-48 justify-center items-center"
+            leftIcon={<Hammer className={iconStyle} />}
+            onClick={() => console.log(configs)}
+          >
+            Create New Configuration
+          </Button>
+        </div>
+      </div>
+      <div>
+        <ul>
+          {configs.map((config) => (
+            <li key={config.id}>{config.name}</li>
+          ))}
+        </ul>
       </div>
     </section>
   );

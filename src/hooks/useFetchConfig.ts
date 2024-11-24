@@ -17,6 +17,8 @@ const useFetchConfig = () => {
     try {
       const response = await getConfig();
 
+      console.log("response is: ", response);
+
       if ("id" in response) {
         setUserConfig(response);
       } else if (response.error) {

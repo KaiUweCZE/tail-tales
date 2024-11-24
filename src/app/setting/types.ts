@@ -4,11 +4,19 @@ export interface HTMLElementConfig {
   defaultVariants?: string;
 }
 
+export interface MetaConfiguration
+  extends Pick<
+    DefaultConfiguration,
+    "name" | "id" | "userId" | "updatedAt" | "createdAt"
+  > {}
+
 export interface DefaultConfiguration {
+  name: string;
   id: string;
   userId: string;
   createdAt: Date;
   updatedAt: Date;
+  //[key in HTMLElementKeys]?: HTMLElementConfig;
   div?: HTMLElementConfig;
   span?: HTMLElementConfig;
   p?: HTMLElementConfig;
@@ -31,7 +39,7 @@ export interface DefaultConfiguration {
 
 export type HtmlKeys = keyof Omit<
   DefaultConfiguration,
-  "id" | "userId" | "createdAt" | "updatedAt"
+  "id" | "userId" | "createdAt" | "updatedAt" | "name"
 >;
 
 export const htmlElements = [
@@ -57,5 +65,5 @@ export const htmlElements = [
 
 export type HtmlElements = Omit<
   DefaultConfiguration,
-  "id" | "userId" | "createdAt" | "updatedAt"
+  "id" | "userId" | "createdAt" | "updatedAt" | "name"
 >;

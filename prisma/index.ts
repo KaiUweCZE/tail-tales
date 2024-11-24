@@ -12,9 +12,26 @@ const prismaClientSingleton = () => {
       const result = await next(params);
 
       try {
-        const config = await prisma.defaultConfiguration.create({
+        const configSet = await prisma.configurationSet.create({
           data: {
             userId: result.id,
+          },
+        });
+
+        const config = await prisma.defaultConfiguration.create({
+          data: {
+            name: "default",
+            user: {
+              connect: {
+                id: result.id,
+              },
+            },
+            configSet: {
+              connect: {
+                id: configSet.id,
+              },
+            },
+            elementStyles: {},
           },
         });
 
@@ -31,6 +48,7 @@ const prismaClientSingleton = () => {
         return updatedUser;
       } catch (error) {
         console.error("Error creating config: ", error);
+        throw error;
       }
     }
 

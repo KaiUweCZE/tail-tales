@@ -37,12 +37,50 @@ export const getConfig = async () => {
   }
 };
 
+export const getAllConfigs = async () => {
+  try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return { error: "Not authenticated" };
+    }
+
+    const userId = session.user.id;
+    await connectToDatabase();
+
+    const configSet = await prisma.configurationSet.findUnique({
+      where: {
+        userId: userId,
+      },
+      include: {
+        configurations: true,
+      },
+    });
+
+    if (!configSet?.configurations?.length) {
+      return { error: "No configurations found" };
+    }
+
+    const transformedConfigurations =
+      configSet.configurations.map(convertDbConfig);
+    return { data: transformedConfigurations };
+  } catch (error) {
+    console.error("An Error occured during the fetching configurations", error);
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
 type ConfigWithoutMetadata = Omit<
   DefaultConfiguration,
-  "id" | "userId" | "createdAt" | "updatedAt"
+  "id" | "userId" | "createdAt" | "updatedAt" | "name"
 >;
 
-export const saveConfig = async (config: ConfigWithoutMetadata) => {
+export const saveConfig = async (
+  configId: string,
+  config: ConfigWithoutMetadata,
+  name: string
+) => {
   try {
     const session = await auth();
 
@@ -61,23 +99,73 @@ export const saveConfig = async (config: ConfigWithoutMetadata) => {
       }
     });
 
-    await prisma.defaultConfiguration.upsert({
-      where: { userId: session.user.id },
-      update: {
+    const updatedConfig = await prisma.defaultConfiguration.update({
+      where: {
+        id: configId,
+        userId: session.user.id,
+      },
+      data: {
+        name,
         elementStyles: configToSave as unknown as Prisma.JsonValue,
         updatedAt: new Date(),
-      },
-      create: {
-        userId: session.user.id,
-        elementStyles: configToSave as unknown as Prisma.JsonValue,
       },
     });
 
     revalidatePath("/settings");
-    return { success: true };
+    return {
+      success: true,
+      configuration: convertDbConfig(updatedConfig),
+    };
   } catch (error) {
     console.error("Error saving configuration:", error);
     return { error: "Failed to save configuration" };
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+export const createConfiguration = async (
+  newConfig: Omit<
+    DefaultConfiguration,
+    "id" | "userId" | "createdAt" | "updatedAt"
+  >
+) => {
+  try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return { error: "Not authenticated" };
+    }
+    await connectToDatabase();
+
+    // find configuration set
+    const configSet = await prisma.configurationSet.findUnique({
+      where: { userId: session.user.id },
+    });
+
+    if (!configSet) {
+      return { error: "Configuration set not found" };
+    }
+
+    const { name, ...elementStyles } = newConfig;
+
+    const newConfiguration = await prisma.defaultConfiguration.create({
+      data: {
+        name,
+        userId: session.user.id,
+        elementStyles: elementStyles as Prisma.JsonValue,
+        configSetId: configSet.id,
+      },
+    });
+
+    revalidatePath("/settings");
+    return {
+      success: true,
+      configuration: convertDbConfig(newConfiguration),
+    };
+  } catch (error) {
+    console.error("Error creating configuration:", error);
+    return { error: "Failed to create configuration" };
   } finally {
     await prisma.$disconnect();
   }

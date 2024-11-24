@@ -18,7 +18,7 @@ const inputVariants = cva(
         primary:
           "border-gray-300 focus:border-slate-900 focus:outline-amber-200 focus:border-amber-100",
         secondary:
-          "bg-slate-900 placeholder:text-slate-500 text-amber-100 focus:border-amber-200 focus:outline-amber-200",
+          "bg-slate-700 border-slate-600 placeholder:text-slate-400 text-amber-50 focus:border-amber-200 focus:outline-amber-200",
         error: "border-red-500 focus:border-red-500 focus:ring-red-200 ",
       },
       size: {

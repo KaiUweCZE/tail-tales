@@ -11,10 +11,12 @@ import Button from "@/ui/primitives/button";
 import { useSession } from "next-auth/react";
 import ProfileSection from "@/ui/setting/profile-section";
 import Input from "@/ui/primitives/input";
+import useConfigurations from "@/hooks/useConfigurations";
 
 const SettingPage = () => {
   const context = useContext(FileContext);
   const { isLoading, userConfig } = useFetchConfig();
+  const { isLoading: configsLoading } = useConfigurations();
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const { data: session } = useSession();
@@ -23,7 +25,7 @@ const SettingPage = () => {
   if (!context || !session)
     return <FileProviderInit text="Loading your setting..."></FileProviderInit>;
 
-  const { setUserConfig } = context;
+  const { setUserConfig, allConfigs } = context;
   const { user } = session;
 
   const setSetting = (element: HtmlKeys, value: string) => {
@@ -40,6 +42,14 @@ const SettingPage = () => {
     });
   };
 
+  const setConfigName = (value: string) => {
+    setError(null);
+    setUserConfig((prev) => {
+      if (!prev) return prev;
+      return { ...prev, name: value };
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -51,8 +61,9 @@ const SettingPage = () => {
 
     setIsSaving(true);
     try {
-      const { id, userId, createdAt, updatedAt, ...configToSave } = userConfig; // eslint-disable-line @typescript-eslint/no-unused-vars
-      const result = await saveConfig(configToSave);
+      const { id, userId, createdAt, updatedAt, name, ...configToSave } =
+        userConfig; // eslint-disable-line @typescript-eslint/no-unused-vars
+      const result = await saveConfig(id, configToSave, name);
 
       if (result.error) {
         setError(result.error);
@@ -70,21 +81,40 @@ const SettingPage = () => {
     }
   };
 
-  if (isLoading)
+  if (isLoading || configsLoading)
     return <FileProviderInit text="Loading your setting..."></FileProviderInit>;
 
   return (
-    <main className="grid grid-cols-2 mt-4 p-4 media-setting" role="main">
+    <main
+      className="grid grid-cols-2 min-h-screen mt-4 p-4 media-setting"
+      role="main"
+    >
+      <h1 className="text-3xl font-bold text-amber-100 mb-8 col-span-2">
+        Settings
+      </h1>
       <form
         onSubmit={handleSubmit}
-        className="form-setting  "
+        className="form-setting  bg-slate-800 rounded-lg p-6 shadow-lg"
         aria-label="Element styles configuration"
       >
         <fieldset
           className="grid gap-4 pr-8 overflow-y-auto max-h-[90dvh] scroll-primary"
           disabled={isSaving}
         >
-          <legend className="text-2xl mb-4">HTML Elements Styles</legend>
+          <legend className="text-xl font-semibold text-amber-100 mb-4">
+            HTML Elements Styles
+          </legend>
+          <div className="element-setting">
+            <label htmlFor="config-name">Name: </label>
+            <Input
+              intent="secondary"
+              size="md"
+              type="text"
+              value={userConfig?.name}
+              onChange={(e) => setConfigName(e.target.value)}
+              placeholder="Enter Configuration Name"
+            />
+          </div>
           {htmlElements.map((element, index) => (
             <div key={`${element}${index}`} className="element-setting">
               <label htmlFor={`style-${element}`}>{element}</label>
@@ -124,7 +154,8 @@ const SettingPage = () => {
           Save
         </Button>
       </form>
-      {user && <ProfileSection user={user} />}
+      {user && <ProfileSection user={user} configs={allConfigs} />}
+
       {isSuccess && (
         <SuccessfulMessage
           text="Configuration was saved"
