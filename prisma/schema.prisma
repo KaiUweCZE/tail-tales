@@ -24,30 +24,31 @@ model User {
 
   // configuration
   sharedConfigurations SharedConfiguration[]
-  configuration   DefaultConfiguration?
+  configuration   DefaultConfiguration? @relation("ActiveConfiguration", fields: [configurationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  configurationId String?              @db.ObjectId @unique
   configurationSet     ConfigurationSet?     @relation("UserConfigSet")
-  configurationId String?               @db.ObjectId
+  configurations DefaultConfiguration[] @relation("UserConfigurations")
 }
 
 model DefaultConfiguration {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   name          String
-  userId        String   @unique @db.ObjectId
+  userId        String   @db.ObjectId
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   elementStyles Json?
 
   // relation to SetConfiguration
-  configSet     ConfigurationSet?  @relation("SetConfigurations", fields: [configSetId], references: [id])
+  configSet     ConfigurationSet?  @relation("SetConfigurations", fields: [configSetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   configSetId   String?           @db.ObjectId
 
   // relation to user 
- user          User     @relation(fields: [userId], references: [id])
+  user          User   @relation("UserConfigurations", fields: [userId], references: [id])
+  activeForUser User?  @relation("ActiveConfiguration")
   shared        SharedConfiguration?
 
   @@map("defaultConfigurations")
 }
-
 
 model ConfigurationSet {
   id            String                @id @default(auto()) @map("_id") @db.ObjectId
@@ -55,7 +56,7 @@ model ConfigurationSet {
 
   user            User                  @relation("UserConfigSet", fields: [userId], references: [id])
   userId          String                @unique @db.ObjectId
-  // Kolekce konfigurací
+  
   configurations DefaultConfiguration[] @relation("SetConfigurations")
 }
 

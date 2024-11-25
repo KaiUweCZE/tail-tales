@@ -38,6 +38,7 @@ const useFetchConfig = () => {
   return {
     isLoading: !userConfig,
     userConfig,
+    setUserConfig,
     refetch: fetchConfig,
     context,
   };

@@ -393,3 +393,11 @@ p {
     }
   }
 }
+
+dialog {
+  opacity: 1;
+  transition: 0.5s;
+  @starting-style {
+    opacity: 0;
+  }
+}

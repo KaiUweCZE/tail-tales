@@ -18,15 +18,18 @@ export const getConfig = async () => {
 
     await connectToDatabase();
 
-    const config = await prisma.defaultConfiguration.findUnique({
-      where: { userId: session.user.id },
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      include: {
+        configuration: true,
+      },
     });
 
-    if (!config) {
+    if (!user?.configuration) {
       return { error: "Configuration not found" };
     }
 
-    const clientConfig = convertDbConfig(config);
+    const clientConfig = convertDbConfig(user.configuration);
 
     return clientConfig;
   } catch (error) {
@@ -124,12 +127,7 @@ export const saveConfig = async (
   }
 };
 
-export const createConfiguration = async (
-  newConfig: Omit<
-    DefaultConfiguration,
-    "id" | "userId" | "createdAt" | "updatedAt"
-  >
-) => {
+export const createConfiguration = async (name: string) => {
   try {
     const session = await auth();
 
@@ -138,22 +136,26 @@ export const createConfiguration = async (
     }
     await connectToDatabase();
 
+    console.log("start with config set");
+
     // find configuration set
     const configSet = await prisma.configurationSet.findUnique({
       where: { userId: session.user.id },
+      include: {
+        configurations: true,
+      },
     });
 
     if (!configSet) {
       return { error: "Configuration set not found" };
     }
 
-    const { name, ...elementStyles } = newConfig;
-
+    console.log("new config: ", name);
     const newConfiguration = await prisma.defaultConfiguration.create({
       data: {
         name,
         userId: session.user.id,
-        elementStyles: elementStyles as Prisma.JsonValue,
+        // elementStyles: (elementStyles as Prisma.JsonValue) ?? "",
         configSetId: configSet.id,
       },
     });
