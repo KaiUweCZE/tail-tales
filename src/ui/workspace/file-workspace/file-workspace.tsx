@@ -9,17 +9,19 @@ import FileWorkspaceNav from "./file-workspace-nav";
 import { Expand, Loader2, Minimize, Save } from "lucide-react";
 import { handlePaste } from "./utils/handlePaste";
 
+interface FileWorkspaceProps {
+  userConfig: DefaultConfiguration;
+  setIsExpanded: Dispatch<SetStateAction<boolean>>;
+  isExpanded: boolean;
+  largeWindow: boolean;
+}
+
 const FileWorkspace = ({
   userConfig,
   setIsExpanded,
   isExpanded,
   largeWindow,
-}: {
-  userConfig: DefaultConfiguration;
-  setIsExpanded: Dispatch<SetStateAction<boolean>>;
-  isExpanded: boolean;
-  largeWindow: boolean;
-}) => {
+}: FileWorkspaceProps) => {
   const addCss = isExpanded ? "expanded" : "";
   const editableRef = useRef<HTMLDivElement>(null);
   const [isSuccses, setIsSuccess] = useState<"default" | "saved" | "error">(
@@ -50,23 +52,13 @@ const FileWorkspace = ({
 
   return (
     <div className={`file-wrapper rounded-lg ${addCss}`}>
-      {largeWindow &&
-        (isExpanded ? (
-          <Minimize
-            className="cursor-pointer absolute h-5 w-5 inset-1 z-10"
-            color="currentColor"
-            onClick={() => setIsExpanded((prev) => !prev)}
-          />
-        ) : (
-          <Expand
-            className="cursor-pointer absolute h-5 w-5 inset-1 z-10"
-            color="currentColor"
-            onClick={() => setIsExpanded((prev) => !prev)}
-          />
-        ))}
-
       <div className="bg-slate-800 rounded-lg">
-        <FileWorkspaceNav addElement={addElement} />
+        <FileWorkspaceNav
+          addElement={addElement}
+          largeWindow={largeWindow}
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
+        />
 
         {currentFile ? (
           <div

@@ -17,7 +17,10 @@ export type ElementType =
   | "table"
   | "tr"
   | "td"
-  | "img";
+  | "img"
+  | "pre"
+  | "a"
+  | "code";
 
 export interface FileElement {
   id: string;

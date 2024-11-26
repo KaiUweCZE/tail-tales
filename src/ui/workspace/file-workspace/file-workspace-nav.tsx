@@ -1,34 +1,54 @@
 import Button from "@/ui/primitives/button";
 import { ElementType } from "./types";
+import { Expand, Minimize } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
+import { navElements } from "./data";
+import ColorPicker from "@/components/color-picker";
+
+interface FileNavProsp {
+  setIsExpanded: Dispatch<SetStateAction<boolean>>;
+  isExpanded: boolean;
+  addElement: (element: ElementType) => void;
+  largeWindow: boolean;
+}
 
 const FileWorkspaceNav = ({
   addElement,
-}: {
-  addElement: (element: ElementType) => void;
-}) => {
-  const elements = [
-    "div",
-    "span",
-    "h1",
-    "h2",
-    "h3",
-    "p",
-    "ul",
-    "li",
-    "article",
-  ];
+  largeWindow,
+  setIsExpanded,
+  isExpanded,
+}: FileNavProsp) => {
   return (
     <nav className="file-navigation bg-slate-800 border-b mb-1 border-slate-400 h-fit p-1 rounded-t-lg">
-      {elements.map((element) => (
-        <Button
-          key={element}
-          variant="nav"
-          size="sm"
-          onClick={() => addElement(element as ElementType)}
-        >
-          {element}
-        </Button>
-      ))}
+      <div className="grid grid-cols-6 items-center">
+        {navElements.map((element) => (
+          <Button
+            key={element}
+            variant="nav"
+            size="sm"
+            onClick={() => addElement(element as ElementType)}
+          >
+            {element}
+          </Button>
+        ))}
+      </div>
+      <div className="flex justify-between items-center ">
+        <ColorPicker />
+        {largeWindow &&
+          (isExpanded ? (
+            <Minimize
+              className="cursor-pointer h-5 w-5 z-10"
+              color="currentColor"
+              onClick={() => setIsExpanded((prev) => !prev)}
+            />
+          ) : (
+            <Expand
+              className="cursor-pointer h-5 w-5 z-10"
+              color="currentColor"
+              onClick={() => setIsExpanded((prev) => !prev)}
+            />
+          ))}
+      </div>
     </nav>
   );
 };

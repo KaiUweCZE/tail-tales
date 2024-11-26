@@ -277,10 +277,11 @@ p {
 
 .file-navigation {
   display: grid;
+  grid-template-columns: max-content max-content;
   /* grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr)); */
   /* grid-template-columns: repeat(12, 1fr); */
-  grid-auto-flow: column;
-  place-items: center;
+  /*grid-auto-flow: column;*/
+  /*place-items: center;*/
   margin: 0 auto;
   /* background-color: red; */
   column-gap: 0.5rem;

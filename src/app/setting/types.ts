@@ -35,6 +35,8 @@ export interface DefaultConfiguration {
   button?: HTMLElementConfig;
   article?: HTMLElementConfig;
   hr?: HTMLElementConfig;
+  pre?: HTMLElementConfig;
+  code?: HTMLElementConfig;
 }
 
 export type HtmlKeys = keyof Omit<
