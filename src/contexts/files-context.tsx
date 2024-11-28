@@ -45,6 +45,10 @@ export interface FileContextType {
   newInput: (e: InputTypes, parent?: string) => void;
   userConfig: DefaultConfiguration | null;
   setUserConfig: Dispatch<SetStateAction<DefaultConfiguration | null>>;
+  allConfigs: DefaultConfiguration[];
+  setAllConfigs: Dispatch<SetStateAction<DefaultConfiguration[]>>;
+  configsInit: boolean;
+  setConfigsInit: Dispatch<SetStateAction<boolean>>;
   currentFile: FileElement[] | null;
   setCurrentFile: Dispatch<SetStateAction<FileElement[] | null>>;
   currentFileState: { name: string; id: string };
@@ -77,6 +81,8 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
   const [userConfig, setUserConfig] = useState<DefaultConfiguration | null>(
     null
   );
+  const [allConfigs, setAllConfigs] = useState<DefaultConfiguration[]>([]);
+  const [configsInit, setConfigsInit] = useState(false);
   const [currentFile, setCurrentFile] = useState<FileElement[] | null>(null);
   const [currentFileState, setCurrentFileState] = useState({
     name: "",
@@ -123,6 +129,10 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     setInputName,
     userConfig,
     setUserConfig,
+    allConfigs,
+    setAllConfigs,
+    configsInit,
+    setConfigsInit,
     activeFolder,
     setActiveFolder,
   };

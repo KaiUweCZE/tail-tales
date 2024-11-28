@@ -11,7 +11,7 @@ const buttonVariants = cva(
   {
     variants: {
       intent: {
-        primary: "bg-slate-950 hover:bg-slate-800 text-amber-100",
+        primary: "bg-slate-950 hover:bg-slate-900 text-amber-100",
         secondary: "bg-gray-200 hover:bg-gray-300 text-gray-900",
         ternary: "transparent justify-center items-center",
       },
@@ -23,7 +23,7 @@ const buttonVariants = cva(
         default: "text-base",
         sm: "text-xs max-h-fit rounded-sm",
         md: "text-lg",
-        lg: "py-3 px-8 rounded-lg text-xl font-semibold",
+        lg: "py-3 px-4 text-xl rounded-md font-semibold w-full",
       },
       variant: {
         hero: "bg-cyan-400 hover:bg-cyan-600",
@@ -117,7 +117,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       >
         <span
           className={cn(
-            "flex items-center gap-2 px-2",
+            "flex items-center justify-center gap-2 px-2",
             isLoading && "invisible",
             active &&
               (variant === "toggle" || variant === "column") &&

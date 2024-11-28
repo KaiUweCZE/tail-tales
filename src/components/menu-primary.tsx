@@ -53,6 +53,19 @@ const MenuPrimary = () => {
           </li>
         )}
         {isAuthenticated && (
+          <li key="storage">
+            <Link href="/storage">
+              <span
+                className={clsx(``, {
+                  "text-amber-200": pathname === "/storage",
+                })}
+              >
+                Storage
+              </span>
+            </Link>
+          </li>
+        )}
+        {isAuthenticated && (
           <li
             className="flex justify-between w-min-16 items-center font-bold capitalize cursor-pointer hover:bg-amber-50/20 px-2"
             onClick={() => setIsActive(!isActive)}
