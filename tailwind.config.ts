@@ -39,7 +39,7 @@ const config: Config = {
     },
     {
       // Margin a padding
-      pattern: /[mp][tlrxy]?-[0-9]+/,
+      pattern: /[mp][tblrxy]?-[0-9]+/,
     },
     {
       // Flex a Grid
@@ -48,6 +48,15 @@ const config: Config = {
     {
       // Border radius
       pattern: /rounded(-[tlrb][lr])?-([0-9]+|full|none)/,
+    },
+    {
+      // Border style
+      pattern: /border(-solid|-dashed|-dotted|-none)?/,
+    },
+    {
+      // Border color
+      pattern:
+        /border-(?:transparent|current|black|white|gray|red|blue|green|yellow|purple|pink|indigo)-[0-9]{2,3}/,
     },
     {
       // Border width

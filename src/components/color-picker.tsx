@@ -1,9 +1,13 @@
+import { WorkspaceContext } from "@/ui/workspace/context/workspace-context";
 import { Paintbrush } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 const ColorPicker = () => {
-  const [color, setColor] = useState("#aaa");
+  const context = useContext(WorkspaceContext);
 
+  if (!context) return <span>Context is missing</span>;
+
+  const { color, setColor } = context;
   return (
     <div className="flex items-center gap-1">
       <div className="relative flex items-center rounded-lg p-2 border border-slate-700">

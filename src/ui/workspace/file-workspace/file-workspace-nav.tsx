@@ -1,9 +1,10 @@
 import Button from "@/ui/primitives/button";
 import { ElementType } from "./types";
 import { Expand, Minimize } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import { navElements } from "./data";
 import ColorPicker from "@/components/color-picker";
+import { WorkspaceContext } from "../context/workspace-context";
 
 interface FileNavProsp {
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
@@ -18,21 +19,27 @@ const FileWorkspaceNav = ({
   setIsExpanded,
   isExpanded,
 }: FileNavProsp) => {
+  const context = useContext(WorkspaceContext);
+
   return (
     <nav className="file-navigation bg-slate-800 border-b mb-1 border-slate-400 h-fit p-1 rounded-t-lg">
       <div className="grid grid-cols-6 items-center">
-        {navElements.map((element) => (
-          <Button
-            key={element}
-            variant="nav"
-            size="sm"
-            onClick={() => addElement(element as ElementType)}
-          >
-            {element}
-          </Button>
+        {context?.navState.map((element) => (
+          <React.Fragment key={element.name}>
+            {element.active && (
+              <Button
+                key={element.name}
+                variant="nav"
+                size="sm"
+                onClick={() => addElement(element.name as ElementType)}
+              >
+                {element.name}
+              </Button>
+            )}
+          </React.Fragment>
         ))}
       </div>
-      <div className="flex justify-between items-center ">
+      <div className="flex gap-2 justify-between items-center w-full bg-red-500">
         <ColorPicker />
         {largeWindow &&
           (isExpanded ? (
