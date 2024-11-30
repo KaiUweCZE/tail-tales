@@ -29,6 +29,8 @@ const AsideWorkspace = ({
     setCurrentFile,
     currentFileState,
     setCurrentFileState,
+    setColor,
+    setFont,
   } = context;
   const rootFolders = folders.filter(
     (folder) => folder.parentId === "null" || folder.parentId === null
@@ -99,6 +101,8 @@ const AsideWorkspace = ({
                 currentFileState={currentFileState}
                 setCurrentFile={setCurrentFile}
                 setCurrentFileState={setCurrentFileState}
+                setColor={setColor}
+                setFont={setFont}
               />
             ))}
           </ul>

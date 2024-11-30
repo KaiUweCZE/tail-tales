@@ -63,6 +63,8 @@ const useFetchFiles = () => {
         return {
           id: file.id,
           name: file.name,
+          rootFont: file.rootFont ?? "",
+          rootBg: file.rootBg ?? "",
           elements,
           folderId: file.folderId || undefined,
           folderIndex: file.folderIndex || undefined,

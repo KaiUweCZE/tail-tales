@@ -40,6 +40,8 @@ export interface UserFile {
   userId: string;
   createdAt: Date;
   updatedAt: Date;
+  rootBg?: string;
+  rootFont?: string;
 }
 
 export interface UserFolder {

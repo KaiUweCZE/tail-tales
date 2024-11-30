@@ -10,6 +10,8 @@ interface UserFileInputs {
   currentFileState: { id: string; name: string };
   setCurrentFile: Dispatch<SetStateAction<FileElement[] | null>>;
   setCurrentFileState: Dispatch<SetStateAction<{ id: string; name: string }>>;
+  setColor: Dispatch<SetStateAction<string>>;
+  setFont: Dispatch<SetStateAction<string>>;
 }
 
 const UsersFile = ({
@@ -17,6 +19,8 @@ const UsersFile = ({
   setCurrentFileState,
   setCurrentFile,
   currentFileState,
+  setColor,
+  setFont,
 }: UserFileInputs) => {
   const [isCofigurated, setIsConfigurated] = useState(false);
   const handleSelectFile = (file: UserFile) => {
@@ -24,6 +28,8 @@ const UsersFile = ({
 
     setCurrentFile(file.elements);
     setCurrentFileState({ name: file.name, id: file.id });
+    setColor(() => file.rootBg ?? "");
+    setFont(() => file.rootFont ?? "");
   };
   return (
     <li className="flex gap-1 pr-2 items-center justify-between relative">

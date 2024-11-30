@@ -22,15 +22,8 @@ const config: Config = {
   plugins: [],
   safelist: [
     {
-      // bacground
       pattern:
-        /bg-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-[0-9]+/,
-      variants: ["hover"],
-    },
-    {
-      // text-color
-      pattern:
-        /text-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-[0-9]+/,
+        /(bg|text|border)-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-[0-9]+/,
       variants: ["hover"],
     },
     {
@@ -47,17 +40,13 @@ const config: Config = {
     },
     {
       // Border radius
-      pattern: /rounded(-[tlrb][lr])?-([0-9]+|full|none)/,
+      pattern: /rounded(-[tlrb][lr])?-(?:sm|md|lg|xl|2xl|3xl|full|none)/,
     },
     {
       // Border style
       pattern: /border(-solid|-dashed|-dotted|-none)?/,
     },
-    {
-      // Border color
-      pattern:
-        /border-(?:transparent|current|black|white|gray|red|blue|green|yellow|purple|pink|indigo)-[0-9]{2,3}/,
-    },
+
     {
       // Border width
       pattern: /border(-[tlrb])?-[0-9]+/,
@@ -70,6 +59,14 @@ const config: Config = {
       // Font weight
       pattern:
         /font-(thin|extralight|light|normal|medium|semibold|bold|extrabold|black)/,
+    },
+
+    {
+      pattern:
+        /(?:underline|line-through|overline|no-underline|uppercase|lowercase|capitalize|normal-case)/,
+    },
+    {
+      pattern: /decoration-(?:solid|double|dotted|dashed|wavy)/,
     },
     {
       // Gap
@@ -88,7 +85,9 @@ const config: Config = {
     {
       pattern: /(scale|rotate|translate)-[0-9]+/,
     },
-
+    {
+      pattern: /shadow(?:-(?:sm|md|lg|xl|2xl|inner|none))?/,
+    },
     // overflow
     {
       pattern: /overflow-(auto|hidden|visible|scroll)/,
@@ -99,23 +98,19 @@ const config: Config = {
       pattern: /(static|fixed|absolute|relative|sticky)/,
     },
     {
-      // Top, Right, Bottom, Left
-      pattern: /[trbl]-(0|auto|full)/,
+      // Position properties
+      pattern:
+        /(?:top|right|bottom|left|inset|[trbl])-(?:0|px|auto|full|\[?-?\d+(%|px|rem|em|vh|vw)\]?)/,
     },
-
     {
       // Z-index
       pattern: /z-[0-9]+/,
     },
     {
       // List styles
-      pattern:
-        /list-(none|disc|decimal|square|inside|outside)|list-image-[a-zA-Z0-9]+/,
+      pattern: /list-(?:none|disc|decimal|inside|outside)$/,
     },
-    {
-      // Shadow
-      pattern: /shadow(-sm|-md|-lg|-xl|-2xl|-inner|-none)?/,
-    },
+
     {
       // Cursor
       pattern: /cursor-(pointer|default|wait|text|move|not-allowed|help|none)/,

@@ -55,6 +55,10 @@ export interface FileContextType {
   setCurrentFileState: Dispatch<SetStateAction<{ name: string; id: string }>>;
   activeFolder: { name: string; index: number };
   setActiveFolder: Dispatch<SetStateAction<{ name: string; index: number }>>;
+  color: string;
+  setColor: Dispatch<SetStateAction<string>>;
+  font: string;
+  setFont: Dispatch<SetStateAction<string>>;
 }
 
 export const FileContext = createContext<FileContextType | undefined>(
@@ -89,6 +93,8 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     id: "",
   });
   const [activeFolder, setActiveFolder] = useState({ name: "", index: 0 });
+  const [color, setColor] = useState("");
+  const [font, setFont] = useState("");
 
   const newInput = (e: InputTypes, parent?: string) => {
     setInputName("");
@@ -135,6 +141,10 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     setConfigsInit,
     activeFolder,
     setActiveFolder,
+    color,
+    setColor,
+    font,
+    setFont,
   };
 
   return (

@@ -13,9 +13,9 @@ import useEditFile from "../hooks/useEditFile";
 import useSave from "../hooks/useSave";
 import SuccessfulMessage from "@/components/successfull-message";
 import FileWorkspaceNav from "./file-workspace-nav";
-import { Expand, Loader2, Minimize, Save } from "lucide-react";
+import { Loader2, Save } from "lucide-react";
 import { handlePaste } from "./utils/handlePaste";
-import { WorkspaceContext } from "../context/workspace-context";
+import { FileContext } from "@/contexts/files-context";
 
 interface FileWorkspaceProps {
   userConfig: DefaultConfiguration;
@@ -31,17 +31,16 @@ const FileWorkspace = ({
   largeWindow,
 }: FileWorkspaceProps) => {
   const addCss = isExpanded ? "expanded" : "";
-  const worksapaceContext = useContext(WorkspaceContext);
+  const context = useContext(FileContext);
   const editableRef = useRef<HTMLDivElement>(null);
   const [isSuccses, setIsSuccess] = useState<"default" | "saved" | "error">(
     "default"
   );
   const { currentFile, addElement, currentFileState } = useEditFile(userConfig);
 
-  if (!worksapaceContext) return <span>Context is missing</span>;
+  if (!context) return <span>Context is missing</span>;
 
-  const { color } = worksapaceContext;
-
+  const { color, font } = context;
   const {
     saveFile,
     isSaving,
@@ -78,8 +77,13 @@ const FileWorkspace = ({
           <div
             ref={editableRef}
             id="rootElement"
-            style={{ backgroundColor: color }}
-            className={`w-full scroll-primary relative inter h-[80dvh] max-h-80dvh overflow-y-auto text-amber-50 p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1`}
+            style={{
+              backgroundColor: color,
+              //fontFamily: font,
+            }}
+            className={`file-content w-full scroll-primary ${
+              font ?? "inter"
+            } relative h-[80dvh] max-h-80dvh overflow-y-auto text-amber-50 p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1`}
             contentEditable
             autoFocus
             suppressContentEditableWarning

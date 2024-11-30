@@ -1,6 +1,7 @@
 import { editFile } from "@/app/workspace/action";
 import { FileContext } from "@/contexts/files-context";
 import { UserFile } from "@/types/types";
+import { log } from "console";
 import { useSession } from "next-auth/react";
 import { useContext, useState } from "react";
 
@@ -22,7 +23,8 @@ const useSave = ({ onSaveSuccess, onSaveError }: UseSaveProps) => {
 
   if (!context) throw new Error("Context is missing");
 
-  const { files, setFiles, currentFile, currentFileState } = context;
+  const { files, setFiles, currentFile, currentFileState, color, font } =
+    context;
 
   // updates file on backend and frontend
   const saveFile = async () => {
@@ -34,8 +36,11 @@ const useSave = ({ onSaveSuccess, onSaveError }: UseSaveProps) => {
     }
 
     try {
+      console.log("save hook: ", color);
       const updatedFile = await editFile(currentFileState.id, session.user.id, {
         elements: currentFile,
+        rootBG: color,
+        rootFont: font,
       });
 
       if (updatedFile) {
