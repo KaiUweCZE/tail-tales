@@ -6,6 +6,7 @@ import { navElements } from "./data";
 import ColorPicker from "@/components/color-picker";
 import { WorkspaceContext } from "../context/workspace-context";
 import FontPicker from "@/components/font-picker";
+import TextColorPicker from "@/components/text-color-picker";
 
 interface FileNavProsp {
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
@@ -41,6 +42,7 @@ const FileWorkspaceNav = ({
         ))}
       </div>
       <div className="flex gap-2 justify-between items-center">
+        <TextColorPicker />
         <ColorPicker />
         <FontPicker />
         {largeWindow &&

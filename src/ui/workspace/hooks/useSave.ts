@@ -36,7 +36,6 @@ const useSave = ({ onSaveSuccess, onSaveError }: UseSaveProps) => {
     }
 
     try {
-      console.log("save hook: ", color);
       const updatedFile = await editFile(currentFileState.id, session.user.id, {
         elements: currentFile,
         rootBG: color,
@@ -49,6 +48,8 @@ const useSave = ({ onSaveSuccess, onSaveError }: UseSaveProps) => {
             file.id === currentFileState.id
               ? {
                   ...file,
+                  rootBg: color,
+                  rootFont: font,
                   elements: currentFile,
                   updatedAt: new Date(),
                 }

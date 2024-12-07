@@ -1,26 +1,27 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
-interface OutsideProps {
-  className: string;
-  state: { index: number; active: boolean };
-  setState: Dispatch<SetStateAction<{ index: number; active: boolean }>>;
+interface UseClickOutsideReturn<T extends HTMLElement> {
+  ref: RefObject<T>;
+  active: boolean;
+  setActive: (value: boolean) => void;
 }
 
-const useClickOutside = ({ setState, className }: OutsideProps) => {
+const useClickOutside = <T extends HTMLElement>(): UseClickOutsideReturn<T> => {
+  const [active, setActive] = useState(false);
+  const ref = useRef<T>(null);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      const clickedElement = target.closest(`.${className}`);
-
-      if (!clickedElement) {
-        setState({ index: 0, active: false });
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setActive(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [className, setState]);
+  }, []);
+
+  return { ref, active, setActive };
 };
 
 export default useClickOutside;

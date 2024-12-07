@@ -40,7 +40,7 @@ const FileWorkspace = ({
 
   if (!context) return <span>Context is missing</span>;
 
-  const { color, font } = context;
+  const { color, font, fontColor } = context;
   const {
     saveFile,
     isSaving,
@@ -83,7 +83,7 @@ const FileWorkspace = ({
             }}
             className={`file-content w-full scroll-primary ${
               font ?? "inter"
-            } relative h-[80dvh] max-h-80dvh overflow-y-auto text-amber-50 p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1`}
+            } relative h-[80dvh] max-h-80dvh overflow-y-auto ${fontColor} p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1`}
             contentEditable
             autoFocus
             suppressContentEditableWarning
