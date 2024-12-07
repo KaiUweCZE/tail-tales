@@ -31,6 +31,7 @@ const inputVariants = cva(
         editor: "bg-slate-700 text-amber-50",
         folder: "mx-auto",
         file: "mx-auto",
+        textColor: "w-36",
       },
       icon: {
         true: "pl-10", // extra padding

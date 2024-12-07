@@ -63,7 +63,7 @@ const config: Config = {
 
     {
       pattern:
-        /(?:underline|line-through|overline|no-underline|uppercase|lowercase|capitalize|normal-case)/,
+        /(?:underline|italic|line-through|overline|no-underline|uppercase|lowercase|capitalize|normal-case)/,
     },
     {
       pattern: /decoration-(?:solid|double|dotted|dashed|wavy)/,

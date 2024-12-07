@@ -1,5 +1,4 @@
 import { FileContext } from "@/contexts/files-context";
-import { WorkspaceContext } from "@/ui/workspace/context/workspace-context";
 import { Type } from "lucide-react";
 import { useContext } from "react";
 

@@ -27,6 +27,7 @@ const buttonVariants = cva(
       },
       variant: {
         hero: "bg-cyan-400 hover:bg-cyan-600",
+        outline: "bg-transparent border border-slate-700",
         nav: "bg-transparent hover:bg-transparent ",
         error: "bg-error hover:bg-red-700 text-amber",
         light: "bg-slate-700 hover:bg-slate-950 disabled:hover:bg-slate-700",
@@ -50,11 +51,9 @@ const buttonVariants = cva(
         className: "border-b-2 border-amber-200 transparent",
       },
       {
-        /*
-        variant: "nav",
+        variant: "outline",
         size: "sm",
-        className: "bg-transparent",
-      */
+        className: "p-0 py-2 rounded-lg",
       },
     ],
     defaultVariants: {
