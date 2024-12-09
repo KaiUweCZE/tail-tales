@@ -3,6 +3,7 @@ import { DefaultConfiguration } from "@/app/setting/types";
 import {
   InputState,
   InputTypes,
+  TextColor,
   UserFile,
   UserFolderWithoutId,
 } from "@/types/types";
@@ -45,12 +46,22 @@ export interface FileContextType {
   newInput: (e: InputTypes, parent?: string) => void;
   userConfig: DefaultConfiguration | null;
   setUserConfig: Dispatch<SetStateAction<DefaultConfiguration | null>>;
+  allConfigs: DefaultConfiguration[];
+  setAllConfigs: Dispatch<SetStateAction<DefaultConfiguration[]>>;
+  configsInit: boolean;
+  setConfigsInit: Dispatch<SetStateAction<boolean>>;
   currentFile: FileElement[] | null;
   setCurrentFile: Dispatch<SetStateAction<FileElement[] | null>>;
   currentFileState: { name: string; id: string };
   setCurrentFileState: Dispatch<SetStateAction<{ name: string; id: string }>>;
   activeFolder: { name: string; index: number };
   setActiveFolder: Dispatch<SetStateAction<{ name: string; index: number }>>;
+  color: string;
+  setColor: Dispatch<SetStateAction<string>>;
+  font: string;
+  setFont: Dispatch<SetStateAction<string>>;
+  fontColor: TextColor | null;
+  setFontColor: Dispatch<SetStateAction<TextColor | null>>;
 }
 
 export const FileContext = createContext<FileContextType | undefined>(
@@ -77,12 +88,17 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
   const [userConfig, setUserConfig] = useState<DefaultConfiguration | null>(
     null
   );
+  const [allConfigs, setAllConfigs] = useState<DefaultConfiguration[]>([]);
+  const [configsInit, setConfigsInit] = useState(false);
   const [currentFile, setCurrentFile] = useState<FileElement[] | null>(null);
   const [currentFileState, setCurrentFileState] = useState({
     name: "",
     id: "",
   });
   const [activeFolder, setActiveFolder] = useState({ name: "", index: 0 });
+  const [color, setColor] = useState("");
+  const [fontColor, setFontColor] = useState<TextColor | null>("text-amber-50");
+  const [font, setFont] = useState("");
 
   const newInput = (e: InputTypes, parent?: string) => {
     setInputName("");
@@ -123,8 +139,18 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     setInputName,
     userConfig,
     setUserConfig,
+    allConfigs,
+    setAllConfigs,
+    configsInit,
+    setConfigsInit,
     activeFolder,
     setActiveFolder,
+    color,
+    setColor,
+    font,
+    setFont,
+    fontColor,
+    setFontColor,
   };
 
   return (

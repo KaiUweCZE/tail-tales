@@ -5,8 +5,12 @@ import { addElement } from "../file-workspace/utils/add-element";
 import useFileObserver from "./useFileObserve";
 import useElementHighlight from "./useElementHighlight";
 import { DefaultConfiguration } from "@/app/setting/types";
+import { TextColor } from "@/types/types";
 
-const useEditFile = (userConfig: DefaultConfiguration) => {
+const useEditFile = (
+  userConfig: DefaultConfiguration,
+  fontColor?: TextColor | null
+) => {
   const { currentFile, currentFileState } = useFileObserver({
     rootElementId: "rootElement",
   });
@@ -34,6 +38,7 @@ const useEditFile = (userConfig: DefaultConfiguration) => {
       isSelectionWithinEditor,
       handleElementClick,
       setSelectedElementId,
+      fontColor,
     });
   };
 

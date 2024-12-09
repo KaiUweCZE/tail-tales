@@ -5,6 +5,7 @@ import useFetchFiles from "@/hooks/useFetchFiles";
 import useFetchFolders from "@/hooks/useFetchFolders";
 import useWindowSize from "@/hooks/useWindowSize";
 import AsideWorkspace from "@/ui/workspace/aside-workspace/aside-workspace";
+import { WorkspaceProvider } from "@/ui/workspace/context/workspace-context";
 import FileWorkspace from "@/ui/workspace/file-workspace/file-workspace";
 import MobileNav from "@/ui/workspace/mobile-nav";
 import UiConfig from "@/ui/workspace/ui-config/ui-config";
@@ -34,7 +35,7 @@ const WorkspacePage = () => {
     );
 
   return (
-    <>
+    <WorkspaceProvider>
       <main
         className={`workspace grid grid-cols-4 gap-2 h-min-50 max-h-[90dvh] overflow-hidden media-workspace relative z-10 ${expandedCss}`}
       >
@@ -54,7 +55,7 @@ const WorkspacePage = () => {
           isExpanded={isExpanded}
         />
       </main>
-    </>
+    </WorkspaceProvider>
   );
 };
 

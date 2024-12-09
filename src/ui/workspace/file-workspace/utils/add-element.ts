@@ -2,6 +2,7 @@ import { DefaultConfiguration } from "@/app/setting/types";
 import { ElementType } from "../types";
 import { createId } from "./create-id";
 import { selectedElement } from "../../ui-config/utils/selectElement";
+import { TextColor } from "@/types/types";
 
 interface AddElementOptions {
   element: ElementType;
@@ -9,6 +10,7 @@ interface AddElementOptions {
   isSelectionWithinEditor: () => boolean;
   handleElementClick: (e: Event) => void;
   setSelectedElementId: (id: string) => void;
+  fontColor?: TextColor | null;
 }
 
 export const addElement = ({
@@ -17,6 +19,7 @@ export const addElement = ({
   isSelectionWithinEditor,
   handleElementClick,
   setSelectedElementId,
+  fontColor,
 }: AddElementOptions) => {
   const selection = window.getSelection();
   const range = selection?.getRangeAt(0);
@@ -30,6 +33,10 @@ export const addElement = ({
 
   if (userConfig[element]) {
     newElement.className = userConfig[element]?.className ?? "";
+  }
+
+  if (fontColor) {
+    newElement.classList.add(fontColor);
   }
 
   newElement.id = itemId;

@@ -1,4 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Button from "@/ui/primitives/button";
 import { DefaultConfiguration } from "@/app/setting/types";
 import { handleKeyDown } from "./utils/handleKeyDown";
@@ -6,26 +13,39 @@ import useEditFile from "../hooks/useEditFile";
 import useSave from "../hooks/useSave";
 import SuccessfulMessage from "@/components/successfull-message";
 import FileWorkspaceNav from "./file-workspace-nav";
-import { Expand, Loader2, Minimize, Save } from "lucide-react";
+import { Loader2, Save } from "lucide-react";
 import { handlePaste } from "./utils/handlePaste";
+import { FileContext } from "@/contexts/files-context";
+
+interface FileWorkspaceProps {
+  userConfig: DefaultConfiguration;
+  setIsExpanded: Dispatch<SetStateAction<boolean>>;
+  isExpanded: boolean;
+  largeWindow: boolean;
+}
 
 const FileWorkspace = ({
   userConfig,
   setIsExpanded,
   isExpanded,
   largeWindow,
-}: {
-  userConfig: DefaultConfiguration;
-  setIsExpanded: Dispatch<SetStateAction<boolean>>;
-  isExpanded: boolean;
-  largeWindow: boolean;
-}) => {
+}: FileWorkspaceProps) => {
   const addCss = isExpanded ? "expanded" : "";
+  const context = useContext(FileContext);
   const editableRef = useRef<HTMLDivElement>(null);
   const [isSuccses, setIsSuccess] = useState<"default" | "saved" | "error">(
     "default"
   );
-  const { currentFile, addElement, currentFileState } = useEditFile(userConfig);
+
+  if (!context) return <span>Context is missing</span>;
+
+  const { color, font, fontColor, setColor, setFontColor, setFont } = context;
+  const { currentFile, addElement, currentFileState } = useEditFile(
+    userConfig,
+    fontColor
+  );
+
+  const navProps = { color, setColor, setFont, setFontColor, font, fontColor };
   const {
     saveFile,
     isSaving,
@@ -47,32 +67,25 @@ const FileWorkspace = ({
       editableRef.current.focus();
     }
   }, []);
-
+  // *:${fontColor}
   return (
     <div className={`file-wrapper rounded-lg ${addCss}`}>
-      {largeWindow &&
-        (isExpanded ? (
-          <Minimize
-            className="cursor-pointer absolute h-5 w-5 inset-1 z-10"
-            color="currentColor"
-            onClick={() => setIsExpanded((prev) => !prev)}
-          />
-        ) : (
-          <Expand
-            className="cursor-pointer absolute h-5 w-5 inset-1 z-10"
-            color="currentColor"
-            onClick={() => setIsExpanded((prev) => !prev)}
-          />
-        ))}
-
       <div className="bg-slate-800 rounded-lg">
-        <FileWorkspaceNav addElement={addElement} />
+        <FileWorkspaceNav
+          addElement={addElement}
+          largeWindow={largeWindow}
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
+          navContextProps={navProps}
+        />
 
         {currentFile ? (
           <div
             ref={editableRef}
             id="rootElement"
-            className="w-full scroll-primary relative inter h-[80dvh] max-h-80dvh overflow-y-auto  bg-slate-800 text-amber-50 p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1"
+            className={`file-content w-full ${color} scroll-primary ${
+              font ?? "inter"
+            } relative h-[80dvh] max-h-80dvh ${fontColor} overflow-y-auto p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1`}
             contentEditable
             autoFocus
             suppressContentEditableWarning
@@ -117,6 +130,7 @@ const FileWorkspace = ({
           >
             Save
           </Button>
+          <Button onClick={() => console.log("color: ", color)}>logger</Button>
         </div>
       </div>
       {isSuccses === "saved" && (

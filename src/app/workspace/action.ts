@@ -123,6 +123,9 @@ export const editFile = async (
   userId: string,
   updateData: {
     elements: FileElement[];
+    rootBG?: string;
+    rootFont?: string;
+    rootFontColor?: string;
     name?: string;
   }
 ) => {
@@ -133,12 +136,12 @@ export const editFile = async (
       throw new Error("Unauthorized");
     }
 
-    // Validace elementů
+    // Are elements valid?
     if (!validateFileElements(updateData.elements)) {
       throw new Error("Invalid elements structure");
     }
 
-    // Převedeme datumy na ISO string pro uložení
+    // transform date to ISO formatt
     const elementsForDb = updateData.elements.map((element) => ({
       ...element,
       createdAt: element.createdAt.toISOString(),
@@ -148,16 +151,19 @@ export const editFile = async (
     const updatedFile = await prisma.file.update({
       where: {
         id: fileId,
-        userId, // Přidáno pro dodatečnou bezpečnost
+        userId,
       },
       data: {
         elements: elementsForDb,
+        rootBg: updateData.rootBG ?? "",
+        rootFont: updateData.rootFont ?? "",
+        rootFontColor: updateData.rootFontColor ?? "",
         name: updateData.name,
         updatedAt: new Date(),
       },
     });
 
-    // Převedeme zpět na FileElement[] s Date objekty
+    // transform to FileElement[] with Date objects
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const transformedElements = updatedFile.elements as any[];
     const elementsWithDates = transformedElements.map((element) => ({
@@ -166,9 +172,14 @@ export const editFile = async (
       updatedAt: new Date(element.updatedAt),
     }));
 
+    console.log(updatedFile);
+
     return {
       id: updatedFile.id,
       name: updatedFile.name,
+      rootBg: updatedFile.rootBg,
+      rootFont: updatedFile.rootFont,
+      rootFontColor: updatedFile.rootFontColor,
       elements: elementsWithDates,
       folderId: updatedFile.folderId || undefined,
       folderIndex: updatedFile.folderIndex || undefined,
