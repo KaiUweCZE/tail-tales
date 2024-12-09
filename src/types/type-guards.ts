@@ -53,3 +53,14 @@ export const isTextColor = (value: string): value is TextColor => {
 
   return isValidColor(parts[1]) && isValidShade(parts[2]);
 };
+
+const specialTypes = ["bg-white", "bg-custom", "bg-black", "bg-transparent"];
+
+export const isBgColor = (value: string): value is string => {
+  const parts = value.split("-");
+  if (specialTypes.includes(value)) return true;
+  if (parts.length !== 3) return false;
+  if (parts[0] !== "bg") return false;
+
+  return isValidColor(parts[1]) && isValidShade(parts[2]);
+};

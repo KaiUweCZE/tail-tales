@@ -1,4 +1,4 @@
-import { UserFile } from "@/types/types";
+import { TextColor, UserFile } from "@/types/types";
 import { Dispatch, SetStateAction, useState } from "react";
 import { FileElement } from "../file-workspace/types";
 import { NotepadTextIcon, Settings2 } from "lucide-react";
@@ -12,6 +12,7 @@ interface UserFileInputs {
   setCurrentFileState: Dispatch<SetStateAction<{ id: string; name: string }>>;
   setColor: Dispatch<SetStateAction<string>>;
   setFont: Dispatch<SetStateAction<string>>;
+  setFontColor: Dispatch<SetStateAction<TextColor | null>>;
 }
 
 const UsersFile = ({
@@ -21,15 +22,16 @@ const UsersFile = ({
   currentFileState,
   setColor,
   setFont,
+  setFontColor,
 }: UserFileInputs) => {
   const [isCofigurated, setIsConfigurated] = useState(false);
   const handleSelectFile = (file: UserFile) => {
-    console.log("file:", file);
-
     setCurrentFile(file.elements);
     setCurrentFileState({ name: file.name, id: file.id });
     setColor(() => file.rootBg ?? "");
     setFont(() => file.rootFont ?? "");
+    setFontColor(() => (file.rootFontColor as TextColor) ?? null);
+    console.log("file:", file);
   };
   return (
     <li className="flex gap-1 pr-2 items-center justify-between relative">

@@ -42,6 +42,7 @@ export interface UserFile {
   updatedAt: Date;
   rootBg?: string;
   rootFont?: string;
+  rootFontColor?: string;
 }
 
 export interface UserFolder {

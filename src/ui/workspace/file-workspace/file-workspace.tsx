@@ -36,11 +36,16 @@ const FileWorkspace = ({
   const [isSuccses, setIsSuccess] = useState<"default" | "saved" | "error">(
     "default"
   );
-  const { currentFile, addElement, currentFileState } = useEditFile(userConfig);
 
   if (!context) return <span>Context is missing</span>;
 
-  const { color, font, fontColor } = context;
+  const { color, font, fontColor, setColor, setFontColor, setFont } = context;
+  const { currentFile, addElement, currentFileState } = useEditFile(
+    userConfig,
+    fontColor
+  );
+
+  const navProps = { color, setColor, setFont, setFontColor, font, fontColor };
   const {
     saveFile,
     isSaving,
@@ -62,7 +67,7 @@ const FileWorkspace = ({
       editableRef.current.focus();
     }
   }, []);
-
+  // *:${fontColor}
   return (
     <div className={`file-wrapper rounded-lg ${addCss}`}>
       <div className="bg-slate-800 rounded-lg">
@@ -71,19 +76,16 @@ const FileWorkspace = ({
           largeWindow={largeWindow}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
+          navContextProps={navProps}
         />
 
         {currentFile ? (
           <div
             ref={editableRef}
             id="rootElement"
-            style={{
-              backgroundColor: color,
-              //fontFamily: font,
-            }}
-            className={`file-content w-full scroll-primary ${
+            className={`file-content w-full ${color} scroll-primary ${
               font ?? "inter"
-            } relative h-[80dvh] max-h-80dvh overflow-y-auto ${fontColor} p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1`}
+            } relative h-[80dvh] max-h-80dvh ${fontColor} overflow-y-auto p-2 max-w-full font-mono rounded-b focus:outline-none focus:outline-amber-100 focus:outline-1`}
             contentEditable
             autoFocus
             suppressContentEditableWarning
@@ -128,6 +130,7 @@ const FileWorkspace = ({
           >
             Save
           </Button>
+          <Button onClick={() => console.log("color: ", color)}>logger</Button>
         </div>
       </div>
       {isSuccses === "saved" && (

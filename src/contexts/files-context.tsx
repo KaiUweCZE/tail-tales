@@ -60,8 +60,8 @@ export interface FileContextType {
   setColor: Dispatch<SetStateAction<string>>;
   font: string;
   setFont: Dispatch<SetStateAction<string>>;
-  fontColor: TextColor;
-  setFontColor: Dispatch<SetStateAction<TextColor>>;
+  fontColor: TextColor | null;
+  setFontColor: Dispatch<SetStateAction<TextColor | null>>;
 }
 
 export const FileContext = createContext<FileContextType | undefined>(
@@ -97,7 +97,7 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
   });
   const [activeFolder, setActiveFolder] = useState({ name: "", index: 0 });
   const [color, setColor] = useState("");
-  const [fontColor, setFontColor] = useState<TextColor>("text-amber-50");
+  const [fontColor, setFontColor] = useState<TextColor | null>("text-amber-50");
   const [font, setFont] = useState("");
 
   const newInput = (e: InputTypes, parent?: string) => {

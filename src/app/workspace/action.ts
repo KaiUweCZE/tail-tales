@@ -125,6 +125,7 @@ export const editFile = async (
     elements: FileElement[];
     rootBG?: string;
     rootFont?: string;
+    rootFontColor?: string;
     name?: string;
   }
 ) => {
@@ -139,8 +140,6 @@ export const editFile = async (
     if (!validateFileElements(updateData.elements)) {
       throw new Error("Invalid elements structure");
     }
-
-    console.log("root background recieved: ", updateData.rootBG);
 
     // transform date to ISO formatt
     const elementsForDb = updateData.elements.map((element) => ({
@@ -158,6 +157,7 @@ export const editFile = async (
         elements: elementsForDb,
         rootBg: updateData.rootBG ?? "",
         rootFont: updateData.rootFont ?? "",
+        rootFontColor: updateData.rootFontColor ?? "",
         name: updateData.name,
         updatedAt: new Date(),
       },
@@ -172,11 +172,14 @@ export const editFile = async (
       updatedAt: new Date(element.updatedAt),
     }));
 
+    console.log(updatedFile);
+
     return {
       id: updatedFile.id,
       name: updatedFile.name,
       rootBg: updatedFile.rootBg,
       rootFont: updatedFile.rootFont,
+      rootFontColor: updatedFile.rootFontColor,
       elements: elementsWithDates,
       folderId: updatedFile.folderId || undefined,
       folderIndex: updatedFile.folderIndex || undefined,

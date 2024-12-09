@@ -65,6 +65,7 @@ const useFetchFiles = () => {
           name: file.name,
           rootFont: file.rootFont ?? "",
           rootBg: file.rootBg ?? "",
+          rootFontColor: file.rootFontColor ?? "",
           elements,
           folderId: file.folderId || undefined,
           folderIndex: file.folderIndex || undefined,
