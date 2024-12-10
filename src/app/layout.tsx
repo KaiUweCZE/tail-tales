@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://tail-tales.xyz",
   },
-  manifest: "/manifest.json",
+  //manifest: "/manifest.json",
 };
 
 export default function RootLayout({

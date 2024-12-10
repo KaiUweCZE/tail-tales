@@ -14,8 +14,15 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
 
   if (!context) return <span>Context is missing</span>;
 
-  const { files, setCurrentFile, setCurrentFileState, currentFileState } =
-    context;
+  const {
+    files,
+    setCurrentFile,
+    setCurrentFileState,
+    currentFileState,
+    setColor,
+    setFontColor,
+    setFont,
+  } = context;
 
   const logInfo = () => {
     console.log(folderFiles, folder.index, folder.name);
@@ -82,6 +89,9 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
                 file={file}
                 setCurrentFile={setCurrentFile}
                 setCurrentFileState={setCurrentFileState}
+                setColor={setColor}
+                setFont={setFont}
+                setFontColor={setFontColor}
               />
             ))}
           </ul>

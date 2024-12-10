@@ -3,6 +3,7 @@ import { DefaultConfiguration, htmlElements, HtmlKeys } from "../types";
 
 interface PrismaDefaultConfiguration {
   id: string;
+  name: string;
   userId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -12,9 +13,10 @@ interface PrismaDefaultConfiguration {
 export const convertDbConfig = (
   dbConfig: PrismaDefaultConfiguration
 ): DefaultConfiguration => {
-  const { id, userId, createdAt, updatedAt, elementStyles } = dbConfig;
+  const { id, userId, createdAt, updatedAt, name, elementStyles } = dbConfig;
 
   const clientConfig: DefaultConfiguration = {
+    name,
     id,
     userId,
     createdAt: new Date(createdAt),

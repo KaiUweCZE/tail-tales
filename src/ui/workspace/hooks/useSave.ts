@@ -22,7 +22,15 @@ const useSave = ({ onSaveSuccess, onSaveError }: UseSaveProps) => {
 
   if (!context) throw new Error("Context is missing");
 
-  const { files, setFiles, currentFile, currentFileState } = context;
+  const {
+    files,
+    setFiles,
+    currentFile,
+    currentFileState,
+    color,
+    font,
+    fontColor,
+  } = context;
 
   // updates file on backend and frontend
   const saveFile = async () => {
@@ -36,6 +44,9 @@ const useSave = ({ onSaveSuccess, onSaveError }: UseSaveProps) => {
     try {
       const updatedFile = await editFile(currentFileState.id, session.user.id, {
         elements: currentFile,
+        rootBG: color,
+        rootFont: font,
+        rootFontColor: fontColor ?? undefined,
       });
 
       if (updatedFile) {
@@ -44,6 +55,8 @@ const useSave = ({ onSaveSuccess, onSaveError }: UseSaveProps) => {
             file.id === currentFileState.id
               ? {
                   ...file,
+                  rootBg: color,
+                  rootFont: font,
                   elements: currentFile,
                   updatedAt: new Date(),
                 }

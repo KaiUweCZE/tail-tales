@@ -8,7 +8,7 @@ const useCreateFile = () => {
   const [error, setError] = useState<string | null>(null);
 
   if (!context) throw Error("context is missing");
-  const { setFiles } = context;
+  const { setFiles, setIsActive, setInputName } = context;
 
   const handleCreateFile = async (
     userId: string,
@@ -35,6 +35,13 @@ const useCreateFile = () => {
       if (!newFile) throw new Error("Failed to create file");
 
       setFiles((prevFiles) => [...prevFiles, newFile]);
+      setInputName("");
+      setIsActive((prev) => ({
+        ...prev,
+        active: false,
+        inputType: "none",
+        parentId: undefined,
+      }));
 
       return newFile;
     } catch (err) {
