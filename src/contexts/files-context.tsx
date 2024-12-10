@@ -56,8 +56,8 @@ export interface FileContextType {
   setCurrentFileState: Dispatch<SetStateAction<{ name: string; id: string }>>;
   activeFolder: { name: string; index: number };
   setActiveFolder: Dispatch<SetStateAction<{ name: string; index: number }>>;
-  color: string;
-  setColor: Dispatch<SetStateAction<string>>;
+  color: string | null;
+  setColor: Dispatch<SetStateAction<string | null>>;
   font: string;
   setFont: Dispatch<SetStateAction<string>>;
   fontColor: TextColor | null;
@@ -96,7 +96,7 @@ export const FileProvider = ({ children }: { children: ReactNode }) => {
     id: "",
   });
   const [activeFolder, setActiveFolder] = useState({ name: "", index: 0 });
-  const [color, setColor] = useState("");
+  const [color, setColor] = useState<string | null>(null);
   const [fontColor, setFontColor] = useState<TextColor | null>("text-amber-50");
   const [font, setFont] = useState("");
 

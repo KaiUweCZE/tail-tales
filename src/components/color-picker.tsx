@@ -3,34 +3,20 @@ import { isBgColor } from "@/types/type-guards";
 import Button from "@/ui/primitives/button";
 import Input from "@/ui/primitives/input";
 import { Paintbrush } from "lucide-react";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, use, useEffect, useState } from "react";
 
 const ColorPicker = ({
   color,
   setColor,
 }: {
-  color: string;
-  setColor: Dispatch<SetStateAction<string>>;
+  color: string | null;
+  setColor: Dispatch<SetStateAction<string | null>>;
 }) => {
-  console.log("Component rendering, before useState");
-
-  const defaultValue = color ?? "bg-red-900";
-
-  const [inputColor, setInputColor] = useState(defaultValue);
-
+  const [inputColor, setInputColor] = useState(color ?? "");
+  const [isValid, setIsValid] = useState(false);
   useEffect(() => {
-    console.log("useEffect running");
-    console.log("color:", color);
-    console.log("defaultValue:", defaultValue);
-    console.log("inputColor:", inputColor);
-  }, [color, defaultValue, inputColor]);
-  //const [isValid, setIsValid] = useState(false);
+    setInputColor(color ?? "");
+  }, [color]);
   const {
     ref: colorRef,
     active,
@@ -39,17 +25,17 @@ const ColorPicker = ({
 
   console.log(color, "and", inputColor);
 
-  const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
-    //const newColor = e.target.value;
-    // setInputColor(() => newColor);
+  const handleChangeColor = (e: string) => {
+    const newColor = e;
+    setInputColor(() => newColor);
 
-    //const isVerified = isBgColor(newColor);
+    const isVerified = isBgColor(newColor);
 
-    //setIsValid(isVerified);
+    setIsValid(isVerified);
 
-    // if (isVerified) {
-    //setColor(newColor);
-    // }
+    if (isVerified) {
+      setColor(newColor);
+    }
     console.log(inputColor);
   };
 
@@ -70,7 +56,7 @@ const ColorPicker = ({
           variant="textColor"
           placeholder="bg-white etc."
           value={inputColor}
-          onChange={(e) => handleChangeColor(e)}
+          onChange={(e) => handleChangeColor(e.target.value)}
         />
       )}
     </div>

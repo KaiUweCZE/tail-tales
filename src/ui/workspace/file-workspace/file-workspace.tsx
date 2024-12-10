@@ -1,7 +1,7 @@
 import {
   Dispatch,
   SetStateAction,
-  useContext,
+  use,
   useEffect,
   useRef,
   useState,
@@ -31,7 +31,7 @@ const FileWorkspace = ({
   largeWindow,
 }: FileWorkspaceProps) => {
   const addCss = isExpanded ? "expanded" : "";
-  const context = useContext(FileContext);
+  const context = use(FileContext);
   const editableRef = useRef<HTMLDivElement>(null);
   const [isSuccses, setIsSuccess] = useState<"default" | "saved" | "error">(
     "default"
@@ -130,7 +130,6 @@ const FileWorkspace = ({
           >
             Save
           </Button>
-          <Button onClick={() => console.log("color: ", color)}>logger</Button>
         </div>
       </div>
       {isSuccses === "saved" && (

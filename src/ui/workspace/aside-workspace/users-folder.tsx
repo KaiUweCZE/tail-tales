@@ -20,6 +20,7 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
     setCurrentFileState,
     currentFileState,
     setColor,
+    setFontColor,
     setFont,
   } = context;
 
@@ -90,6 +91,7 @@ const UsersFolder = ({ folder }: { folder: UserFolderWithoutId }) => {
                 setCurrentFileState={setCurrentFileState}
                 setColor={setColor}
                 setFont={setFont}
+                setFontColor={setFontColor}
               />
             ))}
           </ul>

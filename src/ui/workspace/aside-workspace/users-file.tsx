@@ -10,7 +10,7 @@ interface UserFileInputs {
   currentFileState: { id: string; name: string };
   setCurrentFile: Dispatch<SetStateAction<FileElement[] | null>>;
   setCurrentFileState: Dispatch<SetStateAction<{ id: string; name: string }>>;
-  setColor: Dispatch<SetStateAction<string>>;
+  setColor: Dispatch<SetStateAction<string | null>>;
   setFont: Dispatch<SetStateAction<string>>;
   setFontColor: Dispatch<SetStateAction<TextColor | null>>;
 }
@@ -28,7 +28,7 @@ const UsersFile = ({
   const handleSelectFile = (file: UserFile) => {
     setCurrentFile(file.elements);
     setCurrentFileState({ name: file.name, id: file.id });
-    setColor(() => file.rootBg ?? "");
+    setColor(() => file.rootBg ?? null);
     setFont(() => file.rootFont ?? "");
     setFontColor(() => (file.rootFontColor as TextColor) ?? null);
     console.log("file:", file);

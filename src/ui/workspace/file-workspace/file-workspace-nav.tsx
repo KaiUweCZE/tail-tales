@@ -1,8 +1,7 @@
 import Button from "@/ui/primitives/button";
 import { ElementType } from "./types";
 import { Expand, Minimize } from "lucide-react";
-import React, { Dispatch, SetStateAction, useContext, useState } from "react";
-import { navElements } from "./data";
+import React, { Dispatch, SetStateAction, use } from "react";
 import ColorPicker from "@/components/color-picker";
 import { WorkspaceContext } from "../context/workspace-context";
 import FontPicker from "@/components/font-picker";
@@ -15,8 +14,8 @@ interface FileNavProsp {
   addElement: (element: ElementType) => void;
   largeWindow: boolean;
   navContextProps: {
-    color: string;
-    setColor: Dispatch<SetStateAction<string>>;
+    color: string | null;
+    setColor: Dispatch<SetStateAction<string | null>>;
     font: string;
     setFont: Dispatch<SetStateAction<string>>;
     fontColor: TextColor | null;
@@ -31,7 +30,7 @@ const FileWorkspaceNav = ({
   isExpanded,
   navContextProps,
 }: FileNavProsp) => {
-  const context = useContext(WorkspaceContext);
+  const context = use(WorkspaceContext);
 
   return (
     <nav className="file-navigation bg-slate-800 border-b mb-1 border-slate-400 h-fit p-1 rounded-t-lg">
@@ -60,6 +59,7 @@ const FileWorkspaceNav = ({
           color={navContextProps.color}
           setColor={navContextProps.setColor}
         />
+
         <FontPicker />
         {largeWindow &&
           (isExpanded ? (
